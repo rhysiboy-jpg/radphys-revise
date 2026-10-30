@@ -38,7 +38,7 @@ const STEPS = [
   { t: "The tube at rest", d: "Press Next to follow one exposure, from prep to beam." },
   { t: "Prep 1: heating the filament", d: "The filament current heats the filament. Electrons are released by <b>thermionic emission</b> and gather in a cloud around it (the <b>space charge</b>). Filament temperature sets the tube current (mA)." },
   { t: "Prep 2: the anode spins up", d: "The stator's magnetic field turns the rotor, and the anode disc spins up to speed. No X-rays yet." },
-  { t: "Exposure: kV is applied", d: "The high voltage is switched on: cathode negative, anode positive. Electrons accelerate across the vacuum, and the focusing cup narrows them onto the focal spot. <b>kV sets how much energy each electron carries.</b>" },
+  { t: "Exposure: kVp is applied", d: "The high voltage is switched on: cathode negative, anode positive. Electrons accelerate across the vacuum, and the focusing cup narrows them onto the focal spot. <b>kVp sets how much energy each electron carries.</b>" },
   { t: "Electrons hit the target", d: "The electrons stop in the tungsten target. About <b>99%</b> of their energy becomes <b>heat</b>, spread around the spinning track. Only about <b>1%</b> becomes <b>X-ray photons</b>, which leave in all directions. Those heading the wrong way are absorbed by the lead-lined housing." },
   { t: "The useful beam", d: "Photons heading for the window pass out of the tube. The aluminium filter removes the low-energy ones, which would only add skin dose. What's left is the <b>useful beam</b> sent towards the patient." },
 ];
@@ -101,7 +101,7 @@ const MARKUP = `
       <g class="fx fx-3" aria-hidden="true"><text class="fxlabel el-t" x="250" y="216">electrons →</text></g>
       <g class="fx fx-4" aria-hidden="true">
         <circle cx="453" cy="232" r="30" fill="url(#g-heat)"/>
-        <text class="fxlabel heat-t" x="330" y="268">≈99% heat</text>
+        <text class="fxlabel heat-t" x="374" y="272" text-anchor="end">≈99% heat</text>
       </g>
       <g data-role="strays" class="fx fx-4" aria-hidden="true"></g>
       <g class="fx fx-5" aria-hidden="true"><polygon class="beam" points="453,236 387,436 519,436"/></g>

@@ -1,5 +1,5 @@
 // Explorer: the Bohr atom. Pick an element, then step through excitation or ionisation and the characteristic X-ray that follows.
-import { svgEl as el, wavy, tween, lerp } from "./util.js";
+import { svgEl as el, wavy, tween, lerp, keepInside } from "./util.js";
 import { drawAtom, moveTo, vacancy } from "./atom.js";
 
 // Binding energies in keV. L and M are the sub-shells (L3, M5) that give the strongest K and L lines.
@@ -83,7 +83,9 @@ export function mount(root) {
   const photon = (x1, y1, x2, y2, label, small, labelAtStart) => {
     const g = el("g", { opacity: 0 }, fx);
     el("path", { class: small ? "photon weak" : "photon", d: wavy(x1, y1, x2, y2) }, g);
-    el("text", { class: "fxlabel ph-t", x: labelAtStart ? x1 : x2 + 6, y: labelAtStart ? y1 - 12 : y2 + 4 }, g).textContent = label;
+    const t = el("text", { class: "fxlabel ph-t", x: labelAtStart ? x1 : x2 + 6, y: labelAtStart ? y1 - 12 : y2 + 4 }, g);
+    t.textContent = label;
+    keepInside(t, 8, 552);
     return g;
   };
 

@@ -106,8 +106,9 @@
       {
         "id": "windowing",
         "title": "Window level and width",
-        "blurb": "Change the window and see brightness and contrast respond, with the histogram alongside.",
-        "ready": false
+        "blurb": "Change the window level and width and watch the image, its histogram and the look-up table respond.",
+        "ready": true,
+        "approved": false
       },
       {
         "id": "detectors",
@@ -129,8 +130,9 @@
       {
         "id": "console",
         "title": "The exposure console",
-        "blurb": "Set the exposure and see contrast, noise, sharpness, exposure index and dose change.",
-        "ready": false
+        "blurb": "Set the exposure and see brightness, contrast, noise, sharpness, exposure index and dose change. Then try the \"What do I do?\" scenarios and \"Higher or lower?\".",
+        "ready": true,
+        "approved": false
       },
       {
         "id": "geometry",

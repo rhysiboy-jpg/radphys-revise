@@ -38,8 +38,10 @@
   --lead: #47505A;
   --metal: #8F9AA4;
   --tungsten: #59626B;
-  --copper: #B06A33;
+  --copper: #9A5A2A;   /* deepened from #B06A33 so the white "+" on a nucleus passes 4.5:1 */
   --al: #B4C0C9;
+  --on-electron: #FFFFFF;   /* signs drawn on an electron or nucleus */
+  --on-copper: #FFFFFF;
 
   --font-display: "Figtree", "Segoe UI", system-ui, sans-serif;
   --font-body: "Noto Sans", "Segoe UI", system-ui, sans-serif;
@@ -52,20 +54,20 @@
     --chrome: #0E0F11; --sheet: #16171A; --panel: #1D1F22; --raised: #24262A; --edge: #2A2C31; --control: #3B3E45;
     --ink: #ECEDEF; --muted: #A4A9B1; --brand: #FF5C52; --brand-tint: #3A1B1A; --sun-tint: #3A2F12; --sun-ink: #FDB913;
     --primary: #ECEDEF; --primary-ink: #15171B; --good: #5CC98A; --good-tint: #16301F;
-    --paper: #0D141A; --surface: #151F27; --line: #2A3843; --dg-accent: #4CB3D3; --dg-accent-ink: #06222C;
+    --paper: #0D141A; --surface: #151F27; --line: #3A4C59; --dg-accent: #4CB3D3; --dg-accent-ink: #06222C;
     --electron: #7AA2FF; --photon: #E27BCB; --heat: #F28A3C;
-    --oil: #2A2719; --vacuum: #0F1920; --glass: #5F8597; --lead: #8D97A1; --metal: #76818B;
-    --tungsten: #A9B2BA; --copper: #D08F59; --al: #5E6C77; color-scheme: dark;
+    --oil: #3A3420; --vacuum: #0F1920; --glass: #8DB4C6; --lead: #8D97A1; --metal: #76818B;
+    --tungsten: #A9B2BA; --copper: #D08F59; --al: #7D8B96; --on-electron: #0D141A; --on-copper: #0D141A; color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
   --chrome: #0E0F11; --sheet: #16171A; --panel: #1D1F22; --raised: #24262A; --edge: #2A2C31; --control: #3B3E45;
   --ink: #ECEDEF; --muted: #A4A9B1; --brand: #FF5C52; --brand-tint: #3A1B1A; --sun-tint: #3A2F12; --sun-ink: #FDB913;
   --primary: #ECEDEF; --primary-ink: #15171B; --good: #5CC98A; --good-tint: #16301F;
-  --paper: #0D141A; --surface: #151F27; --line: #2A3843; --dg-accent: #4CB3D3; --dg-accent-ink: #06222C;
+  --paper: #0D141A; --surface: #151F27; --line: #3A4C59; --dg-accent: #4CB3D3; --dg-accent-ink: #06222C;
   --electron: #7AA2FF; --photon: #E27BCB; --heat: #F28A3C;
-  --oil: #2A2719; --vacuum: #0F1920; --glass: #5F8597; --lead: #8D97A1; --metal: #76818B;
-  --tungsten: #A9B2BA; --copper: #D08F59; --al: #5E6C77; color-scheme: dark;
+  --oil: #3A3420; --vacuum: #0F1920; --glass: #8DB4C6; --lead: #8D97A1; --metal: #76818B;
+  --tungsten: #A9B2BA; --copper: #D08F59; --al: #7D8B96; --on-electron: #0D141A; --on-copper: #0D141A; color-scheme: dark;
 }
 
 * { box-sizing: border-box; }
@@ -323,6 +325,20 @@ textarea { min-height: 9rem; resize: vertical; }
   .title-row .btn { width: 100%; }
 }
 
+/* ---------- Diagrams: shared ---------- */
+/* Diagram text keeps a readable size on screen. --u is drawing units per screen pixel, set by app.js as the drawing scales,
+   so on a phone a label grows within the drawing rather than shrinking below --min-fs. --fs is each label's size at full width. */
+.stage svg text { font-size: max(var(--fs, 12px), calc(var(--min-fs, 11px) * var(--u, 0))); }
+.stage svg .badge circle { r: max(13px, calc(11px * var(--u, 0))); }
+/* Where a drawing is too narrow for its full labels, words marked wide-only drop out and narrow-only ones appear.
+   The interactions diagram also drops its closing notes (the step caption says the same) and its outer-shell count there. */
+.stage { container-type: inline-size; }
+.stage .narrow-only { display: none; }
+@container (max-width: 480px) {
+  .stage .wide-only, .stage .pane-note, .pec-svg .outer-note { display: none; }
+  .stage .narrow-only { display: inline; }
+}
+
 /* ---------- Diagrams: tube ---------- */
 .stepper { display: grid; gap: 12px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-panel); padding: 16px; }
 .step-meta { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
@@ -356,13 +372,13 @@ textarea { min-height: 9rem; resize: vertical; }
 .rotor { fill: var(--copper); stroke: var(--lead); stroke-width: 1.5; }
 .stator { fill: var(--lead); }
 .stator-coil { stroke: var(--copper); stroke-width: 2; }
-.pol { font: 600 20px var(--font-body); fill: var(--muted); }
+.pol { font: 600 20px var(--font-body); fill: var(--muted); --fs: 20px; }
 .hit { fill: transparent; }
 .part { cursor: pointer; transition: opacity .25s; }
 svg.has-sel .part:not(.sel) { opacity: 0.35; }
 .part.sel { filter: drop-shadow(0 0 5px var(--dg-accent)); }   /* taste-skill-ignore: selection glow inside the signed-off diagram */
 .badge circle { fill: var(--ink); }
-.badge text { font: 600 13px var(--font-body); fill: var(--sheet); text-anchor: middle; dominant-baseline: central; }
+.badge text { font: 600 13px var(--font-body); fill: var(--sheet); text-anchor: middle; dominant-baseline: central; --fs: 13px; }
 .badge line { stroke: var(--ink); stroke-width: 1.2; }
 .badge { cursor: pointer; }
 .badge.sel circle { fill: var(--dg-accent); }
@@ -376,10 +392,7 @@ svg.has-sel .part:not(.sel) { opacity: 0.35; }
 .beam { fill: var(--photon); opacity: 0.12; }
 .spin { fill: none; stroke: var(--dg-accent); stroke-width: 2.5; stroke-dasharray: 10 6; animation: flow 0.6s linear infinite; }
 .spin-head { fill: var(--dg-accent); }
-.fxlabel { font: 600 13px var(--font-body); }
-.fxlabel.heat-t { fill: var(--heat); }
-.fxlabel.ph-t { fill: var(--photon); }
-.fxlabel.el-t { fill: var(--electron); }
+.fxlabel { font: 500 13px var(--font-body); fill: var(--ink); --fs: 13px; }   /* labels in plain ink: the colour stays on the mark they name */
 @keyframes flow { to { stroke-dashoffset: -20; } }
 
 /* ---------- Diagrams: spectrum ---------- */
@@ -402,17 +415,17 @@ input[type="range"] { width: 100%; accent-color: var(--dg-accent); min-height: 3
 .try ol { margin: 0; padding-left: 1.3em; display: grid; gap: 6px; color: var(--muted); }
 .try ol b { color: var(--ink); font-weight: 600; }
 .axis line, .axis path { stroke: var(--line); }
-.axis text, .ax-title { font: 400 12px var(--font-body); fill: var(--muted); }
-.ax-title { font-size: 12.5px; }
+.axis text, .ax-title { font: 400 12px var(--font-body); fill: var(--muted); --fs: 12px; }
+.ax-title { font-size: 12.5px; --fs: 12.5px; }
 .grid-l { stroke: var(--line); stroke-dasharray: 2 4; }
 .curve { fill: none; stroke: var(--photon); stroke-width: 2.4; stroke-linejoin: round; }
-.area { fill: var(--photon); opacity: 0.14; }
+.spec-area { fill: var(--photon); opacity: 0.14; }
 .pinned { fill: none; stroke: var(--muted); stroke-width: 2; stroke-dasharray: 6 5; }
 .kvline { stroke: var(--dg-accent); stroke-width: 1.5; stroke-dasharray: 4 4; }
-.kvlabel { font: 600 12px var(--font-body); fill: var(--dg-accent); }
-.linelabel { font: 600 12px var(--font-body); fill: var(--photon); }
+.kvlabel { font: 500 12px var(--font-body); fill: var(--ink); --fs: 12px; }
+.linelabel { font: 500 12px var(--font-body); fill: var(--ink); --fs: 12px; }
 .meanmark { fill: var(--ink); }
-.meanlabel { font: 500 11.5px var(--font-body); fill: var(--ink); }
+.meanlabel { font: 500 11.5px var(--font-body); fill: var(--ink); --fs: 11.5px; }
 .legend { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 0.8rem; color: var(--muted); }
 .legend i { display: inline-block; width: 22px; height: 0; border-top: 2.5px solid var(--photon); vertical-align: middle; margin-right: 6px; }
 .legend i.dash { border-top: 2px dashed var(--muted); }
@@ -425,18 +438,18 @@ input[type="range"] { width: 100%; accent-color: var(--dg-accent); min-height: 3
 .select { font: 400 1rem var(--font-body); color: var(--ink); background: var(--raised); border: 1px solid var(--control); border-radius: var(--r-row); padding: 9px 12px; width: 100%; min-height: 44px; }
 .shell { fill: none; stroke: var(--glass); stroke-width: 1.6; }
 .shell.empty, .shell.outer { stroke-dasharray: 4 5; opacity: 0.7; }
-.shell-label { font: 600 13px var(--font-body); fill: var(--muted); }
+.shell-label { font: 600 13px var(--font-body); fill: var(--muted); --fs: 13px; }
 .nucleus { fill: var(--copper); stroke: var(--lead); stroke-width: 1.5; }
-.nucleus-t { font: 700 11px var(--font-body); fill: #FFFFFF; text-anchor: middle; dominant-baseline: central; }
+.nucleus-t { font: 700 11px var(--font-body); fill: var(--on-copper); text-anchor: middle; dominant-baseline: central; --fs: 11px; --min-fs: 0px; }
 .e-dot { fill: var(--electron); }
-.e-sign { font: 700 11px var(--font-body); fill: #FFFFFF; text-anchor: middle; dominant-baseline: central; }
+.e-sign { font: 700 11px var(--font-body); fill: var(--on-electron); text-anchor: middle; dominant-baseline: central; --fs: 11px; --min-fs: 0px; }
 .vacancy { fill: none; stroke: var(--electron); stroke-width: 1.8; stroke-dasharray: 3 3; }
-.atom-state { font: 600 14px var(--font-body); fill: var(--ink); }
+.atom-state { font: 600 14px var(--font-body); fill: var(--ink); --fs: 14px; }
 .e-path { fill: none; stroke: var(--electron); stroke-width: 1.4; stroke-dasharray: 2 5; opacity: 0.6; }
 .heat-glow { fill: var(--heat); }
-.pane { fill: var(--vacuum); stroke: var(--line); }
-.pane-t { font: 600 14px var(--font-body); fill: var(--ink); text-anchor: middle; }
-.pane-note { font: 600 12px var(--font-body); fill: var(--ink); text-anchor: middle; }
+.pane { fill: var(--vacuum); stroke: var(--glass); }
+.pane-t { font: 600 14px var(--font-body); fill: var(--ink); text-anchor: middle; --fs: 14px; }
+.pane-note { font: 600 12px var(--font-body); fill: var(--ink); text-anchor: middle; --fs: 12px; }
 .share { display: grid; gap: 8px; }
 .share-row { display: grid; grid-template-columns: 7.5em minmax(0, 1fr) 3em; gap: 10px; align-items: center; font-size: 0.9rem; }
 .share-row b { text-align: right; }
@@ -448,7 +461,7 @@ input[type="range"] { width: 100%; accent-color: var(--dg-accent); min-height: 3
 .source { fill: var(--heat); stroke: var(--lead); stroke-width: 1.5; }
 .plane { fill: var(--lead); }
 .plane.ref { fill: none; stroke: var(--muted); stroke-width: 1.5; stroke-dasharray: 4 3; }
-.plane-t, .tick-t { font: 500 12px var(--font-body); fill: var(--muted); }
+.plane-t, .tick-t { font: 500 12px var(--font-body); fill: var(--muted); --fs: 12px; }
 .tick { stroke: var(--line); stroke-width: 1.2; }
 .front-beam { fill: var(--photon); fill-opacity: 0.1; stroke: var(--photon); stroke-width: 1.2; }
 .patch { fill: none; stroke: var(--ink); stroke-width: 1.6; stroke-dasharray: 5 3; }
@@ -458,3 +471,26 @@ input[type="range"] { width: 100%; accent-color: var(--dg-accent); min-height: 3
   .photon, .spin { animation: none; }
   .fx, .part, button, .btn, .opt, .review-list summary::after { transition: none; }
 }
+
+/* ---------- Diagrams: exposure console ---------- */
+/* The simulated image is greyscale in both themes, as a radiograph is; a fine edge keeps it from bleeding into a dark stage. */
+.xray { width: 100%; height: auto; display: block; border-radius: 8px; background: #000; outline: 1px solid var(--line); }
+.slider .label { font-weight: 600; }
+.readout b + span { font-size: 0.8rem; color: var(--muted); }
+fieldset legend { margin-bottom: 4px; }
+/* On a phone the controls sit below the image, so the image stays in view while they scroll past. */
+@media (max-width: 900px) {
+  [data-diagram="console"] .stage { position: sticky; top: 60px; z-index: 2; padding: 8px; gap: 4px; }
+  [data-diagram="console"] .scale-note { font-size: 0.72rem; }
+}
+
+/* ---------- Diagrams: windowing ---------- */
+.stage svg + .scale-note, .stage canvas + svg { margin-top: 2px; }
+.hist-bar { fill: var(--muted); opacity: 0.55; }
+.win-band { fill: var(--dg-accent); opacity: 0.14; }
+.lut { fill: none; stroke: var(--ink); stroke-width: 2; stroke-linejoin: round; }
+.strip-edge { fill: none; stroke: var(--line); }
+.peak-t { font: 500 12px var(--font-body); fill: var(--ink); --fs: 12px; }
+.legend i.lut-key { border-top: 2px solid var(--ink); }
+.legend i.band-key { height: 10px; border: 0; background: var(--dg-accent); opacity: 0.3; vertical-align: -1px; }
+.summary:empty { display: none; }

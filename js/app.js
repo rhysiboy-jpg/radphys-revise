@@ -11,6 +11,8 @@ const DIAGRAMS = {
   target: () => import("./diagrams/target.js"),
   "pe-compton": () => import("./diagrams/pecompton.js"),
   isl: () => import("./diagrams/isl.js"),
+  console: () => import("./diagrams/console.js"),
+  windowing: () => import("./diagrams/windowing.js"),
 };
 
 // Mastery (how secure the tried questions are) shows once this many questions have been tried.
@@ -260,11 +262,24 @@ async function explore(id) {
       const mod = await loader();
       if (!box.isConnected) return;   // the user navigated away while loading
       cleanups.push(mod.mount(box));
+      cleanups.push(trackScale(box));
     } catch (err) {
       console.error(err);
       box.innerHTML = '<p class="muted">This diagram could not load. Try refreshing the page.</p>';
     }
   }
+}
+
+// Tells each diagram how far it is scaled down (--u: drawing units per screen pixel), so the CSS can keep its text readable on a phone.
+function trackScale(box) {
+  const ro = new ResizeObserver(entries => {
+    for (const { target } of entries) {
+      const w = target.getBoundingClientRect().width, vb = target.viewBox?.baseVal;
+      if (w && vb?.width) target.style.setProperty("--u", (vb.width / w).toFixed(3));
+    }
+  });
+  box.querySelectorAll("svg[viewBox]").forEach(svg => ro.observe(svg));
+  return () => ro.disconnect();
 }
 
 /* ---------- Practise ---------- */

@@ -23,7 +23,7 @@ export function drawAtom(parent, { cx, cy, counts, radii = [44, 76, 108], outerR
   const outer = counts.slice(3).reduce((a, b) => a + b, 0);
   if (outer) {
     el("circle", { class: "shell outer", cx, cy, r: outerR }, g);
-    el("text", { class: "shell-label", x: cx, y: cy + outerR + 18, "text-anchor": "middle" }, g).textContent = `+ ${outer} electrons in outer shells`;
+    el("text", { class: "shell-label outer-note", x: cx, y: cy + outerR + 18, "text-anchor": "middle" }, g).textContent = `+ ${outer} electrons in outer shells`;
   }
   const nucleus = el("g", { class: "nucleus-g" }, g);
   el("circle", { class: "nucleus", cx, cy, r: 16 }, nucleus);

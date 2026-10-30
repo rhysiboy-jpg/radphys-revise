@@ -59,8 +59,8 @@ const MARKUP = `
       <h3>Try this</h3>
       <ol>
         <li><b>Fire Bremsstrahlung at every distance.</b> Each one gives a different photon energy, which is why the spectrum is a continuous curve.</li>
-        <li><b>Set a direct hit.</b> The photon takes all the electron's energy: this is the maximum photon energy, equal to the kV.</li>
-        <li><b>Characteristic below 70 kV.</b> The electron can't remove a K-shell electron, so there's no 59 keV line.</li>
+        <li><b>Set a direct hit.</b> The photon takes all the electron's energy: this is the maximum photon energy, equal to the kVp.</li>
+        <li><b>Characteristic below 70 kVp.</b> The electron can't remove a K-shell electron, so there's no 59 keV line.</li>
       </ol>
     </div>
   </div>
@@ -100,22 +100,22 @@ export function mount(root) {
         t: c.b ? "Braking radiation" : "A direct hit on the nucleus",
         d: c.b
           ? `The electron passes ${c.label.toLowerCase()} and is pulled towards the positive nucleus. It slows and changes direction, and the energy it loses leaves as an X-ray photon of <b>${e} keV</b>. Closer passes mean sharper turns and higher-energy photons. <b>Bremsstrahlung</b> is German for "braking radiation".`
-          : `Rarely, the electron is stopped dead by the nucleus. All of its ${kV} keV becomes one photon of <b>${kV} keV</b>: the highest energy any photon in the beam can have, which is why the maximum photon energy equals the kV.`,
+          : `Rarely, the electron is stopped dead by the nucleus. All of its ${kV} keV becomes one photon of <b>${kV} keV</b>: the highest energy any photon in the beam can have, which is why the maximum photon energy equals the kVp.`,
         ph: `${e} keV`, out: c.b ? `${+(kV - e).toFixed(1)} keV` : "Stopped", often: "Most of the X-ray beam" };
     }
     if (kV < W.K) return {
       t: "Not enough energy for the K shell",
       d: `The electron carries ${kV} keV, less than the <b>${W.K} keV</b> holding a tungsten K-shell electron. It cannot remove it, so there's no K-characteristic radiation. It can still remove L-shell electrons, but the resulting 8–12 keV photons are absorbed by the tube window and filtration.`,
-      ph: "None from the K shell", out: `≈ ${kV} keV`, often: "Only above 69.5 kV" };
+      ph: "None from the K shell", out: `≈ ${kV} keV`, often: "Only above 69.5 kVp" };
     return {
       t: "Characteristic radiation",
-      d: `The electron carries ${kV} keV, more than the <b>${W.K} keV</b> K-shell binding energy, so it knocks a K-shell electron out of the atom. An L-shell electron drops into the vacancy and gives out the difference as a photon: ${W.K} − ${W.L} ≈ <b>${KA} keV</b> (Kα). The energy is the same every time, whatever the kV, which is why it shows as a sharp line on the spectrum.`,
+      d: `The electron carries ${kV} keV, more than the <b>${W.K} keV</b> K-shell binding energy, so it knocks a K-shell electron out of the atom. An L-shell electron drops into the vacancy and gives out the difference as a photon: ${W.K} − ${W.L} ≈ <b>${KA} keV</b> (Kα). The energy is the same every time, whatever the kVp, which is why it shows as a sharp line on the spectrum.`,
       ph: `${KA} keV (Kα)`, out: `${+(kV - W.K).toFixed(1)} keV or less`, often: "A small part of the beam" };
   }
 
   function describe(fired) {
     const o = outcome(), kV = +kvIn.value;
-    $("kv-o").textContent = `${kV} kV`;
+    $("kv-o").textContent = `${kV} kVp`;
     $("b-o").textContent = CLOSE[+bIn.value].label;
     $("close-row").hidden = mode !== "brems";
     $("caption").innerHTML = `<strong>${o.t}</strong><p>${fired ? "" : "Press Fire an electron to see this. "}${o.d}</p>`;

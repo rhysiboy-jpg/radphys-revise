@@ -20,7 +20,7 @@ const MARKUP = `
       <title id="isl-title">Inverse square law: a beam spreading with distance</title>
       <desc id="isl-desc" data-role="desc"></desc>
       <text class="pane-t" x="${(SX0 + SX1) / 2}" y="26">Side view</text>
-      <text class="pane-t" x="${FX}" y="26">Front view at the detector</text>
+      <text class="pane-t" x="${FX}" y="26">Front view<tspan class="wide-only"> at the detector</tspan></text>
       <g data-role="side"></g>
       <g data-role="front"></g>
     </svg>
@@ -79,16 +79,20 @@ export function mount(root) {
   // Distance scale along the bottom.
   for (let d = 0; d <= DMAX; d += 50) {
     el("line", { class: "tick", x1: sx(d), y1: 320, x2: sx(d), y2: 326 }, side);
-    el("text", { class: "tick-t", x: sx(d), y: 342, "text-anchor": "middle" }, side).textContent = d;
+    const tick = el("text", { class: d % 100 ? "tick-t wide-only" : "tick-t", x: sx(d), y: 342, "text-anchor": "middle" }, side);
+    tick.textContent = d;
+    if (d === DMAX) el("tspan", { class: "narrow-only" }, tick).textContent = " cm";   // on a phone the unit joins the last label
   }
   el("line", { class: "tick", x1: SX0, y1: 320, x2: SX1, y2: 320 }, side);
-  el("text", { class: "tick-t", x: SX1 + 6, y: 324 }, side).textContent = "cm";
+  el("text", { class: "tick-t wide-only", x: SX1 + 6, y: 324 }, side).textContent = "cm";
 
   // Front view: the beam's square, the fixed patch, and the photons.
   const square = el("rect", { class: "front-beam" }, front);
   const patch = el("rect", { class: "patch", x: FX - PATCH, y: FY - PATCH, width: PATCH * 2, height: PATCH * 2 }, front);
   const dots = SPOTS.map(() => el("circle", { class: "spot", r: 1.9 }, front));
-  el("text", { class: "plane-t", x: FX, y: FY + FMAX + 26, "text-anchor": "middle" }, front).textContent = "fixed patch: beam size at 100 cm";
+  const patchLabel = el("text", { class: "plane-t", x: FX, y: FY + FMAX + 26, "text-anchor": "middle" }, front);
+  patchLabel.textContent = "fixed patch";
+  el("tspan", { class: "wide-only" }, patchLabel).textContent = ": beam size at 100 cm";
 
   const ratioWords = r => {
     if (Math.abs(r - 1) < 1e-9) return "the same as";
@@ -106,7 +110,7 @@ export function mount(root) {
     beam.setAttribute("points", `${SX0},${SY} ${x},${SY - h} ${x},${SY + h}`);
     rays.forEach((ray, i) => { ray.setAttribute("x2", x); ray.setAttribute("y2", SY - h + (2 * h * i) / 6); });
     plane.setAttribute("x", x - 4); plane.setAttribute("y", SY - h - 6); plane.setAttribute("height", 2 * h + 12);
-    planeLabel.setAttribute("x", x); planeLabel.setAttribute("y", SY - h - 14); planeLabel.textContent = `detector ${d} cm`;
+    planeLabel.setAttribute("x", x); planeLabel.setAttribute("y", SY - h - 14); planeLabel.innerHTML = `<tspan class="wide-only">detector </tspan>${d} cm`;
     const rx = sx(ref), rh = half(ref);
     refPlane.setAttribute("x", rx - 4); refPlane.setAttribute("y", SY - rh - 6); refPlane.setAttribute("height", 2 * rh + 12);
     refLabel.setAttribute("x", rx); refLabel.setAttribute("y", SY + rh + 22); refLabel.textContent = `reference ${ref} cm`;

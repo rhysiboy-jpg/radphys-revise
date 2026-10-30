@@ -8,6 +8,21 @@ export function svgEl(tag, attrs = {}, parent) {
   return n;
 }
 
+// Sets a label's text as lines stacked under its anchor point.
+export function setLines(t, ...lines) {
+  t.textContent = "";
+  lines.forEach((line, i) => { svgEl("tspan", { x: t.getAttribute("x"), dy: i ? "1.15em" : 0 }, t).textContent = line; });
+}
+
+// Nudges a label sideways so it stays between x0 and x1 at its on-screen size (labels grow on a phone).
+export function keepInside(t, x0, x1) {
+  t.removeAttribute("transform");
+  t.getBoundingClientRect();   // a full layout first: getBBox alone can measure a new label before its phone-size text applies
+  const b = t.getBBox();
+  const shift = b.x < x0 ? x0 - b.x : b.x + b.width > x1 ? x1 - (b.x + b.width) : 0;
+  if (shift) t.setAttribute("transform", `translate(${shift.toFixed(1)} 0)`);
+}
+
 // A wavy line from (x1, y1) to (x2, y2): the usual way of drawing a photon.
 export function wavy(x1, y1, x2, y2, amp = 4, wl = 13) {
   const dx = x2 - x1, dy = y2 - y1, L = Math.hypot(dx, dy), ux = dx / L, uy = dy / L;

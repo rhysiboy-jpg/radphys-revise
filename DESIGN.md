@@ -178,6 +178,9 @@ A cool slate-and-white bench with three rationed signals (Deepened Bangor Red, B
 - **Diagram Teal** (diagram-teal): the diagrams' accent for selection, stepper buttons and slider thumbs.
 - **Electron Blue** (electron-blue), **Photon Magenta** (photon-magenta), **Heat Orange** (heat-orange): one colour per physical thing, used consistently across every diagram.
 - **Diagram Paper / Diagram Line** (diagram-paper, diagram-line): stage grounds and strokes. The tube's materials (oil, glass, lead, tungsten, copper, aluminium) have their own tokens in `css/app.css`.
+- **Labels inside diagrams** are plain ink at medium weight, never in the diagram colours. The colour stays on the electron, photon or line the label names (Rhys, 30 October 2026).
+- **Text size:** diagram text never renders below 11px on screen. As a drawing shrinks on a phone its labels and numbered markers grow within it, and the side-by-side diagrams swap to shorter phone labels (`wide-only` / `narrow-only`).
+- **Dark mode:** materials are lifted so every edge stands clear of the dark stage, and signs drawn on an electron or nucleus switch to dark text (`--on-electron`, `--on-copper`).
 
 ### Neutral
 - **Ink** (ink): text, primary buttons and focus rings.

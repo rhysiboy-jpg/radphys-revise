@@ -1,5 +1,5 @@
 // Explorer: the photoelectric effect and Compton scatter, side by side, stepped together.
-import { svgEl as el, wavy, tween } from "./util.js";
+import { svgEl as el, wavy, tween, setLines, keepInside } from "./util.js";
 import { drawAtom, vacancy } from "./atom.js";
 
 // Effective atomic number, the atom drawn for it, and its K, L (L3) and M (M5) binding energies in keV.
@@ -22,7 +22,7 @@ const L_CX = 160, R_CX = 480, CY = 196, RADII = [28, 50, 72], OUTER = 94;
 const MARKUP = `
 <div class="grid">
   <div class="stage">
-    <svg viewBox="0 0 640 380" role="img" aria-labelledby="pec-t pec-d">
+    <svg class="pec-svg" viewBox="0 0 640 380" role="img" aria-labelledby="pec-t pec-d">
       <title id="pec-t">Photoelectric effect and Compton scatter, side by side</title>
       <desc id="pec-d" data-role="desc"></desc>
       <rect class="pane" x="6" y="6" width="306" height="368" rx="10"/>
@@ -115,7 +115,7 @@ export function mount(root) {
     if (at(1)) {
       vacancy(fx, ix, iy).setAttribute("opacity", at(1));
       inner.setAttribute("transform", `translate(${ix + 100 * at(1)} ${iy - 80 * at(1)})`);
-      if (at(1) === 1) el("text", { class: "fxlabel el-t", x: ix + 112, y: iy - 98, "text-anchor": "end" }, fx).textContent = `photoelectron ${r1(n.peKE)} keV`;
+      if (at(1) === 1) setLines(el("text", { class: "fxlabel el-t", x: ix + 86, y: iy - 98, "text-anchor": "end" }, fx), "photoelectron", `${r1(n.peKE)} keV`);
     }
     if (at(2) && n.char !== null && lA.shells[shellIx + 1]) {
       const l = lA.shells[shellIx + 1].dots[0], lx = l._x, ly = l._y;
@@ -128,18 +128,23 @@ export function mount(root) {
 
     // Compton: the photon hands part of its energy to an outer electron and carries on in a new direction.
     const outerShell = rA.shells[rA.shells.length - 1], oe = outerShell.dots[0], ox = oe._x, oy = oe._y;
-    photon(fx, 342, oy, ox - 10, oy, `${n.E} keV`, at(1) ? 0.3 : 1, "start", true);
+    photon(fx, 342, oy, ox - 10, oy, at(1) ? null : `${n.E} keV`, at(1) ? 0.3 : 1, "start", true);   // the faded incoming photon drops its label, which would sit under the scattered one
     if (at(1)) {
       const phi = (n.phi * Math.PI) / 180, L = 110 * at(1);
       oe.setAttribute("transform", `translate(${ox + L * Math.cos(phi)} ${oy + L * Math.sin(phi)})`);
-      if (at(1) === 1) el("text", { class: "fxlabel el-t", x: Math.min(ox + 110 * Math.cos(phi), 600), y: oy + 110 * Math.sin(phi) + 22, "text-anchor": "middle" }, fx).textContent = `recoil electron ${r1(n.Ee)} keV`;
+      if (at(1) === 1) setLines(el("text", { class: "fxlabel el-t", x: Math.min(ox + 110 * Math.cos(phi), 600), y: oy + 110 * Math.sin(phi) + 22, "text-anchor": "middle" }, fx), "recoil electron", `${r1(n.Ee)} keV`);
     }
     if (at(2)) {
       const th = (n.deg * Math.PI) / 180, L = 110;
-      const x2 = Math.max(342, Math.min(624, ox + L * Math.cos(th))), y2 = Math.max(70, oy - L * Math.sin(th));
+      const x2 = Math.max(342, Math.min(624, ox + L * Math.cos(th))), y2 = Math.max(84, oy - L * Math.sin(th));
       photon(fx, ox + 4, oy, x2, y2, `${r1(n.Es)} keV`, at(2), x2 > 560 ? "end" : "start");
     }
     if (at(3)) note(fx, R_CX, 362, "Scatter: fogs the image, dose to staff", at(3));
+    // Each label stays inside its own pane, however large the text has grown.
+    for (const label of fx.querySelectorAll(".fxlabel")) {
+      const left = +label.getAttribute("x") < 320;
+      keepInside(label, left ? 12 : 334, left ? 306 : 628);
+    }
   }
 
   const STEP_TEXT = n => [

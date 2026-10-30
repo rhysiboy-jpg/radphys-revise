@@ -43,7 +43,7 @@ const MARKUP = `
       <desc id="spec-d" data-role="desc">Relative number of photons plotted against photon energy in keV.</desc>
       <g class="axis" data-role="axes"></g>
       <path class="pinned" data-role="pinned" d=""/>
-      <path class="area" data-role="area" d=""/>
+      <path class="spec-area" data-role="area" d=""/>
       <path class="curve" data-role="curve" d=""/>
       <line class="kvline" data-role="kvline" x1="0" y1="20" x2="0" y2="310"/>
       <text class="kvlabel" data-role="kvlabel" x="0" y="16"></text>
@@ -56,7 +56,7 @@ const MARKUP = `
   <div class="panel">
     <div class="sliders">
       <div class="slider">
-        <div class="slider-top"><label for="spec-kv">Tube voltage</label><output for="spec-kv" data-role="kv-o">80 kV</output></div>
+        <div class="slider-top"><label for="spec-kv">Tube voltage</label><output for="spec-kv" data-role="kv-o">80 kVp</output></div>
         <input type="range" id="spec-kv" min="40" max="150" step="1" value="80">
         <small>Sets the energy of each electron, so the highest photon energy.</small>
       </div>
@@ -85,7 +85,7 @@ const MARKUP = `
     <div class="try">
       <h3>Try this</h3>
       <ol>
-        <li><b>Drop the kV below 70.</b> The sharp lines vanish: electrons no longer carry the 69.5 keV needed to eject a tungsten K-shell electron.</li>
+        <li><b>Drop the kVp below 70.</b> The sharp lines vanish: electrons no longer carry the 69.5 keV needed to eject a tungsten K-shell electron.</li>
         <li><b>Pin, then double the mA.</b> Same shape and same maximum energy, twice the photons.</li>
         <li><b>Pin, then add filtration.</b> The low-energy end is cut away, the mean energy rises and there are fewer photons overall. This is beam hardening.</li>
       </ol>
@@ -125,7 +125,7 @@ export function mount(root) {
   let pinned = null, summaryTimer = null;
   function update() {
     const K = +kv.value, M = +ma.value, F = +fl.value;
-    $("kv-o").textContent = `${K} kV`;
+    $("kv-o").textContent = `${K} kVp`;
     $("ma-o").textContent = `${M} mA`;
     $("fl-o").textContent = `${F.toFixed(1)} mm Al`;
 
@@ -163,7 +163,7 @@ export function mount(root) {
     $("r-pin").textContent = pinned ? `× ${(s.tot / pinned.stats.tot).toFixed(2)}` : "–";
 
     const frac = s.mean / K;
-    const sentence = `At ${K} kV, ${M} mA and ${F.toFixed(1)} mm Al the highest photon energy is ${K} keV and the mean is about ${Math.round(s.mean)} keV (${frac < 0.42 ? "a little under" : frac > 0.58 ? "a little over" : "about"} half the kV). ` +
+    const sentence = `At ${K} kVp, ${M} mA and ${F.toFixed(1)} mm Al the highest photon energy is ${K} keV and the mean is about ${Math.round(s.mean)} keV (${frac < 0.42 ? "a little under" : frac > 0.58 ? "a little over" : "about"} half the kVp). ` +
       (hasLines
         ? "Tungsten's K-characteristic lines appear at about 59 keV (Kα) and 67 keV (Kβ), because the electrons now carry more than the 69.5 keV needed to eject a K-shell electron."
         : "There are no K-characteristic lines: the electrons carry less than the 69.5 keV needed to eject a tungsten K-shell electron.");
