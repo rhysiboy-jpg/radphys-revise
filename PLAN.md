@@ -56,6 +56,7 @@ Confirmed with Rhys Morris, 29 October 2026.
 - Diagram sign-off: each diagram has `"approved"` in `content/topics.json`. Rhys reviews them on `prototypes/diagrams.html` (a checklist per diagram); only approved diagrams reach students.
 - Signed off by Rhys (30 October 2026): Bohr atom, electron–target interactions, photoelectric vs Compton, inverse square law. All six pilot diagrams are now approved.
 - Offline support is now network-first: online visitors always get the latest files; saved copies are used only offline.
+- Review notes: Rhys checks the app locally (`tools/serve.ps1`, http://localhost:8080) and logs notes as GitHub Issues using the "Review note" form (label `note`, plus `physics`, `wording`, `layout`, `bug` or `enhancement`). Claude works through open notes and closes each with a comment saying what changed.
 - Next: the topic 2 question bank (X-ray Production & the X-ray Tube) in the same CSV format, then topics 3 and 4.
 - Untested: offline mode. Check it once hosted on GitHub Pages, which needs the repo made public (only with Rhys's go-ahead).
 - Commit identity: Rhys Morris, using the GitHub no-reply email.

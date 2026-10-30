@@ -1,0 +1,54 @@
+name: Review note
+description: Something to change or check in RadPhys Revise.
+title: "Note: "
+labels: ["note"]
+body:
+  - type: dropdown
+    id: where
+    attributes:
+      label: Where
+      options:
+        - A practice question
+        - A diagram
+        - Home or navigation
+        - Everywhere / general
+    validations:
+      required: true
+  - type: dropdown
+    id: topic
+    attributes:
+      label: Topic
+      options:
+        - "1 Atomic Structure & EM Radiation"
+        - "2 X-ray Production & the X-ray Tube"
+        - "3 Interactions with Matter"
+        - "4 Radiation Protection & Legislation"
+        - Mixed practice
+        - Not topic-specific
+    validations:
+      required: true
+  - type: input
+    id: item
+    attributes:
+      label: Question ID or diagram
+      description: Shown on the question while review mode is on (e.g. AS-07), or the diagram's name.
+      placeholder: AS-07
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Kind of change
+      options:
+        - Physics or content is wrong
+        - Wording or level
+        - Look and layout
+        - Something doesn't work
+        - Idea for later
+    validations:
+      required: true
+  - type: textarea
+    id: note
+    attributes:
+      label: Note
+      description: What you noticed and, if you know, what it should be.
+    validations:
+      required: true
