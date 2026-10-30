@@ -4,9 +4,17 @@
     "number": 1,
     "title": "Atomic Structure & EM Radiation",
     "blurb": "SI units, energy, the Bohr atom, shells and binding energy, ionisation and excitation, and the electromagnetic spectrum.",
-    "files": ["content/01-atomic-structure.csv"],
+    "files": [
+      "content/01-atomic-structure.csv"
+    ],
     "diagrams": [
-      { "id": "bohr", "title": "The Bohr atom", "blurb": "Shells, binding energy, and tap-to-trigger excitation and ionisation.", "ready": true, "approved": true }
+      {
+        "id": "bohr",
+        "title": "The Bohr atom",
+        "blurb": "Shells, binding energy, and tap-to-trigger excitation and ionisation.",
+        "ready": true,
+        "approved": true
+      }
     ]
   },
   {
@@ -14,9 +22,16 @@
     "number": 2,
     "title": "Electricity & X-ray Circuits",
     "blurb": "Charge, potential difference, current and resistance; transformers, rectification and the primary, secondary and filament circuits.",
-    "files": [],
+    "files": [
+      "content/02-electricity-circuits.csv"
+    ],
     "diagrams": [
-      { "id": "circuits", "title": "Transformers and rectification", "blurb": "Change the turns ratio and the rectification, and watch the voltage and waveform respond.", "ready": false }
+      {
+        "id": "circuits",
+        "title": "Transformers and rectification",
+        "blurb": "Change the turns ratio and the rectification, and watch the voltage and waveform respond.",
+        "ready": false
+      }
     ]
   },
   {
@@ -24,11 +39,31 @@
     "number": 3,
     "title": "X-ray Production & the X-ray Tube",
     "blurb": "The parts of the tube, thermionic emission, what happens in the anode, Bremsstrahlung and characteristic radiation, and the X-ray spectrum.",
-    "files": ["content/03-x-ray-production.csv"],
+    "files": [
+      "content/03-x-ray-production.csv"
+    ],
     "diagrams": [
-      { "id": "tube", "title": "The rotating-anode tube", "blurb": "Step through an exposure, or tap a numbered part to see what it does.", "ready": true, "approved": true },
-      { "id": "spectrum", "title": "The X-ray spectrum", "blurb": "Change kV, mA and filtration and watch the spectrum respond.", "ready": true, "approved": true },
-      { "id": "target", "title": "Electron–target interactions", "blurb": "Bremsstrahlung and characteristic radiation, step by step.", "ready": true, "approved": true }
+      {
+        "id": "tube",
+        "title": "The rotating-anode tube",
+        "blurb": "Step through an exposure, or tap a numbered part to see what it does.",
+        "ready": true,
+        "approved": true
+      },
+      {
+        "id": "spectrum",
+        "title": "The X-ray spectrum",
+        "blurb": "Change kV, mA and filtration and watch the spectrum respond.",
+        "ready": true,
+        "approved": true
+      },
+      {
+        "id": "target",
+        "title": "Electron–target interactions",
+        "blurb": "Bremsstrahlung and characteristic radiation, step by step.",
+        "ready": true,
+        "approved": true
+      }
     ]
   },
   {
@@ -36,7 +71,9 @@
     "number": 4,
     "title": "Effects of Radiation",
     "blurb": "Ionisation in cells, stochastic and deterministic effects, risk versus benefit, and ALARP.",
-    "files": [],
+    "files": [
+      "content/04-effects-of-radiation.csv"
+    ],
     "diagrams": []
   },
   {
@@ -44,9 +81,17 @@
     "number": 5,
     "title": "Interactions with Matter",
     "blurb": "Transmission, absorption and scatter; the photoelectric effect, Compton and coherent scatter; attenuation and absorption edges.",
-    "files": [],
+    "files": [
+      "content/05-interactions-with-matter.csv"
+    ],
     "diagrams": [
-      { "id": "pe-compton", "title": "Photoelectric effect and Compton scatter", "blurb": "Side-by-side animations of the two main interactions.", "ready": true, "approved": true }
+      {
+        "id": "pe-compton",
+        "title": "Photoelectric effect and Compton scatter",
+        "blurb": "Side-by-side animations of the two main interactions.",
+        "ready": true,
+        "approved": true
+      }
     ]
   },
   {
@@ -54,10 +99,22 @@
     "number": 6,
     "title": "Digital Image Formation",
     "blurb": "CR and DR detectors, digitisation, histograms and look-up tables, windowing, and image quality measures.",
-    "files": [],
+    "files": [
+      "content/06-digital-image-formation.csv"
+    ],
     "diagrams": [
-      { "id": "windowing", "title": "Window level and width", "blurb": "Change the window and see brightness and contrast respond, with the histogram alongside.", "ready": false },
-      { "id": "detectors", "title": "CR and DR detectors", "blurb": "Follow an X-ray photon to a pixel value, direct and indirect.", "ready": false }
+      {
+        "id": "windowing",
+        "title": "Window level and width",
+        "blurb": "Change the window and see brightness and contrast respond, with the histogram alongside.",
+        "ready": false
+      },
+      {
+        "id": "detectors",
+        "title": "CR and DR detectors",
+        "blurb": "Follow an X-ray photon to a pixel value, direct and indirect.",
+        "ready": false
+      }
     ]
   },
   {
@@ -65,10 +122,22 @@
     "number": 7,
     "title": "Exposure & Image Quality",
     "blurb": "kV and mAs, contrast, density, noise and resolution, focal spot, grids, AEC and the exposure index.",
-    "files": [],
+    "files": [
+      "content/07-exposure-image-quality.csv"
+    ],
     "diagrams": [
-      { "id": "console", "title": "The exposure console", "blurb": "Set the exposure and see contrast, noise, sharpness, exposure index and dose change.", "ready": false },
-      { "id": "geometry", "title": "Focal spot and geometry", "blurb": "Focal spot size, object–receptor distance and penumbra.", "ready": false }
+      {
+        "id": "console",
+        "title": "The exposure console",
+        "blurb": "Set the exposure and see contrast, noise, sharpness, exposure index and dose change.",
+        "ready": false
+      },
+      {
+        "id": "geometry",
+        "title": "Focal spot and geometry",
+        "blurb": "Focal spot size, object–receptor distance and penumbra.",
+        "ready": false
+      }
     ]
   },
   {
@@ -76,9 +145,16 @@
     "number": 8,
     "title": "Dosimetry & Dose Control",
     "blurb": "Absorbed, equivalent and effective dose, ESD and DAP, DRLs, dosimeters and controlling dose.",
-    "files": [],
+    "files": [
+      "content/08-dosimetry-dose-control.csv"
+    ],
     "diagrams": [
-      { "id": "dose-ladder", "title": "The dose ladder", "blurb": "Typical effective doses compared with background radiation, for explaining risk to patients.", "ready": false }
+      {
+        "id": "dose-ladder",
+        "title": "The dose ladder",
+        "blurb": "Typical effective doses compared with background radiation, for explaining risk to patients.",
+        "ready": false
+      }
     ]
   },
   {
@@ -88,7 +164,13 @@
     "blurb": "IR(ME)R 2017, IRR17, ALARP, time, distance and shielding, the inverse square law, consent and record keeping.",
     "files": [],
     "diagrams": [
-      { "id": "isl", "title": "The inverse square law", "blurb": "Watch a beam spread over a larger area as distance increases.", "ready": true, "approved": true }
+      {
+        "id": "isl",
+        "title": "The inverse square law",
+        "blurb": "Watch a beam spread over a larger area as distance increases.",
+        "ready": true,
+        "approved": true
+      }
     ]
   },
   {
@@ -98,7 +180,12 @@
     "blurb": "Nuclear stability, isotopes, alpha, beta and gamma decay, half-life and technetium-99m.",
     "files": [],
     "diagrams": [
-      { "id": "decay", "title": "Decay and half-life", "blurb": "Watch a sample decay, and see how each decay changes Z and A.", "ready": false }
+      {
+        "id": "decay",
+        "title": "Decay and half-life",
+        "blurb": "Watch a sample decay, and see how each decay changes Z and A.",
+        "ready": false
+      }
     ]
   },
   {
@@ -108,7 +195,12 @@
     "blurb": "Quality assurance and control, IPEM Report 91, and the routine tests with their remedial and suspension levels.",
     "files": [],
     "diagrams": [
-      { "id": "qa-check", "title": "QA checker", "blurb": "Is a test result fine, remedial or suspension?", "ready": false }
+      {
+        "id": "qa-check",
+        "title": "QA checker",
+        "blurb": "Is a test result fine, remedial or suspension?",
+        "ready": false
+      }
     ]
   }
 ]

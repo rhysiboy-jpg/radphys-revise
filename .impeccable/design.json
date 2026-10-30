@@ -1,0 +1,533 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-30T16:29:02.352Z",
+  "title": "Design System: RadPhys Revise",
+  "extensions": {
+    "colorMeta": {
+      "bangor-red": {
+        "role": "primary",
+        "displayName": "Deepened Bangor Red",
+        "canonical": "#CF0A0A",
+        "oklch": "oklch(53.9% 0.217 29)",
+        "tonalRamp": [
+          "#1E0000",
+          "#4F0202",
+          "#850605",
+          "#BD1913",
+          "#D46153",
+          "#E69589",
+          "#F4C4BC",
+          "#FFE3DC"
+        ]
+      },
+      "bangor-red-tint": {
+        "role": "primary",
+        "displayName": "Red Tint",
+        "canonical": "#FCEBEA",
+        "oklch": "oklch(95.3% 0.019 22)",
+        "tonalRamp": [
+          "#0D0A0A",
+          "#2B2524",
+          "#4D4242",
+          "#706261",
+          "#918685",
+          "#B4ACAB",
+          "#D4D0CF",
+          "#F2EDED"
+        ]
+      },
+      "bangor-sun": {
+        "role": "secondary",
+        "displayName": "Bangor Sun",
+        "canonical": "#FDB913",
+        "oklch": "oklch(82.7% 0.168 81)",
+        "tonalRamp": [
+          "#150800",
+          "#3C1F00",
+          "#673900",
+          "#945700",
+          "#AF8016",
+          "#C9A96F",
+          "#E1CFAF",
+          "#FDECCF"
+        ]
+      },
+      "sun-tint": {
+        "role": "secondary",
+        "displayName": "Sun Tint",
+        "canonical": "#FFF4D6",
+        "oklch": "oklch(96.8% 0.041 90)",
+        "tonalRamp": [
+          "#0D0B06",
+          "#2B261A",
+          "#4C4531",
+          "#6F654C",
+          "#908975",
+          "#B3AEA0",
+          "#D4D1C9",
+          "#F1EEE7"
+        ]
+      },
+      "sun-ink": {
+        "role": "secondary",
+        "displayName": "Sun Ink",
+        "canonical": "#6B4A00",
+        "oklch": "oklch(43.4% 0.090 79)",
+        "tonalRamp": [
+          "#110A01",
+          "#332306",
+          "#594011",
+          "#816022",
+          "#9F855A",
+          "#BDAB8E",
+          "#DACFBF",
+          "#F7EDDE"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Ink",
+        "canonical": "#15171B",
+        "oklch": "oklch(20.4% 0.009 264)",
+        "tonalRamp": [
+          "#0B0B0C",
+          "#252629",
+          "#434549",
+          "#64666B",
+          "#87898D",
+          "#ACAEB1",
+          "#D0D1D2",
+          "#EEEEF0"
+        ]
+      },
+      "muted-slate": {
+        "role": "neutral",
+        "displayName": "Muted Slate",
+        "canonical": "#5A606A",
+        "oklch": "oklch(48.7% 0.018 261)",
+        "tonalRamp": [
+          "#0A0B0D",
+          "#24272B",
+          "#41454D",
+          "#606670",
+          "#858991",
+          "#ABAEB4",
+          "#CFD1D4",
+          "#EDEEF1"
+        ]
+      },
+      "slate-chrome": {
+        "role": "neutral",
+        "displayName": "Slate Chrome",
+        "canonical": "#ECEEF1",
+        "oklch": "oklch(94.8% 0.005 258)",
+        "tonalRamp": [
+          "#0B0B0C",
+          "#262628",
+          "#444547",
+          "#646669",
+          "#88898B",
+          "#ADAEAF",
+          "#D0D1D2",
+          "#EEEEEF"
+        ]
+      },
+      "sheet-white": {
+        "role": "neutral",
+        "displayName": "Sheet White",
+        "canonical": "#FFFFFF",
+        "oklch": "oklch(100.0% 0.000 90)",
+        "tonalRamp": [
+          "#0B0B0B",
+          "#262626",
+          "#454545",
+          "#666666",
+          "#898989",
+          "#AEAEAE",
+          "#D1D1D1",
+          "#EEEEEE"
+        ]
+      },
+      "bench-panel": {
+        "role": "neutral",
+        "displayName": "Bench Panel",
+        "canonical": "#F5F6F8",
+        "oklch": "oklch(97.3% 0.003 265)",
+        "tonalRamp": [
+          "#0B0B0B",
+          "#262627",
+          "#444546",
+          "#656668",
+          "#88898A",
+          "#ADAEAF",
+          "#D1D1D1",
+          "#EEEEEF"
+        ]
+      },
+      "edge-line": {
+        "role": "neutral",
+        "displayName": "Edge Line",
+        "canonical": "#E3E5E9",
+        "oklch": "oklch(92.2% 0.006 265)",
+        "tonalRamp": [
+          "#0B0B0C",
+          "#262628",
+          "#444547",
+          "#646669",
+          "#88898C",
+          "#ADAEB0",
+          "#D0D1D2",
+          "#EEEEEF"
+        ]
+      },
+      "control-line": {
+        "role": "neutral",
+        "displayName": "Control Line",
+        "canonical": "#D3D7DD",
+        "oklch": "oklch(87.8% 0.009 258)",
+        "tonalRamp": [
+          "#0A0B0C",
+          "#252729",
+          "#434549",
+          "#63666B",
+          "#87898D",
+          "#ACAEB1",
+          "#D0D1D3",
+          "#EDEEF0"
+        ]
+      },
+      "correct-green": {
+        "role": "tertiary",
+        "displayName": "Correct Green",
+        "canonical": "#1E7A45",
+        "oklch": "oklch(51.4% 0.118 153)",
+        "tonalRamp": [
+          "#010F05",
+          "#052F17",
+          "#0E532C",
+          "#207945",
+          "#5E9970",
+          "#92B99C",
+          "#C1D8C7",
+          "#E0F5E5"
+        ]
+      },
+      "correct-tint": {
+        "role": "tertiary",
+        "displayName": "Correct Tint",
+        "canonical": "#E7F4EC",
+        "oklch": "oklch(95.5% 0.017 159)",
+        "tonalRamp": [
+          "#090C0A",
+          "#232825",
+          "#3F4742",
+          "#5E6963",
+          "#838C86",
+          "#AAB0AC",
+          "#CED2D0",
+          "#ECEFED"
+        ]
+      },
+      "diagram-paper": {
+        "role": "diagram",
+        "displayName": "Diagram Paper",
+        "canonical": "#EBF0F3",
+        "oklch": "oklch(95.2% 0.007 234)",
+        "tonalRamp": [
+          "#0A0B0C",
+          "#252728",
+          "#424547",
+          "#636769",
+          "#868A8C",
+          "#ACAEB0",
+          "#D0D1D2",
+          "#EDEFEF"
+        ]
+      },
+      "diagram-line": {
+        "role": "diagram",
+        "displayName": "Diagram Line",
+        "canonical": "#C6D1D9",
+        "oklch": "oklch(85.5% 0.016 239)",
+        "tonalRamp": [
+          "#090B0D",
+          "#23272A",
+          "#3F464B",
+          "#5E686E",
+          "#838A90",
+          "#A9AFB3",
+          "#CED1D4",
+          "#ECEFF1"
+        ]
+      },
+      "diagram-teal": {
+        "role": "diagram",
+        "displayName": "Diagram Teal",
+        "canonical": "#0B6A88",
+        "oklch": "oklch(48.9% 0.091 227)",
+        "tonalRamp": [
+          "#010D14",
+          "#032B39",
+          "#094C62",
+          "#1B708D",
+          "#5B92A9",
+          "#90B4C5",
+          "#C0D5DE",
+          "#DFF2FB"
+        ]
+      },
+      "electron-blue": {
+        "role": "diagram",
+        "displayName": "Electron Blue",
+        "canonical": "#2A5FD4",
+        "oklch": "oklch(52.1% 0.189 263)",
+        "tonalRamp": [
+          "#020923",
+          "#092157",
+          "#173D92",
+          "#285CCE",
+          "#5B86DD",
+          "#8EAEEA",
+          "#BFD2F5",
+          "#DEEFFF"
+        ]
+      },
+      "photon-magenta": {
+        "role": "diagram",
+        "displayName": "Photon Magenta",
+        "canonical": "#A12F88",
+        "oklch": "oklch(50.8% 0.178 338)",
+        "tonalRamp": [
+          "#180213",
+          "#420D36",
+          "#701D5E",
+          "#A13288",
+          "#BB67A5",
+          "#D398C2",
+          "#E8C5DC",
+          "#FFE4F9"
+        ]
+      },
+      "heat-orange": {
+        "role": "diagram",
+        "displayName": "Heat Orange",
+        "canonical": "#D2601A",
+        "oklch": "oklch(62.1% 0.162 46)",
+        "tonalRamp": [
+          "#1B0400",
+          "#471300",
+          "#782700",
+          "#AB3E00",
+          "#C47046",
+          "#DA9E82",
+          "#EBC9B8",
+          "#FFE7D8"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "One page title per view."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Diagram module titles in Explore."
+      },
+      "question": {
+        "displayName": "Question",
+        "purpose": "The question stem in Practise."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Panel headings and row titles."
+      },
+      "figure": {
+        "displayName": "Figure",
+        "purpose": "Stat tile values, in a light weight."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Explanations and captions, with tabular figures, up to about 70ch."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Counts, meta lines and chips, in sentence case."
+      }
+    },
+    "shadows": [
+      {
+        "name": "diagram-selection-glow",
+        "value": "drop-shadow(0 0 5px var(--dg-accent))",
+        "purpose": "The selected part in the tube diagram only. Interface surfaces have no shadows."
+      },
+      {
+        "name": "selected-ring",
+        "value": "inset 0 0 0 1px var(--ink)",
+        "purpose": "A selected answer option (state, not elevation)."
+      }
+    ],
+    "motion": [
+      {
+        "name": "state",
+        "value": "background-color .15s, border-color .15s",
+        "purpose": "Buttons and answer options."
+      },
+      {
+        "name": "press",
+        "value": "transform .1s (translateY 1px)",
+        "purpose": "Button press."
+      },
+      {
+        "name": "diagram-reveal",
+        "value": "opacity .5s",
+        "purpose": "Diagram effects fading in at each step."
+      },
+      {
+        "name": "photon-flow",
+        "value": "stroke-dashoffset 0.9s linear infinite",
+        "purpose": "Moving photon dashes, stopped under prefers-reduced-motion."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "phone",
+        "value": "600px"
+      },
+      {
+        "name": "tablet",
+        "value": "900px"
+      },
+      {
+        "name": "diagram-stack",
+        "value": "1100px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The one next action per view.",
+      "html": "<button class=\"ds-btn-primary\">Check answer</button>",
+      "css": ".ds-btn-primary{font:600 0.92rem/1 var(--font-body,\"Noto Sans\",system-ui,sans-serif);background:var(--primary,#15171B);color:var(--primary-ink,#fff);border:1px solid var(--primary,#15171B);border-radius:999px;padding:11px 18px;min-height:44px;cursor:pointer;transition:background-color .15s,transform .1s}.ds-btn-primary:hover{background:color-mix(in srgb,var(--primary,#15171B) 85%,var(--sheet,#fff))}.ds-btn-primary:active{transform:translateY(1px)}.ds-btn-primary:focus-visible{outline:3px solid var(--ink,#15171B);outline-offset:2px}"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Other actions, e.g. Explore beside Practise.",
+      "html": "<button class=\"ds-btn-secondary\">Explore</button>",
+      "css": ".ds-btn-secondary{font:600 0.92rem/1 var(--font-body,\"Noto Sans\",system-ui,sans-serif);background:var(--raised,#fff);color:var(--ink,#15171B);border:1px solid var(--control,#D3D7DD);border-radius:999px;padding:11px 18px;min-height:44px;cursor:pointer;transition:border-color .15s,transform .1s}.ds-btn-secondary:hover{border-color:var(--ink,#15171B)}.ds-btn-secondary:active{transform:translateY(1px)}.ds-btn-secondary:focus-visible{outline:3px solid var(--ink,#15171B);outline-offset:2px}"
+    },
+    {
+      "name": "Answer Option",
+      "kind": "custom",
+      "refersTo": "answer-option",
+      "description": "MCQ option row, with correct and wrong states after checking.",
+      "html": "<div class=\"ds-opts\"><label class=\"ds-opt\"><input type=\"radio\" name=\"ds-q\"> Kelvin</label><label class=\"ds-opt ds-correct\"><input type=\"radio\" name=\"ds-q2\" checked> Kelvin <span class=\"ds-tag\">✓ Correct</span></label><label class=\"ds-opt ds-wrong\"><input type=\"radio\" name=\"ds-q3\" checked> Gray <span class=\"ds-tag\">✗ Not quite</span></label></div>",
+      "css": ".ds-opts{display:grid;gap:8px;font:400 1rem/1.55 var(--font-body,\"Noto Sans\",system-ui,sans-serif);color:var(--ink,#15171B)}.ds-opt{display:flex;gap:12px;align-items:flex-start;padding:14px 16px;border:1px solid var(--edge,#E3E5E9);border-radius:10px;background:var(--raised,#fff);cursor:pointer;transition:border-color .15s}.ds-opt:hover{border-color:var(--ink,#15171B)}.ds-opt:has(input:focus-visible){outline:3px solid var(--ink,#15171B);outline-offset:2px}.ds-opt input{margin:3px 0 0;width:18px;height:18px;accent-color:var(--ink,#15171B)}.ds-tag{margin-left:auto;font-size:.82rem;font-weight:600}.ds-correct{border-color:var(--good,#1E7A45);background:var(--good-tint,#E7F4EC)}.ds-correct .ds-tag{color:var(--good,#1E7A45)}.ds-wrong{border-color:var(--bad,#CF0A0A);background:var(--bad-tint,#FCEBEA)}.ds-wrong .ds-tag{color:var(--bad,#CF0A0A)}"
+    },
+    {
+      "name": "Status Chips",
+      "kind": "chip",
+      "refersTo": "status-ready",
+      "description": "Diagram status: always a word plus a tint.",
+      "html": "<span class=\"ds-status ds-ready\">Ready</span> <span class=\"ds-status ds-review\">Awaiting sign-off</span> <span class=\"ds-status ds-later\">Coming soon</span>",
+      "css": ".ds-status{font:600 .8rem/1.4 var(--font-body,\"Noto Sans\",system-ui,sans-serif);padding:3px 10px;border-radius:999px;white-space:nowrap}.ds-ready{background:var(--good-tint,#E7F4EC);color:var(--good,#1E7A45)}.ds-review{background:var(--sun-tint,#FFF4D6);color:var(--sun-ink,#6B4A00)}.ds-later{background:color-mix(in srgb,var(--ink,#15171B) 7%,transparent);color:var(--muted,#5A606A)}"
+    },
+    {
+      "name": "Topic Row",
+      "kind": "card",
+      "refersTo": "row-card",
+      "description": "Raised row inside a panel: number, title, summary and mastery bar.",
+      "html": "<div class=\"ds-panel\"><div class=\"ds-row\"><span class=\"ds-n\">1</span><div><b>Atomic Structure &amp; EM Radiation</b><p>SI units, energy, the Bohr atom and the EM spectrum.</p><div class=\"ds-bar\"><i style=\"width:40%\"></i></div></div></div></div>",
+      "css": ".ds-panel{background:var(--panel,#F5F6F8);border-radius:12px;padding:20px;font:400 1rem/1.55 var(--font-body,\"Noto Sans\",system-ui,sans-serif);color:var(--ink,#15171B)}.ds-row{background:var(--raised,#fff);border:1px solid var(--edge,#E3E5E9);border-radius:10px;padding:16px;display:grid;grid-template-columns:2ch 1fr;gap:6px 24px}.ds-row b{font:650 1rem/1.3 var(--font-display,Figtree,system-ui,sans-serif)}.ds-row p{margin:4px 0 10px;color:var(--muted,#5A606A);font-size:.9rem}.ds-n{font:600 1rem/1.3 var(--font-display,Figtree,system-ui,sans-serif);color:var(--muted,#5A606A)}.ds-bar{height:8px;border-radius:999px;background:color-mix(in srgb,var(--ink,#15171B) 10%,transparent);overflow:hidden}.ds-bar i{display:block;height:100%;background:var(--sun,#FDB913);border-radius:999px}"
+    },
+    {
+      "name": "Stat Tile",
+      "kind": "card",
+      "refersTo": "panel",
+      "description": "Home summary tile with a light Figtree figure.",
+      "html": "<div class=\"ds-tile\"><span class=\"ds-l\">Questions tried</span><span class=\"ds-v\">12 <small>of 211</small></span><span class=\"ds-c\">Draft questions included</span></div>",
+      "css": ".ds-tile{background:var(--panel,#F5F6F8);border-radius:12px;padding:16px;min-height:128px;display:grid;align-content:space-between;gap:6px;max-width:240px;font-family:var(--font-body,\"Noto Sans\",system-ui,sans-serif);color:var(--ink,#15171B)}.ds-l,.ds-c{font-size:.85rem;color:var(--muted,#5A606A)}.ds-v{font:400 1.75rem/1.1 var(--font-display,Figtree,system-ui,sans-serif);font-variant-numeric:tabular-nums}.ds-v small{font-size:.95rem;color:var(--muted,#5A606A)}"
+    },
+    {
+      "name": "Sidebar Nav",
+      "kind": "nav",
+      "refersTo": "nav-item",
+      "description": "Sidebar on slate chrome; the current page is tinted with Ink.",
+      "html": "<nav class=\"ds-nav\"><a href=\"#\">Home</a><a href=\"#\" aria-current=\"page\"><span>1</span>Atomic Structure</a><a href=\"#\"><span>2</span>Electricity &amp; X-ray Circuits</a></nav>",
+      "css": ".ds-nav{display:grid;gap:2px;background:var(--chrome,#ECEEF1);padding:12px;max-width:228px;font:400 .92rem/1.35 var(--font-body,\"Noto Sans\",system-ui,sans-serif)}.ds-nav a{display:flex;gap:10px;padding:8px 10px;border-radius:8px;text-decoration:none;color:var(--ink,#15171B)}.ds-nav a span{color:var(--muted,#5A606A)}.ds-nav a:hover{background:color-mix(in srgb,var(--ink,#15171B) 6%,transparent)}.ds-nav a[aria-current=page]{background:color-mix(in srgb,var(--ink,#15171B) 9%,transparent);font-weight:600}.ds-nav a:focus-visible{outline:3px solid var(--ink,#15171B);outline-offset:2px}"
+    },
+    {
+      "name": "Diagram Controls",
+      "kind": "custom",
+      "refersTo": "diagram-stage",
+      "description": "Slider panel and readouts beside a diagram, in the diagram palette.",
+      "html": "<div class=\"ds-sliders\"><label>Tube voltage <output>80 kV</output></label><input type=\"range\" min=\"40\" max=\"150\" value=\"80\"><div class=\"ds-readouts\"><div><span>Max photon energy</span><b>80 keV</b></div><div><span>Characteristic lines</span><b>Yes</b></div></div></div>",
+      "css": ".ds-sliders{display:grid;gap:10px;background:var(--surface,#fff);border:1px solid var(--line,#C6D1D9);border-radius:12px;padding:16px;max-width:360px;font:400 1rem/1.55 var(--font-body,\"Noto Sans\",system-ui,sans-serif);color:var(--ink,#15171B)}.ds-sliders label{display:flex;justify-content:space-between;font-weight:600}.ds-sliders input{accent-color:var(--dg-accent,#0B6A88);width:100%}.ds-sliders input:focus-visible{outline:3px solid var(--ink,#15171B);outline-offset:2px}.ds-readouts{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line,#C6D1D9);border:1px solid var(--line,#C6D1D9);border-radius:12px;overflow:hidden}.ds-readouts div{background:var(--surface,#fff);padding:12px 14px;display:grid}.ds-readouts span{font-size:.8rem;color:var(--muted,#5A606A)}.ds-readouts b{font-size:1.15rem;font-weight:600}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Clean Lab Bench",
+    "overview": "RadPhys Revise is a calm, well-ordered workspace. A slate-tinted frame holds a single white sheet, like a bench top. On it, tools are laid out tidily in tonal panels: topic rows, question cards and readouts. The experiment sits at the centre: the interactive diagram, or the question being answered. Nothing on the bench competes with the experiment. Colour is rationed so that when it appears it means something: red for what needs another look, Sun for progress, green for a correct answer, and a separate teal-and-magenta palette inside the diagrams.\n\nThe density is moderate and readable on a phone. Students revise in short sessions, often on placement or a commute, so every screen leads with one clear next action. Type is the Bangor pairing: Figtree for headings and figures, Noto Sans for reading. Depth comes from tone (frame → sheet → panel → raised row), not from shadows.\n\nBangor University's colours are used, but toned down and with no logos. Full-strength Bangor red is deepened to pass contrast, and it is never used as a large field.",
+    "keyCharacteristics": [
+      "An L-shaped frame (sidebar on slate chrome) around one white sheet per view.",
+      "Tonal layering, with no drop shadows on interface surfaces.",
+      "Pill-shaped buttons; near-black primary buttons; red is never the default action colour.",
+      "Status always carries a word or icon as well as a colour.",
+      "Diagrams keep their own signed-off palette, separate from the interface colours.",
+      "Tabular numbers everywhere, so counts and readouts line up."
+    ],
+    "rules": [
+      {
+        "name": "The Rationed Red Rule",
+        "body": "Red means \"look again\": a wrong answer, a question due, a destructive reset. Never use it for a primary button, a heading or decoration.",
+        "section": "colors"
+      },
+      {
+        "name": "The Two Palettes Rule",
+        "body": "Interface colours stay out of the diagrams, and diagram colours stay out of the interface chrome. Electron blue is always an electron, and photon magenta is always a photon.",
+        "section": "colors"
+      },
+      {
+        "name": "The Not-By-Colour-Alone Rule",
+        "body": "Every state that has a colour also has a word or an icon (✓ Correct, ✗ Not quite, Ready, Awaiting sign-off).",
+        "section": "colors"
+      },
+      {
+        "name": "The No-Shouting Rule",
+        "body": "No uppercase labels and no letter-spaced eyebrows. Small labels are plain grey sentence case.",
+        "section": "typography"
+      },
+      {
+        "name": "The Tabular Figures Rule",
+        "body": "All numbers use tabular figures (`font-variant-numeric: tabular-nums`), so scores, counts and readouts never jitter.",
+        "section": "typography"
+      },
+      {
+        "name": "The Tone-Not-Shadow Rule",
+        "body": "To lift something, move it one tonal step; never add a `box-shadow`. Inset rings are allowed only as state: a selected answer option, or a pressed diagram key.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "**Do** layer depth by tone: chrome → sheet → panel → raised row.",
+      "**Do** keep one Ink primary button per view, naming the next action.",
+      "**Do** pair every coloured state with a word or icon.",
+      "**Do** keep diagram colours to their meaning: electron blue, photon magenta, heat orange and teal for selection.",
+      "**Do** keep touch targets at 44px or more, and honour `prefers-reduced-motion`. Animated photon dashes and transitions stop when it is set.",
+      "**Do** define every colour for both light and dark themes."
+    ],
+    "donts": [
+      "**Don't** use Bangor red as a button fill, a heading colour or a large background.",
+      "**Don't** add drop shadows, gradients or glows to interface surfaces.",
+      "**Don't** use uppercase or letter-spaced labels.",
+      "**Don't** show any university logo. Branding is colour and type only.",
+      "**Don't** use real patient images. Phantoms and anatomy are stylised drawings in the diagram style.",
+      "**Don't** change the signed-off diagram palette without Rhys's sign-off."
+    ]
+  }
+}
