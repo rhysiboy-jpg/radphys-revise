@@ -6,19 +6,25 @@
 <title>RadPhys Revise</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <meta name="description" content="Revision for first-year diagnostic radiography physics: interactive diagrams and practice questions.">
-<meta name="theme-color" content="#0B6A88">
+<meta name="theme-color" content="#ECEEF1" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0E0F11" media="(prefers-color-scheme: dark)">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..100,500..800&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@500..700&family=Noto+Sans:wght@400..600&display=swap">
 <link rel="stylesheet" href="css/app.css">
 </head>
 <body>
-<main id="app" class="wrap" tabindex="-1">
-  <p class="loading">Loading RadPhys Revise…</p>
-</main>
-<noscript><p class="wrap">RadPhys Revise needs JavaScript turned on.</p></noscript>
+<div class="shell">
+  <nav class="side" id="side" aria-label="Main">
+    <a class="brand" href="#home"><span class="brand-mark" aria-hidden="true"></span>RadPhys Revise</a>
+  </nav>
+  <main id="app" class="sheet" tabindex="-1">
+    <p class="loading">Loading RadPhys Revise…</p>
+    <noscript><p>RadPhys Revise needs JavaScript turned on.</p></noscript>
+  </main>
+</div>
 <script type="module" src="js/app.js"></script>
 </body>
 </html>

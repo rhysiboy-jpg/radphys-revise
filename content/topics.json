@@ -2,7 +2,7 @@
   {
     "id": "atomic",
     "number": 1,
-    "title": "Atomic structure & EM radiation",
+    "title": "Atomic Structure & EM Radiation",
     "blurb": "The Bohr atom, shells and binding energy, ionisation and excitation, and the electromagnetic spectrum.",
     "files": ["content/01-atomic-structure.csv"],
     "diagrams": [
@@ -12,7 +12,7 @@
   {
     "id": "production",
     "number": 2,
-    "title": "X-ray production & the X-ray tube",
+    "title": "X-ray Production & the X-ray Tube",
     "blurb": "The parts of the tube, what happens during an exposure, Bremsstrahlung and characteristic radiation, and the X-ray spectrum.",
     "files": [],
     "diagrams": [
@@ -24,7 +24,7 @@
   {
     "id": "interactions",
     "number": 3,
-    "title": "Interactions with matter",
+    "title": "Interactions with Matter",
     "blurb": "The photoelectric effect and Compton scatter, attenuation, and what they mean for contrast and dose.",
     "files": [],
     "diagrams": [
@@ -34,7 +34,7 @@
   {
     "id": "protection",
     "number": 4,
-    "title": "Radiation protection & legislation",
+    "title": "Radiation Protection & Legislation",
     "blurb": "IR(ME)R 2017, IRR17, ALARP, time, distance and shielding, and the inverse square law.",
     "files": [],
     "diagrams": [

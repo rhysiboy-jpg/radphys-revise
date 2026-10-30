@@ -1,6 +1,6 @@
 // Offline support: serves saved copies when there's no connection, and refreshes them in the background when there is.
 // Change VERSION to force every device to drop its old copies.
-const VERSION = "radphys-revise-v1";
+const VERSION = "radphys-revise-v2";
 const CORE = [
   "./", "index.html", "css/app.css", "manifest.webmanifest", "icons/icon.svg",
   "js/app.js", "js/config.js", "js/content.js", "js/csv.js", "js/quiz.js", "js/store.js",
