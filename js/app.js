@@ -72,7 +72,7 @@ function home() {
   show(`${header()}
     <section class="intro">
       <p class="eyebrow">First-year diagnostic radiography physics</p>
-      <h1 tabindex="-1">Revise the physics behind every exposure</h1>
+      <h1 tabindex="-1">Revise the physics behind <em>every exposure</em></h1>
       <p>Explore interactive diagrams, then practise with questions that explain every answer. Questions you get wrong come back more often until they stick.</p>
       <p class="device-note">Your progress is saved on this device only. Clearing your browser data or switching device starts you afresh.</p>
     </section>

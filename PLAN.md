@@ -50,6 +50,7 @@ Confirmed with Rhys Morris, 29 October 2026.
   - Atomic structure question bank drafted (18 MCQs, 5 written).
   - 5 calculation templates written.
   - Code saved to the private GitHub repo `rhysiboy-jpg/radphys-revise`.
+  - App shell restyled (branch `main-tbrnio`, awaiting Rhys's sign-off): manila "film envelope" light theme, "reporting room" dark theme, lead-marker and step-wedge motifs, Bricolage Grotesque / Atkinson Hyperlegible Next / Martian Mono. Diagrams keep their signed-off palette and label font.
 - Waiting on Rhys: review of `content/01-atomic-structure.csv` and `content/calculations.js` (set status to approved/rejected).
 - Next (Rhys to choose):
   - the remaining four diagrams (Bohr atom, electron–target interactions, photoelectric vs Compton, inverse square law), built to the same style and accessibility standard as `js/diagrams/tube.js`
@@ -59,7 +60,7 @@ Confirmed with Rhys Morris, 29 October 2026.
 - Rhys is a lecturer, not a developer: explain steps plainly.
 
 ## Rhys's to-dos
-- [ ] Create a free GitHub account (before February).
+- [x] Create a free GitHub account (before February).
 - [ ] Create the Microsoft feedback Form (Claude drafts the questions).
 - [ ] Ask Canolfan Bedwyr about Welsh language requirements.
 - [ ] Ask line manager about IP.
