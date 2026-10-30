@@ -43,6 +43,21 @@ Confirmed with Rhys Morris, 29 October 2026.
 - Late March 2027: full version with all topics.
 - April–May 2027: fixes and exam practice mode.
 
+## Status (30 October 2026)
+- Done:
+  - Diagram style signed off (anode angle corrected to about 15°).
+  - App shell built: home, Explore, Practise, mastery tracking, offline support.
+  - Atomic structure question bank drafted (18 MCQs, 5 written).
+  - 5 calculation templates written.
+  - Code saved to the private GitHub repo `rhysiboy-jpg/radphys-revise`.
+- Waiting on Rhys: review of `content/01-atomic-structure.csv` and `content/calculations.js` (set status to approved/rejected).
+- Next (Rhys to choose):
+  - the remaining four diagrams (Bohr atom, electron–target interactions, photoelectric vs Compton, inverse square law), built to the same style and accessibility standard as `js/diagrams/tube.js`
+  - or the topic 2 question bank (X-ray production & the tube) in the same CSV format
+- Untested: offline mode. Check it once hosted on GitHub Pages, which needs the repo made public (only with Rhys's go-ahead).
+- Commit identity: Rhys Morris, using the GitHub no-reply email.
+- Rhys is a lecturer, not a developer: explain steps plainly.
+
 ## Rhys's to-dos
 - [ ] Create a free GitHub account (before February).
 - [ ] Create the Microsoft feedback Form (Claude drafts the questions).
