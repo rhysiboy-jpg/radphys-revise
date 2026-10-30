@@ -7,9 +7,9 @@ import { drawAtom, moveTo, vacancy } from "./atom.js";
 const ELEMENTS = {
   C:  { name: "Carbon",   z: 6,  counts: [2, 4],                K: 0.284, L: 0.011, M: null, where: "in soft tissue" },
   Ca: { name: "Calcium",  z: 20, counts: [2, 8, 8, 2],          K: 4.04,  L: 0.35,  M: 0.03, where: "in bone" },
-  I:  { name: "Iodine",   z: 53, counts: [2, 8, 18, 18, 7],     K: 33.2,  L: 4.56,  M: 0.62, where: "in contrast media" },
-  W:  { name: "Tungsten", z: 74, counts: [2, 8, 18, 32, 12, 2], K: 69.5,  L: 10.2,  M: 1.81, where: "in the X-ray tube target" },
-  Pb: { name: "Lead",     z: 82, counts: [2, 8, 18, 32, 18, 4], K: 88.0,  L: 13.0,  M: 2.48, where: "in lead aprons and shielding" },
+  I:  { name: "Iodine",   z: 53, counts: [2, 8, 18, 18, 7],     K: 33.2,  L: 4.56,  M: 0.62, where: "in contrast media", lecture: { L: 5.1, M: 1 } },
+  W:  { name: "Tungsten", z: 74, counts: [2, 8, 18, 32, 12, 2], K: 69.5,  L: 10.2,  M: 1.81, where: "in the X-ray tube target", lecture: { L: 11.5, M: 2.5 } },
+  Pb: { name: "Lead",     z: 82, counts: [2, 8, 18, 32, 18, 4], K: 88.0,  L: 13.0,  M: 2.48, where: "in lead aprons and shielding", lecture: { L: 15, M: 3.8 } },
 };
 const kev = v => v == null ? "–" : v >= 10 ? v.toFixed(1) : v >= 1 ? v.toFixed(2) : v.toFixed(v < 0.1 ? 3 : 2);
 
@@ -42,6 +42,7 @@ const MARKUP = `
       <div class="readout"><span>M-shell binding energy</span><b data-role="r-m"></b></div>
       <div class="readout"><span>Characteristic Kα (K − L)</span><b data-role="r-ka"></b></div>
     </div>
+    <p class="scale-note" data-role="lecture-note"></p>
     <div class="stepper">
       <div class="modes" role="group" aria-label="Interaction">${Object.entries(MODES).map(([k, v]) => `<button type="button" data-mode="${k}" aria-pressed="${k === "ionise"}">${v}</button>`).join("")}</div>
       <div class="step-meta">
@@ -178,6 +179,9 @@ export function mount(root) {
     $("r-l").textContent = `${kev(e.L)} keV`;
     $("r-m").textContent = e.M == null ? "No M electrons" : `${kev(e.M)} keV`;
     $("r-ka").textContent = `≈ ${kev(e.K - e.L)} keV`;
+    $("lecture-note").textContent = e.lecture
+      ? `Lecture tables give ${e.name.toLowerCase()} L ≈ ${e.lecture.L} keV and M ≈ ${e.lecture.M} keV: averages across each shell's sub-shells. The values here are the sub-shells the main X-ray lines come from, which is why Kα comes out at about ${kev(e.K - e.L)} keV.`
+      : "L and M values are for the sub-shells the main X-ray lines come from.";
   }
 
   select.addEventListener("change", () => { key = select.value; showElement(); jumpTo(0); });

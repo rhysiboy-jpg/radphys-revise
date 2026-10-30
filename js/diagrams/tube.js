@@ -3,7 +3,7 @@ import { svgEl as el, wavy, reducedMotion } from "./util.js";
 
 const PARTS = [
   { id: "filament", name: "Filament", bx: 210, by: 190, lx: 176, ly: 222,
-    text: "A coil of tungsten wire in the cathode. The filament current (around 10 V, a few amps) heats it until electrons escape from its surface. This is <b>thermionic emission</b>. A hotter filament releases more electrons, so filament temperature controls the <b>tube current (mA)</b>.",
+    text: "A coil of tungsten wire in the cathode. The filament current (about 5 A at 12 V, from a step-down transformer) heats it until electrons escape from its surface. This is <b>thermionic emission</b>. A hotter filament releases more electrons, so filament temperature controls the <b>tube current (mA)</b>.",
     tip: "<b>Why tungsten?</b> High melting point (3422 °C) and it can be drawn into fine wire. Many tubes have two filaments, for broad and fine focus." },
   { id: "cup", name: "Focusing cup", bx: 128, by: 182, lx: 142, ly: 202,
     text: "A metal cup around the filament, held at the same negative potential. It repels the electrons and squeezes them into a narrow beam aimed at the focal spot.",
@@ -12,7 +12,7 @@ const PARTS = [
     text: "A tungsten (often tungsten–rhenium) track on the bevelled edge of the anode. The bevel faces the cathode and is angled towards the window, typically at around 12–16° (the <b>target angle</b>). The electrons stop here. Around <b>99% of their energy becomes heat</b> and only about <b>1% becomes X-rays</b>. The focal spot is the area the electrons actually strike.",
     tip: "<b>Why tungsten?</b> High atomic number (Z = 74) gives efficient X-ray production, and its high melting point survives the heat. A smaller focal spot gives a sharper image but tolerates less heat." },
   { id: "anode", name: "Rotating anode", bx: 462, by: 50, lx: 466, ly: 88,
-    text: "A disc connected to the positive high voltage. It spins at around 3,000 to 10,000 rpm, so the electrons strike a moving ring of target rather than one spot. Spreading the heat this way allows much higher exposures without melting the target.",
+    text: "A disc connected to the positive high voltage. It spins at about 3,000 rpm, or about 9,000 rpm in high-speed tubes, so the electrons strike a moving ring of target rather than one spot. Spreading the heat this way allows much higher exposures without melting the target.",
     tip: "<b>Remember:</b> the anode starts spinning when the radiographer presses <b>prep</b>, before any X-rays are made." },
   { id: "rotor", name: "Rotor", bx: 578, by: 170, lx: 578, ly: 170,
     text: "A copper cylinder on the anode stem, inside the vacuum. The stator's magnetic field turns it, and it turns the anode. It runs on bearings.",
@@ -24,7 +24,7 @@ const PARTS = [
     text: "A sealed borosilicate glass (or metal-ceramic) container holding a <b>vacuum</b>. Electrons can then travel from cathode to anode without colliding with gas molecules, and the hot filament cannot oxidise. It also supports and insulates the electrodes.",
     tip: "<b>Link:</b> the glass also absorbs some low-energy X-rays, so it contributes to <b>inherent filtration</b>." },
   { id: "window", name: "Window", bx: 524, by: 306, lx: 490, ly: 292,
-    text: "A thinner part of the envelope where the useful beam leaves the tube. Together with the glass and oil, it forms the tube's <b>inherent filtration</b>, typically about 0.5 to 1 mm aluminium equivalent.",
+    text: "A thinner part of the envelope where the useful beam leaves the tube. Together with the glass and oil, it forms the tube's <b>inherent filtration</b>, about 1 mm aluminium equivalent.",
     tip: "<b>Remember:</b> inherent filtration is built into the tube and cannot be removed." },
   { id: "filter", name: "Added filtration", bx: 532, by: 352, lx: 500, ly: 344,
     text: "Aluminium sheets at the tube port. They absorb the <b>low-energy photons</b>, which would only be absorbed in the patient's skin, adding dose without reaching the image receptor. This raises the beam's mean energy (<b>beam hardening</b>).",

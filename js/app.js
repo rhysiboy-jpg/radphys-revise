@@ -134,7 +134,7 @@ function home() {
       <div class="topic-main">
         <h3>${esc(t.title)}</h3>
         <p>${esc(t.blurb)}</p>
-        <p class="counts">${plural(n, "question")} · ${ready} of ${plural(t.diagrams.length, "diagram")} ready</p>
+        <p class="counts">${plural(n, "question")}${t.diagrams.length ? ` · ${ready} of ${plural(t.diagrams.length, "diagram")} ready` : ""}</p>
       </div>
       <div class="topic-side">
         ${n ? masteryBar(mastery(t.id), "") : '<span class="soon">Questions coming soon</span>'}

@@ -1,12 +1,12 @@
 // Offline support: saves a copy of every file, and serves the saved copies when there's no connection.
 // Change VERSION to force every device to drop its old copies.
-const VERSION = "radphys-revise-v4";
+const VERSION = "radphys-revise-v5";
 const CORE = [
   "./", "index.html", "css/app.css", "manifest.webmanifest", "icons/icon.svg",
   "js/app.js", "js/config.js", "js/content.js", "js/csv.js", "js/quiz.js", "js/store.js",
   "js/diagrams/util.js", "js/diagrams/atom.js", "js/diagrams/tube.js", "js/diagrams/spectrum.js",
   "js/diagrams/bohr.js", "js/diagrams/target.js", "js/diagrams/pecompton.js", "js/diagrams/isl.js",
-  "content/topics.json", "content/calculations.js", "content/01-atomic-structure.csv",
+  "content/topics.json", "content/calculations.js", "content/01-atomic-structure.csv", "content/03-x-ray-production.csv",
 ];
 
 self.addEventListener("install", e => {
