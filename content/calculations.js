@@ -11,7 +11,7 @@ export default [
     topic: "protection",
     subtopic: "Inverse square law",
     difficulty: "core",
-    status: "draft",
+    status: "approved",
     generate() {
       const d1 = pick([1, 2]);
       const d2 = d1 * pick([1.5, 2, 2.5, 3, 4]);
@@ -35,7 +35,7 @@ export default [
     topic: "protection",
     subtopic: "Inverse square law",
     difficulty: "core",
-    status: "draft",
+    status: "approved",
     generate() {
       const d1 = pick([100, 110, 150, 180]);
       let d2 = pick([90, 100, 120, 150, 180, 200]);
@@ -62,7 +62,7 @@ export default [
     topic: "protection",
     subtopic: "Inverse square law",
     difficulty: "stretch",
-    status: "draft",
+    status: "approved",
     generate() {
       const mas1 = pick([5, 8, 10, 16, 20, 25]);
       const d1 = 100;
@@ -86,7 +86,7 @@ export default [
     topic: "protection",
     subtopic: "Inverse square law",
     difficulty: "core",
-    status: "draft",
+    status: "approved",
     generate() {
       const d1 = pick([0.5, 1]);
       const k = pick([2, 3, 4]);
@@ -107,7 +107,7 @@ export default [
     topic: "interactions",
     subtopic: "Half-value layer",
     difficulty: "core",
-    status: "draft",
+    status: "approved",
     generate() {
       const hvl = pick([2, 2.5, 3, 4]);
       const n = pick([1, 2, 3, 4]);

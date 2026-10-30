@@ -1,10 +1,11 @@
-// Offline support: serves saved copies when there's no connection, and refreshes them in the background when there is.
+// Offline support: saves a copy of every file, and serves the saved copies when there's no connection.
 // Change VERSION to force every device to drop its old copies.
-const VERSION = "radphys-revise-v2";
+const VERSION = "radphys-revise-v4";
 const CORE = [
   "./", "index.html", "css/app.css", "manifest.webmanifest", "icons/icon.svg",
   "js/app.js", "js/config.js", "js/content.js", "js/csv.js", "js/quiz.js", "js/store.js",
-  "js/diagrams/util.js", "js/diagrams/tube.js", "js/diagrams/spectrum.js",
+  "js/diagrams/util.js", "js/diagrams/atom.js", "js/diagrams/tube.js", "js/diagrams/spectrum.js",
+  "js/diagrams/bohr.js", "js/diagrams/target.js", "js/diagrams/pecompton.js", "js/diagrams/isl.js",
   "content/topics.json", "content/calculations.js", "content/01-atomic-structure.csv",
 ];
 
@@ -18,14 +19,16 @@ self.addEventListener("activate", e => {
     .then(() => self.clients.claim()));
 });
 
+// Network first: online visitors always get the latest files (and the saved copies are refreshed);
+// the saved copies are used only when the network fails.
 self.addEventListener("fetch", e => {
   if (e.request.method !== "GET") return;
-  e.respondWith(caches.open(VERSION).then(async cache => {
-    const saved = await cache.match(e.request, { ignoreSearch: true });
-    const fresh = fetch(e.request).then(res => {
-      if (res.ok || res.type === "opaque") cache.put(e.request, res.clone());
-      return res;
-    }).catch(() => saved);
-    return saved || fresh;
-  }));
+  e.respondWith(caches.open(VERSION).then(cache =>
+    fetch(e.request)
+      .then(res => {
+        if (res.ok || res.type === "opaque") cache.put(e.request, res.clone());
+        return res;
+      })
+      .catch(async () => (await cache.match(e.request, { ignoreSearch: true })) || Response.error())
+  ));
 });

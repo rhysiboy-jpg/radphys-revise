@@ -38,7 +38,8 @@ Confirmed with Rhys Morris, 29 October 2026.
 - Neutral branding: "RadPhys Revise", footer "Created by Rhys Morris". No university logo. Check IP with line manager.
 
 ## Timeline
-- Now: prototype the tube explorer and spectrum explorer (style sign-off) and draft the Atomic structure question bank.
+- Done (October 2026): tube and spectrum explorers signed off, Atomic structure question bank approved, Bangor restyle, remaining four diagrams built.
+- Now: draft the topic 2–4 question banks.
 - Early February 2027: pilot with 4 topics and 6 diagrams.
 - Late March 2027: full version with all topics.
 - April–May 2027: fixes and exam practice mode.
@@ -47,13 +48,15 @@ Confirmed with Rhys Morris, 29 October 2026.
 - Done:
   - Diagram style signed off (anode angle corrected to about 15°).
   - App shell built: home, Explore, Practise, mastery tracking, offline support.
-  - Atomic structure question bank drafted (18 MCQs, 5 written).
-  - 5 calculation templates written.
+  - Atomic structure question bank: 18 MCQs and 5 written, all approved by Rhys.
+  - 5 calculation templates, all approved by Rhys.
   - Code saved to the private GitHub repo `rhysiboy-jpg/radphys-revise`.
-- Waiting on Rhys: review of `content/01-atomic-structure.csv` and `content/calculations.js` (set status to approved/rejected).
-- Next (Rhys to choose):
-  - the remaining four diagrams (Bohr atom, electron–target interactions, photoelectric vs Compton, inverse square law), built to the same style and accessibility standard as `js/diagrams/tube.js`
-  - or the topic 2 question bank (X-ray production & the tube) in the same CSV format
+  - Restyled to Bangor University branding (Figtree and Noto Sans, Bangor red and Sun, no logos). Diagram labels checked by Rhys after the restyle.
+  - All six diagrams built. The four new ones (Bohr atom, electron–target interactions, photoelectric vs Compton, inverse square law) appear only in review mode, marked "Awaiting sign-off", until approved.
+- Diagram sign-off: each diagram has `"approved"` in `content/topics.json`. Rhys reviews them on `prototypes/diagrams.html` (a checklist per diagram); only approved diagrams reach students.
+- Signed off by Rhys (30 October 2026): Bohr atom, electron–target interactions, photoelectric vs Compton, inverse square law. All six pilot diagrams are now approved.
+- Offline support is now network-first: online visitors always get the latest files; saved copies are used only offline.
+- Next: the topic 2 question bank (X-ray Production & the X-ray Tube) in the same CSV format, then topics 3 and 4.
 - Untested: offline mode. Check it once hosted on GitHub Pages, which needs the repo made public (only with Rhys's go-ahead).
 - Commit identity: Rhys Morris, using the GitHub no-reply email.
 - Rhys is a lecturer, not a developer: explain steps plainly.

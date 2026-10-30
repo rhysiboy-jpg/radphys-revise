@@ -7,6 +7,10 @@ import { buildSet, shuffle, parseNumber, isNumericCorrect } from "./quiz.js";
 const DIAGRAMS = {
   tube: () => import("./diagrams/tube.js"),
   spectrum: () => import("./diagrams/spectrum.js"),
+  bohr: () => import("./diagrams/bohr.js"),
+  target: () => import("./diagrams/target.js"),
+  "pe-compton": () => import("./diagrams/pecompton.js"),
+  isl: () => import("./diagrams/isl.js"),
 };
 
 // A question is "secure" once it has been answered right this many times since the last slip.
@@ -22,6 +26,8 @@ const text = s => esc(s).replace(/\n/g, "<br>");
 const plural = (n, word) => `${n} ${word}${n === 1 ? "" : "s"}`;
 const topicById = id => content.topics.find(t => t.id === id);
 const questionsFor = id => content.questions.filter(q => id === "mixed" || q.topic === id);
+// A diagram is shown once built and signed off; in review mode, built diagrams awaiting sign-off show too.
+const shown = d => d.ready && (d.approved || CONFIG.reviewMode);
 
 // Right and wrong are always shown with a mark and words, never by colour alone.
 const MARKS = {
@@ -96,7 +102,7 @@ function home() {
   const secure = all.filter(q => p[q.id]?.box >= SECURE_BOX).length;
   const overall = mastery("mixed");
   const withQs = content.topics.filter(t => questionsFor(t.id).length);
-  const diagramsReady = content.topics.reduce((s, t) => s + t.diagrams.filter(d => d.ready).length, 0);
+  const diagramsReady = content.topics.reduce((s, t) => s + t.diagrams.filter(shown).length, 0);
   const diagramsAll = content.topics.reduce((s, t) => s + t.diagrams.length, 0);
 
   // The screen's one finding, and the topic the main button opens.
@@ -122,7 +128,7 @@ function home() {
 
   const rows = content.topics.map(t => {
     const n = questionsFor(t.id).length;
-    const ready = t.diagrams.filter(d => d.ready).length;
+    const ready = t.diagrams.filter(shown).length;
     return `<article class="topic">
       <span class="n">${t.number}</span>
       <div class="topic-main">
@@ -187,8 +193,9 @@ async function explore(id) {
   const qs = questionsFor(id);
   const m = mastery(id);
 
-  const diagramRows = t.diagrams.map(d => `<li><div>${d.ready ? `<a href="#d-${d.id}" data-jump="d-${d.id}">${esc(d.title)}</a>` : `<span>${esc(d.title)}</span>`}<p>${esc(d.blurb)}</p></div>
-    <span class="status ${d.ready ? "ready" : "later"}">${d.ready ? "Ready" : "Coming soon"}</span></li>`).join("");
+  const status = d => !shown(d) ? ["later", "Coming soon"] : d.approved ? ["ready", "Ready"] : ["review", "Awaiting sign-off"];
+  const diagramRows = t.diagrams.map(d => `<li><div>${shown(d) ? `<a href="#d-${d.id}" data-jump="d-${d.id}">${esc(d.title)}</a>` : `<span>${esc(d.title)}</span>`}<p>${esc(d.blurb)}</p></div>
+    <span class="status ${status(d)[0]}">${status(d)[1]}</span></li>`).join("");
 
   const areas = [...qs.reduce((map, q) => map.set(q.subtopic || "General", (map.get(q.subtopic || "General") || 0) + 1), new Map())]
     .sort((a, b) => b[1] - a[1]);
@@ -196,7 +203,7 @@ async function explore(id) {
     ? `<ul class="list">${areas.map(([name, n]) => `<li><span>${esc(name)}</span><span class="meta">${plural(n, "question")}</span></li>`).join("")}</ul>`
     : '<p class="muted">Questions for this topic are being written. Use the diagrams to get ahead.</p>';
 
-  const modules = t.diagrams.filter(d => d.ready).map(d =>
+  const modules = t.diagrams.filter(shown).map(d =>
     `<section class="module" id="d-${d.id}" aria-labelledby="dh-${d.id}"><div class="module-head"><h2 id="dh-${d.id}">${esc(d.title)}</h2><p>${esc(d.blurb)}</p></div><div data-diagram="${d.id}"><p class="muted">Loading diagram…</p></div></section>`).join("");
 
   show(`
@@ -326,7 +333,7 @@ function practise(scope) {
     const check = card.querySelector('[data-role="check"]');
     const fb = card.querySelector('[data-role="feedback"]');
     const nextBtn = `<div class="controls"><button type="button" class="primary" data-role="next">${i + 1 < set.length ? "Next question" : "See results"}</button></div>`;
-    const diagramLink = q.diagram && topicById(q.topic)?.diagrams.some(d => d.id === q.diagram && d.ready)
+    const diagramLink = q.diagram && topicById(q.topic)?.diagrams.some(d => d.id === q.diagram && shown(d))
       ? `<p><a href="#explore-${q.topic}">See this in the explorer →</a></p>` : "";
     const refreshRail = () => {
       const old = app.querySelector('aside[aria-label="This set"]');
@@ -372,9 +379,9 @@ function practise(scope) {
         results.push({ q, score: right ? 1 : 0, kind: "auto", stem: inst.question });
         input.readOnly = true;
         check.parentElement.remove();
-        const shown = String(+inst.answer.toFixed(2));
+        const answerText = String(+inst.answer.toFixed(2));
         fb.innerHTML = `<p class="verdict ${right ? "good" : "bad"}">${right ? `${MARKS.right}Correct` : value === null ? `${MARKS.wrong}That isn't a number` : `${MARKS.wrong}Not quite`}</p>
-          <p><b>Answer:</b> ${shown} ${esc(inst.unit)}</p>
+          <p><b>Answer:</b> ${answerText} ${esc(inst.unit)}</p>
           <ol class="working">${inst.working.map(w => `<li>${esc(w)}</li>`).join("")}</ol>
           ${inst.explanation ? `<p>${esc(inst.explanation)}</p>` : ""}${diagramLink}${nextBtn}`;
         finish();
