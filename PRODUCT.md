@@ -35,7 +35,7 @@ Four things together that Blackboard quizzes and the textbook don't offer:
 - Static vanilla-JS PWA, no build step. Hosted on GitHub Pages under Rhys's account. The repo stays private until Rhys gives the go-ahead.
 - No data collection, no accounts. Progress is saved on the device only, with a reset button.
 - Maths is limited to the inverse square law, the mAs–distance rule and doubling/halving (including HVLs). The question banks contain no calculations; the randomised calculation templates are separate.
-- Terminology follows Ball & Moores, *Essential Physics for Radiographers* (UK usage, e.g. kV). Johnston & Fauber is secondary.
+- Terminology follows Ball & Moores, *Essential Physics for Radiographers* (UK usage). Tube voltage is written kVp (Rhys, 30 October 2026); kV stays only as the unit of potential difference, e.g. in defining the electron-volt. Johnston & Fauber is secondary.
 - Diagrams are 2D schematics, correct in trends and labelled "not to scale". Each is signed off by Rhys before release.
 - No real patient images, anywhere.
 - English at launch, built to take Welsh. Whether Welsh is required at launch is still to be checked with Canolfan Bedwyr.

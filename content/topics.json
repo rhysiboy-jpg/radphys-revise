@@ -53,7 +53,7 @@
       {
         "id": "spectrum",
         "title": "The X-ray spectrum",
-        "blurb": "Change kV, mA and filtration and watch the spectrum respond.",
+        "blurb": "Change kVp, mA and filtration and watch the spectrum respond.",
         "ready": true,
         "approved": true
       },
@@ -121,7 +121,7 @@
     "id": "exposure",
     "number": 7,
     "title": "Exposure & Image Quality",
-    "blurb": "kV and mAs, contrast, density, noise and resolution, focal spot, grids, AEC and the exposure index.",
+    "blurb": "kVp and mAs, contrast, density, noise and resolution, focal spot, grids, AEC and the exposure index.",
     "files": [
       "content/07-exposure-image-quality.csv"
     ],
@@ -162,7 +162,9 @@
     "number": 9,
     "title": "Radiation Protection & Legislation",
     "blurb": "IR(ME)R 2017, IRR17, ALARP, time, distance and shielding, the inverse square law, consent and record keeping.",
-    "files": [],
+    "files": [
+      "content/09-radiation-protection-legislation.csv"
+    ],
     "diagrams": [
       {
         "id": "isl",
@@ -178,7 +180,9 @@
     "number": 10,
     "title": "Radioactivity",
     "blurb": "Nuclear stability, isotopes, alpha, beta and gamma decay, half-life and technetium-99m.",
-    "files": [],
+    "files": [
+      "content/10-radioactivity.csv"
+    ],
     "diagrams": [
       {
         "id": "decay",
@@ -193,7 +197,9 @@
     "number": 11,
     "title": "QA & QC",
     "blurb": "Quality assurance and control, IPEM Report 91, and the routine tests with their remedial and suspension levels.",
-    "files": [],
+    "files": [
+      "content/11-qa-qc.csv"
+    ],
     "diagrams": [
       {
         "id": "qa-check",

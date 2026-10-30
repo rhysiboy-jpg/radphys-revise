@@ -69,7 +69,7 @@ export default [
       const d2 = pick([80, 110, 120, 150, 180]);
       const mas2 = mas1 * (d2 / d1) ** 2;
       return {
-        question: `A projection uses ${mas1} mAs at ${d1} cm FRD. The FRD must be changed to ${d2} cm. What mAs keeps the same intensity at the receptor (kV unchanged)?`,
+        question: `A projection uses ${mas1} mAs at ${d1} cm FRD. The FRD must be changed to ${d2} cm. What mAs keeps the same intensity at the receptor (kVp unchanged)?`,
         answer: mas2, unit: "mAs", tolerance: 0.02,
         working: [
           "To compensate, mAs changes with the square of the distance: mAs₂ = mAs₁ × (d₂ ÷ d₁)²",

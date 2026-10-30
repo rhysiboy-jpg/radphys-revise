@@ -23,8 +23,8 @@ Confirmed with Rhys Morris, 29 October 2026.
   10. Radioactivity (12-1)
   11. QA & QC (11-5, 24-1)
 - Binding energies use reference data (the L3 and M5 sub-shells behind the main lines). The app notes that lecture tables quote slightly different, averaged L and M values.
-- Maths: nothing harder than the inverse square law. Randomised numeric questions only for the inverse square law, the mAs–distance rule (mAs₂ = mAs₁ × (d₂/d₁)²), and doubling/halving (including HVLs). The 15% kV rule is conceptual only.
-- Terminology follows Ball & Moores, *Essential Physics for Radiographers* (UK usage, e.g. kV). Johnston & Fauber is secondary.
+- Maths: nothing harder than the inverse square law. Randomised numeric questions only for the inverse square law, the mAs–distance rule (mAs₂ = mAs₁ × (d₂/d₁)²), and doubling/halving (including HVLs). The 15% kVp rule is conceptual only.
+- Terminology follows Ball & Moores, *Essential Physics for Radiographers* (UK usage). Tube voltage is written kVp (Rhys, 30 October 2026); kV stays only as the unit of potential difference, e.g. in defining the electron-volt. Johnston & Fauber is secondary.
 - About 25 approved questions per topic: around 18 MCQs, 5 self-marked written, and up to 5 calculation templates.
 - Workflow: Claude drafts questions into a spreadsheet, one topic at a time, with a `source` column naming the lecture and slide (e.g. "10-2 s25") so Rhys can check each against his slides. Rhys sets Status (draft / approved / rejected) and adds comments. Only approved rows go live. Claude writes the calculation templates and Rhys reviews them on a preview page.
 
@@ -32,7 +32,7 @@ Confirmed with Rhys Morris, 29 October 2026.
 - **Explore** (interactive diagrams) and **Practise** (10-question sets per topic or mixed).
 - Immediate feedback, worked solutions, and an explanation for each wrong option. Written answers are self-marked against a model answer and a marking-point checklist.
 - Mastery bar per topic. Questions answered wrongly come back more often. Timed exam mode arrives in April–May.
-- Diagrams: Bohr atom (reused across the others), X-ray tube explorer, electron–target interactions, spectrum explorer (kV/mA/filtration), photoelectric vs Compton, inverse square law visualiser.
+- Diagrams: Bohr atom (reused across the others), X-ray tube explorer, electron–target interactions, spectrum explorer (kVp/mA/filtration), photoelectric vs Compton, inverse square law visualiser.
   - 2D schematics, correct in trends, labelled "not to scale".
   - Rhys signs off each one before release.
 - No login. Students land on topic selection with a note that progress is saved on this device only, plus a reset button.
@@ -46,7 +46,7 @@ Confirmed with Rhys Morris, 29 October 2026.
 - Neutral branding: "RadPhys Revise", footer "Created by Rhys Morris". No university logo. Check IP with line manager.
 
 ## Interactives to build (build order; each sits in its topic in the app)
-1. Exposure console (topic 7): set kV, mAs, focal spot, grid and distance; a stylised phantom drawn in the diagram style (or playfully cartoony) shows contrast, noise and sharpness changing, with EI and dose. Includes the "What do I do?" EI scenarios, the "Higher or lower?" dose exercise and the 15% rule. No real patient images.
+1. Exposure console (topic 7): set kVp, mAs, focal spot, grid and distance; a stylised phantom drawn in the diagram style (or playfully cartoony) shows contrast, noise and sharpness changing, with EI and dose. Includes the "What do I do?" EI scenarios, the "Higher or lower?" dose exercise and the 15% rule. No real patient images.
 2. Windowing explorer (topic 6): window level and width, LUT, histogram.
 3. Dose ladder (topic 8): typical effective doses as background-radiation days and risk, for explaining to patients; stochastic vs deterministic sorter.
 4. Radioactivity (topic 10): half-life simulator; decay builder (α, β⁻, β⁺, γ and ⁹⁹ᵐTc).
@@ -85,12 +85,16 @@ Confirmed with Rhys Morris, 29 October 2026.
   - No calculation questions in the banks (Rhys, 30 October 2026): the drafted unit conversion (AS-20) and kVp² output ratio (XP-19) were removed; AS-24 asks for the M shell's capacity as recall. The randomised calculation templates (inverse square law, HVL) are separate and unchanged.
   - Drafted for review: topic 2 bank EC-01 to EC-20 and EC-W1 to EC-W5 in `content/02-electricity-circuits.csv` (charge, conductors, potential difference, current, Ohm's law, resistance, AC/DC, transformers, rectification, three-phase, the three circuits). Conceptual only, no calculations.
   - Drafted for review: topic 4 bank EF-01 to EF-20 and EF-W1 to EF-W5 in `content/04-effects-of-radiation.csv` (ionisation in cells, stochastic and deterministic effects, radiosensitivity, genetic and somatic effects, risk and benefit, ALARP). Deterministic doses given in Gy (slide table uses Sv); departmental protocols attributed to IR(ME)R 2017 (slide says IRR17).
-  - Drafted for review: topic 5 bank IM-01 to IM-20 and IM-W1 to IM-W5 in `content/05-interactions-with-matter.csv` (transmission, absorption and scatter; photoelectric, Compton, coherent, pair production; attenuation coefficients; K-edges and iodine; contrast and kV). Compton taught with electron and photon leaving in different directions, and probability falling slowly with energy (slides 23 and 25 differ).
+  - Drafted for review: topic 5 bank IM-01 to IM-20 and IM-W1 to IM-W5 in `content/05-interactions-with-matter.csv` (transmission, absorption and scatter; photoelectric, Compton, coherent, pair production; attenuation coefficients; K-edges and iodine; contrast and kVp). Compton taught with electron and photon leaving in different directions, and probability falling slowly with energy (slides 23 and 25 differ).
   - Drafted for review: topic 6 bank DI-01 to DI-20 and DI-W1 to DI-W5 in `content/06-digital-image-formation.csv` (CR read-out, direct and indirect DR, structured scintillators, sampling, quantisation and aliasing, bit depth and matrix, histogram analysis, LUTs, windowing, SNR and DQE). Window level is tested as controlling brightness, not the direction of change (slide 37's direction depends on the system's pixel-value convention).
   - Drafted for review: topic 7 bank EX-01 to EX-20 and EX-W1 to EX-W5 in `content/07-exposure-image-quality.csv` (mAs and kVp, the 15% rule as a concept, contrast, noise, over-exposure and ALARP, focal spot and ORD, grids, AEC, exposure index and the "What do I do?" scenarios). EI questions say "above or below the target range", because EI scales differ between manufacturers.
   - Drafted for review: topic 8 bank DO-01 to DO-20 and DO-W1 to DO-W5 in `content/08-dosimetry-dose-control.csv` (absorbed, equivalent and effective dose; weighting factors; ESD, DAP and DRLs; ionisation chambers, GM tubes, film badges, TLDs and electronic dosimeters; controlling and explaining dose). Monitoring follows IRR17 classification (over 6 mSv a year) rather than the slide's 10% rule; unintended exposures are notified to HIW in Wales or the CQC in England.
-- Waiting on Rhys: review of the topic 2 and 4–8 drafts (150 questions).
-- Next: question bank for topic 9 (Radiation Protection & Legislation), then topics 10–11.
+  - Drafted for review: topic 9 bank RP-01 to RP-20 and RP-W1 to RP-W5 in `content/09-radiation-protection-legislation.csv` (IR(ME)R 2017 and IRR17, enforcement, data protection, negligence and vicarious liability, consent, duty holders, justification and pregnancy enquiries, dose limits, designated areas, RPA and RPS, pregnant staff, time, distance and shielding, lead equivalence). Consent is attributed to common law and professional standards, with IR(ME)R requiring information on benefits and risks (slide 32 attributes consent to IR(ME)R). Routine patient contact shielding follows the 2020 UK guidance, which no longer recommends it (slide 21 does).
+  - Drafted for review: topic 10 bank RA-01 to RA-20 and RA-W1 to RA-W5 in `content/10-radioactivity.csv` (isotopes, nuclear stability, activity, half-life as a concept, alpha, beta-minus, beta-plus, annihilation, electron capture, gamma and technetium-99m). Annihilation gives two 511 keV photons (slide 35 differs); electron capture emits a neutrino and characteristic X-rays (slide 34 gives a gamma ray).
+  - Drafted for review: topic 11 bank QA-01 to QA-20 and QA-W1 to QA-W5 in `content/11-qa-qc.csv` (QA vs QC, the WHO aim, legal basis, acceptance, commissioning and routine testing, IPEM 91 remedial and suspension levels, records, light beam, output, kVp, AEC, guard timer, focal spot, resolution, low contrast and uniformity). IPEM 91 tolerances are not tested as numbers. AEC testing uses the detector dose indicator (slides describe film and optical density).
+  - Tube voltage is written kVp throughout the banks (Rhys, 30 October 2026). AS-17 and XP-12 keep kV, where it is the unit of potential difference that defines the electron-volt.
+- Waiting on Rhys: review of the topic 2 and 4–11 drafts (225 questions). Every topic now has questions.
+- Next: phase 2 (diagram upgrades and new question types).
 - Untested: offline mode. Check it once hosted on GitHub Pages, which needs the repo made public (only with Rhys's go-ahead).
 - Commit identity: Rhys Morris, using the GitHub no-reply email.
 - Rhys is a lecturer, not a developer: explain steps plainly.
