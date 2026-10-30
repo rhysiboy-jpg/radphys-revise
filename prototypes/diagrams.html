@@ -1,0 +1,703 @@
+<title>RadPhys Revise Diagrams</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..100,500..800&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout: stacked explorer modules; each is diagram (wide column) + control/explanation panel, collapsing to one column on phones. */
+:root {
+  --paper: #EBF0F3;
+  --surface: #FFFFFF;
+  --ink: #14212B;
+  --muted: #52616E;
+  --line: #C6D1D9;
+  --accent: #0B6A88;
+  --accent-ink: #FFFFFF;
+  --electron: #2A5FD4;
+  --photon: #A12F88;
+  --heat: #D2601A;
+  --oil: #EEE8D6;
+  --vacuum: #F8FAFC;
+  --glass: #7FA6B9;
+  --lead: #47505A;
+  --metal: #8F9AA4;
+  --tungsten: #59626B;
+  --copper: #B06A33;
+  --al: #B4C0C9;
+  --font-display: "Archivo", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
+  --font-body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0D141A; --surface: #151F27; --ink: #E2E9EF; --muted: #92A2AF; --line: #2A3843;
+    --accent: #4CB3D3; --accent-ink: #06222C; --electron: #7AA2FF; --photon: #E27BCB; --heat: #F28A3C;
+    --oil: #2A2719; --vacuum: #0F1920; --glass: #5F8597; --lead: #8D97A1; --metal: #76818B;
+    --tungsten: #A9B2BA; --copper: #D08F59; --al: #5E6C77; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0D141A; --surface: #151F27; --ink: #E2E9EF; --muted: #92A2AF; --line: #2A3843;
+  --accent: #4CB3D3; --accent-ink: #06222C; --electron: #7AA2FF; --photon: #E27BCB; --heat: #F28A3C;
+  --oil: #2A2719; --vacuum: #0F1920; --glass: #5F8597; --lead: #8D97A1; --metal: #76818B;
+  --tungsten: #A9B2BA; --copper: #D08F59; --al: #5E6C77; color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  background: var(--paper); color: var(--ink);
+  font: 16px/1.55 var(--font-body);
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 0 48px;
+}
+.wrap { max-width: 1120px; margin: 0 auto; display: grid; gap: 40px; }
+h1, h2, h3 { font-family: var(--font-display); font-stretch: 85%; text-wrap: balance; margin: 0; line-height: 1.15; }
+h1 { font-size: clamp(1.9rem, 4vw, 2.6rem); font-weight: 800; }
+h2 { font-size: clamp(1.45rem, 3vw, 1.9rem); font-weight: 750; }
+h3 { font-size: 1.1rem; font-weight: 700; font-stretch: 90%; }
+p { margin: 0; }
+.eyebrow { font: 500 0.75rem/1 var(--font-mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+
+header.top { display: flex; flex-wrap: wrap; gap: 12px 20px; align-items: center; justify-content: space-between; padding-block: 20px; border-bottom: 1px solid var(--line); }
+.brand { font: 800 1.05rem/1 var(--font-display); font-stretch: 80%; letter-spacing: 0.01em; }
+.brand span { color: var(--accent); }
+.flag { font: 500 0.78rem/1.2 var(--font-mono); padding: 6px 10px; border: 1px dashed var(--heat); color: var(--heat); border-radius: 4px; }
+
+.intro { display: grid; gap: 12px; max-width: 68ch; }
+.intro p { color: var(--muted); }
+
+.module { display: grid; gap: 18px; }
+.module-head { display: grid; gap: 6px; max-width: 70ch; }
+.module-head p { color: var(--muted); }
+.grid { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: 20px; align-items: start; }
+@media (max-width: 880px) { .grid { grid-template-columns: minmax(0, 1fr); } }
+
+.stage { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 12px; display: grid; gap: 10px; min-width: 0; }
+.stage svg { width: 100%; height: auto; display: block; }
+.scale-note { font: 400 0.75rem/1.3 var(--font-mono); color: var(--muted); }
+.panel { display: grid; gap: 16px; min-width: 0; }
+
+/* Stepper */
+.stepper { display: grid; gap: 12px; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 16px; }
+.step-meta { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.dots { display: flex; gap: 6px; }
+.dots i { width: 22px; height: 6px; border-radius: 3px; background: var(--line); }
+.dots i.on { background: var(--accent); }
+.caption { min-height: 7.5em; display: grid; gap: 6px; align-content: start; }
+.caption strong { font-family: var(--font-display); font-stretch: 90%; font-size: 1.05rem; }
+.controls { display: flex; flex-wrap: wrap; gap: 8px; }
+button { font: 600 0.92rem/1 var(--font-body); color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 10px 14px; cursor: pointer; min-height: 44px; }
+button:hover:not(:disabled) { border-color: var(--accent); }
+button.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+button:disabled { opacity: 0.45; cursor: default; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+
+/* Parts key */
+.key { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; list-style: none; margin: 0; padding: 0; }
+.key button { width: 100%; text-align: left; display: flex; gap: 10px; align-items: center; font-weight: 500; padding: 8px 10px; }
+.key button[aria-pressed="true"] { border-color: var(--accent); box-shadow: inset 3px 0 0 var(--accent); }
+.num { font: 500 0.78rem/1 var(--font-mono); width: 24px; height: 24px; border-radius: 50%; display: inline-grid; place-items: center; background: var(--ink); color: var(--surface); flex: none; }
+.key button[aria-pressed="true"] .num { background: var(--accent); color: var(--accent-ink); }
+.part-card { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 16px; display: grid; gap: 8px; }
+.part-card p { color: var(--ink); }
+.part-card .tip { font-size: 0.92rem; color: var(--muted); border-top: 1px solid var(--line); padding-top: 8px; }
+.part-card .tip b { color: var(--ink); }
+
+/* SVG: tube */
+.oil { fill: var(--oil); }
+.housing { fill: none; stroke: var(--lead); stroke-width: 7; }
+.glass { fill: var(--vacuum); stroke: var(--glass); stroke-width: 3; }
+.window { stroke: var(--vacuum); stroke-width: 4; stroke-dasharray: 3 3; }
+.port { fill: var(--oil); }
+.al { fill: var(--al); stroke: var(--lead); stroke-width: 1; }
+.wire { stroke: var(--lead); stroke-width: 4; fill: none; }
+.cup { fill: var(--metal); stroke: var(--lead); stroke-width: 1.5; }
+.coil { fill: none; stroke: var(--tungsten); stroke-width: 2.2; stroke-linejoin: round; }
+.disc { fill: var(--metal); stroke: var(--lead); stroke-width: 1.5; }
+.track { stroke: var(--tungsten); stroke-width: 6; stroke-linecap: round; }
+.stem { fill: var(--metal); }
+.rotor { fill: var(--copper); stroke: var(--lead); stroke-width: 1.5; }
+.stator { fill: var(--lead); }
+.stator-coil { stroke: var(--copper); stroke-width: 2; }
+.pol { font: 600 20px var(--font-mono); fill: var(--muted); }
+.hit { fill: transparent; }
+
+.part { cursor: pointer; transition: opacity .25s; }
+svg.has-sel .part:not(.sel) { opacity: 0.35; }
+.part.sel { filter: drop-shadow(0 0 5px var(--accent)); }
+.badge circle { fill: var(--ink); }
+.badge text { font: 500 13px var(--font-mono); fill: var(--surface); text-anchor: middle; dominant-baseline: central; }
+.badge line { stroke: var(--ink); stroke-width: 1.2; }
+.badge { cursor: pointer; }
+.badge.sel circle { fill: var(--accent); }
+.badge.sel text { fill: var(--accent-ink); }
+
+.fx { opacity: 0; transition: opacity .5s; pointer-events: none; }
+.on-1 .fx-1, .on-2 .fx-2, .on-3 .fx-3, .on-4 .fx-4, .on-5 .fx-5 { opacity: 1; }
+.electron { fill: var(--electron); }
+.photon { fill: none; stroke: var(--photon); stroke-width: 2.4; stroke-dasharray: 14 6; animation: flow 0.9s linear infinite; }
+.photon.weak { stroke-width: 1.8; }
+.stop { stroke: var(--photon); stroke-width: 2.4; }
+.beam { fill: var(--photon); opacity: 0.12; }
+.spin { fill: none; stroke: var(--accent); stroke-width: 2.5; stroke-dasharray: 10 6; animation: flow 0.6s linear infinite; }
+.spin-head { fill: var(--accent); }
+.fxlabel { font: 600 13px var(--font-mono); }
+.fxlabel.heat-t { fill: var(--heat); }
+.fxlabel.ph-t { fill: var(--photon); }
+.fxlabel.el-t { fill: var(--electron); }
+@keyframes flow { to { stroke-dashoffset: -20; } }
+@media (prefers-reduced-motion: reduce) {
+  .photon, .spin { animation: none; }
+  .fx, .part { transition: none; }
+}
+
+/* Spectrum */
+.sliders { display: grid; gap: 14px; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 16px; }
+.slider { display: grid; gap: 4px; }
+.slider-top { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+.slider label { font-weight: 600; }
+.slider output { font: 500 1rem var(--font-mono); font-variant-numeric: tabular-nums; }
+.slider small { color: var(--muted); font-size: 0.85rem; }
+input[type="range"] { width: 100%; accent-color: var(--accent); min-height: 32px; }
+.readouts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+.readout { background: var(--surface); padding: 12px 14px; display: grid; gap: 2px; }
+.readout span { font-size: 0.8rem; color: var(--muted); }
+.readout b { font: 500 1.15rem var(--font-mono); font-variant-numeric: tabular-nums; }
+.readout.wide { grid-column: 1 / -1; }
+.pill { display: inline-block; font: 600 0.8rem/1 var(--font-body); padding: 5px 8px; border-radius: 999px; border: 1px solid currentColor; }
+.pill.yes { color: var(--photon); }
+.pill.no { color: var(--muted); }
+.summary { font-size: 0.95rem; color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; }
+.try { display: grid; gap: 8px; }
+.try ol { margin: 0; padding-left: 1.3em; display: grid; gap: 6px; color: var(--muted); }
+.try ol b { color: var(--ink); font-weight: 600; }
+
+.axis line, .axis path { stroke: var(--line); }
+.axis text, .ax-title { font: 400 12px var(--font-mono); fill: var(--muted); }
+.ax-title { font-size: 12.5px; }
+.grid-l { stroke: var(--line); stroke-dasharray: 2 4; }
+.curve { fill: none; stroke: var(--photon); stroke-width: 2.4; stroke-linejoin: round; }
+.area { fill: var(--photon); opacity: 0.14; }
+.pinned { fill: none; stroke: var(--muted); stroke-width: 2; stroke-dasharray: 6 5; }
+.kvline { stroke: var(--accent); stroke-width: 1.5; stroke-dasharray: 4 4; }
+.kvlabel { font: 600 12px var(--font-mono); fill: var(--accent); }
+.linelabel { font: 600 12px var(--font-mono); fill: var(--photon); }
+.meanmark { fill: var(--ink); }
+.meanlabel { font: 500 11.5px var(--font-mono); fill: var(--ink); }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 18px; font: 400 0.8rem var(--font-mono); color: var(--muted); }
+.legend i { display: inline-block; width: 22px; height: 0; border-top: 2.5px solid var(--photon); vertical-align: middle; margin-right: 6px; }
+.legend i.dash { border-top: 2px dashed var(--muted); }
+
+/* Review */
+.review { background: var(--surface); border: 1px solid var(--line); border-left: 4px solid var(--heat); border-radius: 10px; padding: 20px; display: grid; gap: 10px; max-width: 80ch; }
+.review ul { margin: 0; padding-left: 1.2em; display: grid; gap: 6px; }
+footer { border-top: 1px solid var(--line); padding-top: 16px; color: var(--muted); font-size: 0.88rem; display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: space-between; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div class="brand">RadPhys <span>Revise</span> · Explore</div>
+    <div class="flag">Prototype for review · not yet for students</div>
+  </header>
+
+  <section class="intro">
+    <p class="eyebrow">Topic 2 · X-ray production &amp; the X-ray tube</p>
+    <h1>Inside the X-ray tube</h1>
+    <p>Follow one exposure from filament to beam, then see how kV, mA and filtration shape the X-rays that come out. Both diagrams are schematic and not to scale.</p>
+  </section>
+
+  <!-- ============ TUBE EXPLORER ============ -->
+  <section class="module" aria-labelledby="tube-h">
+    <div class="module-head">
+      <p class="eyebrow">Explorer 1</p>
+      <h2 id="tube-h">The rotating-anode tube</h2>
+      <p>Step through an exposure, or tap a numbered part to see what it does.</p>
+    </div>
+    <div class="grid">
+      <div class="stage">
+        <svg id="tube" viewBox="0 0 760 440" role="img" aria-labelledby="tube-t tube-d">
+          <title id="tube-t">Schematic of a rotating-anode X-ray tube</title>
+          <desc id="tube-d">Side view. Cathode with filament and focusing cup on the left, rotating tungsten anode disc in the centre-right, rotor and stator on the right, all inside a vacuum envelope within an oil-filled, lead-lined housing. The useful beam leaves downwards through the window and aluminium filter.</desc>
+          <defs>
+            <radialGradient id="g-fil"><stop offset="0" stop-color="var(--heat)" stop-opacity="0.95"/><stop offset="1" stop-color="var(--heat)" stop-opacity="0"/></radialGradient>
+            <radialGradient id="g-heat"><stop offset="0" stop-color="var(--heat)" stop-opacity="1"/><stop offset="0.5" stop-color="var(--heat)" stop-opacity="0.55"/><stop offset="1" stop-color="var(--heat)" stop-opacity="0"/></radialGradient>
+          </defs>
+
+          <!-- 10 housing & oil -->
+          <g class="part" data-part="housing">
+            <rect class="oil" x="30" y="30" width="700" height="300" rx="36"/>
+            <rect class="housing" x="30" y="30" width="700" height="300" rx="36"/>
+            <rect class="port" x="410" y="324" width="80" height="12"/>
+          </g>
+          <!-- 7 envelope -->
+          <g class="part" data-part="envelope">
+            <rect class="glass" x="100" y="70" width="540" height="220" rx="60"/>
+          </g>
+          <!-- 8 window -->
+          <g class="part" data-part="window">
+            <rect class="hit" x="408" y="280" width="86" height="22"/>
+            <line class="window" x1="414" y1="290" x2="488" y2="290"/>
+          </g>
+          <!-- 9 filtration -->
+          <g class="part" data-part="filter">
+            <rect class="al" x="402" y="336" width="96" height="12" rx="2"/>
+          </g>
+
+          <!-- cables -->
+          <path class="wire" d="M36 232 H140"/>
+          <path class="wire" d="M616 170 H724"/>
+          <text class="pol" x="70" y="222">−</text>
+          <text class="pol" x="684" y="160">+</text>
+
+          <!-- 2 focusing cup -->
+          <g class="part" data-part="cup">
+            <path class="cup" d="M140 200 H180 V214 H166 V250 H180 V264 H140 Z"/>
+          </g>
+          <!-- 1 filament -->
+          <g class="part" data-part="filament">
+            <rect class="hit" x="160" y="212" width="26" height="40"/>
+            <circle class="fx fx-1" cx="174" cy="232" r="22" fill="url(#g-fil)"/>
+            <path class="coil" d="M170 217 l7 3 l-7 3 l7 3 l-7 3 l7 3 l-7 3 l7 3 l-7 3 l7 3 l-7 3"/>
+          </g>
+
+          <!-- 4 anode disc -->
+          <g class="part" data-part="anode">
+            <polygon class="disc" points="458,90 484,90 484,250 458,250 446,206 446,134"/>
+            <rect class="stem" x="484" y="164" width="56" height="12"/>
+          </g>
+          <!-- 3 target / focal spot -->
+          <g class="part" data-part="target">
+            <line class="hit" x1="446" y1="206" x2="458" y2="250" stroke="transparent" stroke-width="24"/>
+            <line class="track" x1="447" y1="209" x2="457" y2="247"/>
+            <line class="track" x1="457" y1="93" x2="447" y2="131"/>
+          </g>
+          <!-- 5 rotor -->
+          <g class="part" data-part="rotor">
+            <rect class="rotor" x="540" y="136" width="76" height="68" rx="6"/>
+            <path d="M556 136 V204 M572 136 V204 M588 136 V204 M604 136 V204" stroke="var(--lead)" stroke-width="1" opacity="0.5"/>
+          </g>
+          <!-- 6 stator -->
+          <g class="part" data-part="stator">
+            <rect class="stator" x="540" y="44" width="76" height="20" rx="3"/>
+            <rect class="stator" x="540" y="296" width="76" height="20" rx="3"/>
+            <path class="stator-coil" d="M548 48 V60 M560 48 V60 M572 48 V60 M584 48 V60 M596 48 V60 M608 48 V60 M548 300 V312 M560 300 V312 M572 300 V312 M584 300 V312 M596 300 V312 M608 300 V312"/>
+          </g>
+
+          <!-- effects -->
+          <g class="fx fx-2" aria-hidden="true">
+            <path class="spin" d="M506 148 A12 26 0 1 0 506 192"/>
+            <polygon class="spin-head" points="500,190 512,196 502,200"/>
+          </g>
+          <g id="cloud" class="fx fx-1" aria-hidden="true"></g>
+          <g id="stream" class="fx fx-3" aria-hidden="true"></g>
+          <g class="fx fx-3" aria-hidden="true"><text class="fxlabel el-t" x="250" y="216">electrons →</text></g>
+          <g class="fx fx-4" aria-hidden="true">
+            <circle cx="453" cy="232" r="30" fill="url(#g-heat)"/>
+            <text class="fxlabel heat-t" x="330" y="268">≈99% heat</text>
+          </g>
+          <g id="strays" class="fx fx-4" aria-hidden="true"></g>
+          <g class="fx fx-5" aria-hidden="true">
+            <polygon class="beam" points="453,236 387,436 519,436"/>
+          </g>
+          <g id="useful" class="fx fx-5" aria-hidden="true"></g>
+          <g class="fx fx-5" aria-hidden="true"><text class="fxlabel ph-t" x="526" y="420">useful beam</text></g>
+
+          <g id="badges"></g>
+        </svg>
+        <p class="scale-note">Schematic · not to scale · cathode (−) left, anode (+) right</p>
+      </div>
+
+      <div class="panel">
+        <div class="stepper">
+          <div class="step-meta">
+            <span class="eyebrow" id="step-count">Step 0 of 5</span>
+            <div class="dots" id="dots" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+          </div>
+          <div class="caption" id="caption" aria-live="polite"></div>
+          <div class="controls">
+            <button type="button" id="t-back">Back</button>
+            <button type="button" id="t-next" class="primary">Next</button>
+            <button type="button" id="t-play">Play</button>
+            <button type="button" id="t-reset">Start again</button>
+          </div>
+        </div>
+
+        <div>
+          <h3 style="margin-bottom:8px">Parts</h3>
+          <ul class="key" id="key"></ul>
+        </div>
+        <div class="part-card" id="part-card" aria-live="polite">
+          <p class="eyebrow">Part detail</p>
+          <p>Tap a number on the diagram or a part above.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SPECTRUM EXPLORER ============ -->
+  <section class="module" aria-labelledby="spec-h">
+    <div class="module-head">
+      <p class="eyebrow">Explorer 2</p>
+      <h2 id="spec-h">The X-ray spectrum</h2>
+      <p>The beam holds photons of many energies: a smooth Bremsstrahlung continuum plus sharp characteristic lines from tungsten. Change the exposure factors and watch the spectrum respond.</p>
+    </div>
+    <div class="grid">
+      <div class="stage">
+        <svg id="spec" viewBox="0 0 640 370" role="img" aria-labelledby="spec-t spec-d">
+          <title id="spec-t">X-ray spectrum graph</title>
+          <desc id="spec-d">Relative number of photons plotted against photon energy in keV.</desc>
+          <g class="axis" id="axes"></g>
+          <path class="pinned" id="pinned" d=""/>
+          <path class="area" id="area" d=""/>
+          <path class="curve" id="curve" d=""/>
+          <line class="kvline" id="kvline" x1="0" y1="20" x2="0" y2="310"/>
+          <text class="kvlabel" id="kvlabel" x="0" y="16"></text>
+          <g id="linelabels"></g>
+          <g id="meanmark"><polygon class="meanmark" points="0,0 0,0 0,0"/><text class="meanlabel" x="0" y="0"></text></g>
+        </svg>
+        <div class="legend"><span><i></i>current settings</span><span id="legend-pin" hidden><i class="dash"></i>pinned for comparison</span></div>
+        <p class="scale-note">Illustrative: tungsten target, constant-potential generator. The vertical scale adjusts itself, so read the axis numbers when comparing.</p>
+      </div>
+
+      <div class="panel">
+        <div class="sliders">
+          <div class="slider">
+            <div class="slider-top"><label for="kv">Tube voltage</label><output for="kv" id="kv-o">80 kV</output></div>
+            <input type="range" id="kv" min="40" max="150" step="1" value="80">
+            <small>Sets the energy of each electron, so the highest photon energy.</small>
+          </div>
+          <div class="slider">
+            <div class="slider-top"><label for="ma">Tube current</label><output for="ma" id="ma-o">200 mA</output></div>
+            <input type="range" id="ma" min="50" max="500" step="25" value="200">
+            <small>Sets how many electrons cross the tube each second.</small>
+          </div>
+          <div class="slider">
+            <div class="slider-top"><label for="fl">Total filtration</label><output for="fl" id="fl-o">2.5 mm Al</output></div>
+            <input type="range" id="fl" min="1" max="6" step="0.5" value="2.5">
+            <small>Inherent plus added filtration, in aluminium equivalent.</small>
+          </div>
+          <div class="controls">
+            <button type="button" id="pin">Pin for comparison</button>
+            <button type="button" id="unpin" disabled>Clear pinned</button>
+          </div>
+        </div>
+
+        <div class="readouts">
+          <div class="readout"><span>Maximum photon energy</span><b id="r-max">80 keV</b></div>
+          <div class="readout"><span>Mean photon energy</span><b id="r-mean">–</b></div>
+          <div class="readout"><span>Characteristic K-lines</span><b id="r-lines"></b></div>
+          <div class="readout"><span>Photons vs pinned</span><b id="r-pin">–</b></div>
+        </div>
+        <p class="summary" id="spec-summary" aria-live="polite"></p>
+
+        <div class="try">
+          <h3>Try this</h3>
+          <ol>
+            <li><b>Drop the kV below 70.</b> The sharp lines vanish: electrons no longer carry the 69.5 keV needed to eject a tungsten K-shell electron.</li>
+            <li><b>Pin, then double the mA.</b> Same shape and same maximum energy, twice the photons.</li>
+            <li><b>Pin, then add filtration.</b> The low-energy end is cut away, the mean energy rises and there are fewer photons overall. This is beam hardening.</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="review" aria-labelledby="rev-h">
+    <h3 id="rev-h">For Rhys: what to check</h3>
+    <ul>
+      <li><b>Physics:</b> part descriptions, step narration, and the spectrum trends (line energies 59 and 67 keV, K-shell binding energy 69.5 keV, mean energy roughly half the kV).</li>
+      <li><b>Level:</b> is the detail right for first years, too much or too little? Anything you'd add, such as the line-focus principle or the anode heel effect?</li>
+      <li><b>Wording:</b> does it match how you teach it and Ball &amp; Moores' terms?</li>
+      <li><b>Look and feel:</b> diagram style, colours (electrons blue, X-rays magenta, heat orange) and layout on your phone.</li>
+    </ul>
+  </section>
+
+  <footer>
+    <span>RadPhys Revise · Created by Rhys Morris</span>
+    <span>Prototype · October 2026</span>
+  </footer>
+</div>
+
+<script>
+(() => {
+  const NS = "http://www.w3.org/2000/svg";
+  const el = (tag, attrs = {}, parent) => {
+    const n = document.createElementNS(NS, tag);
+    for (const k in attrs) n.setAttribute(k, attrs[k]);
+    if (parent) parent.appendChild(n);
+    return n;
+  };
+  const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+  let reduce = mq.matches;
+  mq.addEventListener?.("change", e => { reduce = e.matches; });
+
+  /* ---------------- Tube explorer ---------------- */
+  const tube = document.getElementById("tube");
+
+  const PARTS = [
+    { id: "filament", name: "Filament", bx: 210, by: 190, lx: 176, ly: 222,
+      text: "A coil of tungsten wire in the cathode. The filament current (around 10 V, a few amps) heats it until electrons escape from its surface. This is <b>thermionic emission</b>. A hotter filament releases more electrons, so filament temperature controls the <b>tube current (mA)</b>.",
+      tip: "<b>Why tungsten?</b> High melting point (3422 °C) and it can be drawn into fine wire. Many tubes have two filaments, for broad and fine focus." },
+    { id: "cup", name: "Focusing cup", bx: 128, by: 182, lx: 142, ly: 202,
+      text: "A metal cup around the filament, held at the same negative potential. It repels the electrons and squeezes them into a narrow beam aimed at the focal spot.",
+      tip: "<b>Exam tip:</b> the filament and focusing cup together make up the <b>cathode</b> assembly." },
+    { id: "target", name: "Target and focal spot", bx: 404, by: 276, lx: 450, ly: 240,
+      text: "A tungsten (often tungsten–rhenium) track on the bevelled edge of the anode. The bevel faces the cathode and is angled towards the window, typically at around 12–16° (the <b>target angle</b>). The electrons stop here. Around <b>99% of their energy becomes heat</b> and only about <b>1% becomes X-rays</b>. The focal spot is the area the electrons actually strike.",
+      tip: "<b>Why tungsten?</b> High atomic number (Z = 74) gives efficient X-ray production, and its high melting point survives the heat. A smaller focal spot gives a sharper image but tolerates less heat." },
+    { id: "anode", name: "Rotating anode", bx: 462, by: 50, lx: 466, ly: 88,
+      text: "A disc connected to the positive high voltage. It spins at around 3,000 to 10,000 rpm, so the electrons strike a moving ring of target rather than one spot. Spreading the heat this way allows much higher exposures without melting the target.",
+      tip: "<b>Remember:</b> the anode starts spinning when the radiographer presses <b>prep</b>, before any X-rays are made." },
+    { id: "rotor", name: "Rotor", bx: 578, by: 170, lx: 578, ly: 170,
+      text: "A copper cylinder on the anode stem, inside the vacuum. The stator's magnetic field turns it, and it turns the anode. It runs on bearings.",
+      tip: "<b>Link:</b> rotor and stator together form an <b>induction motor</b>." },
+    { id: "stator", name: "Stator", bx: 664, by: 54, lx: 618, ly: 54,
+      text: "Electromagnet coils outside the envelope, around the rotor. A changing magnetic field drives the rotor through the glass, with no physical connection across the vacuum.",
+      tip: "<b>Why outside?</b> Keeping the coils out of the vacuum protects the vacuum and keeps their electrical supply simple." },
+    { id: "envelope", name: "Envelope (vacuum)", bx: 300, by: 96, lx: 300, ly: 96,
+      text: "A sealed borosilicate glass (or metal-ceramic) container holding a <b>vacuum</b>. Electrons can then travel from cathode to anode without colliding with gas molecules, and the hot filament cannot oxidise. It also supports and insulates the electrodes.",
+      tip: "<b>Link:</b> the glass also absorbs some low-energy X-rays, so it contributes to <b>inherent filtration</b>." },
+    { id: "window", name: "Window", bx: 524, by: 306, lx: 490, ly: 292,
+      text: "A thinner part of the envelope where the useful beam leaves the tube. Together with the glass and oil, it forms the tube's <b>inherent filtration</b>, typically about 0.5 to 1 mm aluminium equivalent.",
+      tip: "<b>Remember:</b> inherent filtration is built into the tube and cannot be removed." },
+    { id: "filter", name: "Added filtration", bx: 532, by: 352, lx: 500, ly: 344,
+      text: "Aluminium sheets at the tube port. They absorb the <b>low-energy photons</b>, which would only be absorbed in the patient's skin, adding dose without reaching the image receptor. This raises the beam's mean energy (<b>beam hardening</b>).",
+      tip: "<b>Exam tip:</b> general radiography needs <b>at least 2.5 mm Al equivalent</b> total filtration (inherent + added)." },
+    { id: "housing", name: "Housing and oil", bx: 72, by: 60, lx: 72, ly: 60,
+      text: "A metal casing <b>lined with lead</b> to absorb <b>leakage radiation</b>, the X-rays heading in directions other than the window. The space is filled with <b>oil</b>, which insulates against the high voltage and carries heat away from the envelope.",
+      tip: "<b>Link to protection:</b> leakage radiation is limited by regulation, which is why the housing matters to IRR17 compliance." },
+  ];
+
+  const STEPS = [
+    { t: "The tube at rest", d: "Press Next to follow one exposure, from prep to beam." },
+    { t: "Prep 1: heating the filament", d: "The filament current heats the filament. Electrons are released by <b>thermionic emission</b> and gather in a cloud around it (the <b>space charge</b>). Filament temperature sets the tube current (mA)." },
+    { t: "Prep 2: the anode spins up", d: "The stator's magnetic field turns the rotor, and the anode disc spins up to speed. No X-rays yet." },
+    { t: "Exposure: kV is applied", d: "The high voltage is switched on: cathode negative, anode positive. Electrons accelerate across the vacuum, and the focusing cup narrows them onto the focal spot. <b>kV sets how much energy each electron carries.</b>" },
+    { t: "Electrons hit the target", d: "The electrons stop in the tungsten target. About <b>99%</b> of their energy becomes <b>heat</b>, spread around the spinning track. Only about <b>1%</b> becomes <b>X-ray photons</b>, which leave in all directions. Those heading the wrong way are absorbed by the lead-lined housing." },
+    { t: "The useful beam", d: "Photons heading for the window pass out of the tube. The aluminium filter removes the low-energy ones, which would only add skin dose. What's left is the <b>useful beam</b> sent towards the patient." },
+  ];
+
+  // Badges
+  const badges = document.getElementById("badges");
+  const key = document.getElementById("key");
+  PARTS.forEach((p, i) => {
+    const g = el("g", { class: "badge", "data-part": p.id, "aria-hidden": "true" }, badges);
+    if (p.lx !== p.bx || p.ly !== p.by) el("line", { x1: p.bx, y1: p.by, x2: p.lx, y2: p.ly }, g);
+    el("circle", { cx: p.bx, cy: p.by, r: 13 }, g);
+    const t = el("text", { x: p.bx, y: p.by }, g); t.textContent = i + 1;
+    g.addEventListener("click", () => selectPart(p.id));
+
+    const li = document.createElement("li");
+    li.innerHTML = `<button type="button" aria-pressed="false" data-part="${p.id}"><span class="num">${i + 1}</span>${p.name}</button>`;
+    li.firstChild.addEventListener("click", () => selectPart(p.id));
+    key.appendChild(li);
+  });
+  tube.querySelectorAll(".part").forEach(g => g.addEventListener("click", () => selectPart(g.dataset.part)));
+
+  let selected = null;
+  const card = document.getElementById("part-card");
+  function selectPart(id) {
+    selected = selected === id ? null : id;
+    tube.classList.toggle("has-sel", !!selected);
+    tube.querySelectorAll(".part, .badge").forEach(n => n.classList.toggle("sel", n.dataset.part === selected));
+    key.querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", b.dataset.part === selected));
+    if (!selected) { card.innerHTML = '<p class="eyebrow">Part detail</p><p>Tap a number on the diagram or a part above.</p>'; return; }
+    const i = PARTS.findIndex(p => p.id === selected), p = PARTS[i];
+    card.innerHTML = `<p class="eyebrow">Part ${i + 1} of ${PARTS.length}</p><h3>${p.name}</h3><p>${p.text}</p><p class="tip">${p.tip}</p>`;
+  }
+
+  // Photon paths (wavy lines)
+  function wavy(x1, y1, x2, y2, amp = 4, wl = 13) {
+    const dx = x2 - x1, dy = y2 - y1, L = Math.hypot(dx, dy), ux = dx / L, uy = dy / L;
+    let d = `M${x1} ${y1}`;
+    const n = Math.ceil(L / 2);
+    for (let i = 1; i <= n; i++) {
+      const s = (i * L) / n, o = amp * Math.sin((s / wl) * 2 * Math.PI);
+      d += ` L${(x1 + ux * s - uy * o).toFixed(1)} ${(y1 + uy * s + ux * o).toFixed(1)}`;
+    }
+    return d;
+  }
+  const cross = (g, x, y) => { el("path", { class: "stop", d: `M${x - 6} ${y - 6} L${x + 6} ${y + 6} M${x + 6} ${y - 6} L${x - 6} ${y + 6}` }, g); };
+  const strays = document.getElementById("strays");
+  [[392, 36], [300, 324], [330, 36]].forEach(([x, y]) => { el("path", { class: "photon weak", d: wavy(450, 228, x, y) }, strays); cross(strays, x, y); });
+  const useful = document.getElementById("useful");
+  [[421, 432], [455, 432], [489, 432]].forEach(([x, y]) => el("path", { class: "photon", d: wavy(453, 240, x, y) }, useful));
+  el("path", { class: "photon weak", d: wavy(453, 240, 473, 334, 3, 9) }, useful); cross(useful, 473, 336);
+
+  // Electrons
+  const cloud = document.getElementById("cloud"), stream = document.getElementById("stream");
+  const cloudDots = Array.from({ length: 9 }, (_, i) => ({ n: el("circle", { class: "electron", r: 3 }, cloud), a: (i / 9) * Math.PI * 2, r: 8 + (i % 3) * 4 }));
+  const N = 11;
+  const streamDots = Array.from({ length: N }, (_, i) => ({ n: el("circle", { class: "electron", r: 3.2 }, stream), p: i / N, off: ((i * 7) % 5 - 2) * 3 }));
+  const X0 = 184, X1 = 450, Y = 232;
+
+  function placeElectrons(t) {
+    cloudDots.forEach((d, i) => {
+      const a = d.a + (reduce ? 0 : t * 0.0015 * (i % 2 ? 1 : -1));
+      d.n.setAttribute("cx", (190 + Math.cos(a) * d.r * 0.7).toFixed(1));
+      d.n.setAttribute("cy", (Y + Math.sin(a) * d.r).toFixed(1));
+    });
+    streamDots.forEach(d => {
+      const p = reduce ? d.p : (d.p + t * 0.00045) % 1;
+      const x = X0 + (X1 - X0) * p;
+      const y = Y + d.off * (1 - p);   // beam narrows towards the focal spot
+      d.n.setAttribute("cx", x.toFixed(1));
+      d.n.setAttribute("cy", y.toFixed(1));
+    });
+  }
+  function loop(t) { placeElectrons(t); requestAnimationFrame(loop); }
+  requestAnimationFrame(loop);
+
+  // Stepper
+  let step = 0, timer = null;
+  const cap = document.getElementById("caption"), count = document.getElementById("step-count");
+  const back = document.getElementById("t-back"), next = document.getElementById("t-next"), play = document.getElementById("t-play");
+  const dots = [...document.querySelectorAll("#dots i")];
+  function render() {
+    for (let i = 1; i <= 5; i++) tube.classList.toggle("on-" + i, step >= i);
+    cap.innerHTML = `<strong>${STEPS[step].t}</strong><p>${STEPS[step].d}</p>`;
+    count.textContent = `Step ${step} of 5`;
+    dots.forEach((d, i) => d.classList.toggle("on", i < step));
+    back.disabled = step === 0;
+    next.disabled = step === 5;
+  }
+  function go(s) { step = Math.max(0, Math.min(5, s)); render(); }
+  function stop() { clearInterval(timer); timer = null; play.textContent = "Play"; }
+  back.addEventListener("click", () => { stop(); go(step - 1); });
+  next.addEventListener("click", () => { stop(); go(step + 1); });
+  document.getElementById("t-reset").addEventListener("click", () => { stop(); go(0); });
+  play.addEventListener("click", () => {
+    if (timer) { stop(); return; }
+    if (step === 5) go(0);
+    play.textContent = "Pause";
+    go(step + 1);
+    timer = setInterval(() => { if (step >= 5) { stop(); return; } go(step + 1); }, 5000);
+  });
+  render();
+
+  /* ---------------- Spectrum explorer ---------------- */
+  // Aluminium mass attenuation coefficients (cm²/g), NIST XCOM; log-log interpolation.
+  const AL = [[10, 26.2], [15, 7.96], [20, 3.44], [30, 1.128], [40, 0.5685], [50, 0.3681], [60, 0.2778], [80, 0.2018], [100, 0.1704], [150, 0.1378]];
+  function muAl(E) {
+    if (E <= 10) return AL[0][1] * Math.pow(E / 10, -3);
+    for (let i = 1; i < AL.length; i++) if (E <= AL[i][0]) {
+      const [a, fa] = AL[i - 1], [b, fb] = AL[i], t = Math.log(E / a) / Math.log(b / a);
+      return Math.exp(Math.log(fa) + t * Math.log(fb / fa));
+    }
+    return AL[AL.length - 1][1];
+  }
+  const K_EDGE = 69.5, KA = 59, KB = 67.5, DE = 0.5, EMAX = 150;
+  // Photon-number spectrum: Kramers' continuum N(E) ∝ mA·(kV − E)/E, filtered by Al, plus tungsten K-lines.
+  function spectrum(kV, mA, mmAl) {
+    const pts = [];
+    for (let E = DE; E <= EMAX + 1e-9; E += DE) {
+      let n = E < kV ? (mA * (kV - E)) / E : 0;
+      if (kV > K_EDGE) {
+        const s = mA * 3.6 * Math.pow((kV - K_EDGE) / K_EDGE, 1.6);
+        if (Math.abs(E - KA) < 0.01) n += s;
+        if (Math.abs(E - KB) < 0.01) n += s * 0.25;
+      }
+      pts.push([E, n * Math.exp(-muAl(E) * 2.7 * (mmAl / 10))]);
+    }
+    return pts;
+  }
+  const REF = Math.max(...spectrum(70, 200, 2.5).map(p => p[1])) / 100;   // 70 kV, 200 mA, 2.5 mm Al peaks at 100
+
+  const PX0 = 60, PX1 = 620, PY0 = 26, PY1 = 310;
+  const sx = E => PX0 + (E / EMAX) * (PX1 - PX0);
+  let yMax = 100;
+  const sy = v => PY1 - (v / yMax) * (PY1 - PY0);
+  const NICE = []; for (let p = 0; p <= 4; p++) for (const m of [1, 2, 5]) NICE.push(m * 10 ** p);
+
+  const axes = document.getElementById("axes");
+  function drawAxes() {
+    axes.innerHTML = "";
+    for (let E = 0; E <= EMAX; E += 25) {
+      el("line", { class: "grid-l", x1: sx(E), y1: PY0, x2: sx(E), y2: PY1 }, axes);
+      const t = el("text", { x: sx(E), y: PY1 + 18, "text-anchor": "middle" }, axes); t.textContent = E;
+    }
+    for (let i = 0; i <= 4; i++) {
+      const v = (yMax * i) / 4, y = sy(v);
+      el("line", { class: "grid-l", x1: PX0, y1: y, x2: PX1, y2: y }, axes);
+      const t = el("text", { x: PX0 - 8, y: y + 4, "text-anchor": "end" }, axes); t.textContent = yMax < 20 ? +v.toFixed(1) : Math.round(v);
+    }
+    el("path", { d: `M${PX0} ${PY0} V${PY1} H${PX1}`, fill: "none" }, axes);
+    const xt = el("text", { class: "ax-title", x: (PX0 + PX1) / 2, y: PY1 + 44, "text-anchor": "middle" }, axes); xt.textContent = "Photon energy (keV)";
+    const yt = el("text", { class: "ax-title", x: 14, y: (PY0 + PY1) / 2, "text-anchor": "middle", transform: `rotate(-90 14 ${(PY0 + PY1) / 2})` }, axes); yt.textContent = "Relative number of photons";
+  }
+  const toPath = pts => pts.map(([E, v], i) => `${i ? "L" : "M"}${sx(E).toFixed(1)} ${sy(v).toFixed(1)}`).join(" ");
+
+  const kv = document.getElementById("kv"), ma = document.getElementById("ma"), fl = document.getElementById("fl");
+  const curve = document.getElementById("curve"), area = document.getElementById("area"), pinnedPath = document.getElementById("pinned");
+  const kvline = document.getElementById("kvline"), kvlabel = document.getElementById("kvlabel"), lineLabels = document.getElementById("linelabels");
+  const meanG = document.getElementById("meanmark");
+  let pinned = null;
+
+  const stats = pts => {
+    let tot = 0, w = 0, mx = 0;
+    for (const [E, v] of pts) { tot += v; w += E * v; mx = Math.max(mx, v); }
+    return { tot, mean: tot ? w / tot : 0, max: mx };
+  };
+
+  let summaryTimer = null;
+  function update() {
+    const K = +kv.value, M = +ma.value, F = +fl.value;
+    document.getElementById("kv-o").textContent = `${K} kV`;
+    document.getElementById("ma-o").textContent = `${M} mA`;
+    document.getElementById("fl-o").textContent = `${F.toFixed(1)} mm Al`;
+
+    const pts = spectrum(K, M, F).map(([E, v]) => [E, v / REF]);
+    const s = stats(pts);
+    const need = Math.max(s.max, pinned ? pinned.stats.max : 0) * 1.08;
+    if (need > yMax || need < yMax * 0.3) yMax = NICE.find(n => n >= need) || NICE[NICE.length - 1];
+    drawAxes();
+
+    curve.setAttribute("d", toPath(pts));
+    area.setAttribute("d", `${toPath(pts)} L${sx(EMAX)} ${PY1} L${sx(DE)} ${PY1} Z`);
+    pinnedPath.setAttribute("d", pinned ? toPath(pinned.pts) : "");
+    document.getElementById("legend-pin").hidden = !pinned;
+
+    const x = sx(K);
+    kvline.setAttribute("x1", x); kvline.setAttribute("x2", x);
+    kvlabel.setAttribute("x", Math.min(x, PX1 - 4)); kvlabel.setAttribute("text-anchor", x > PX1 - 90 ? "end" : "middle");
+    kvlabel.textContent = `max = ${K} keV`;
+
+    lineLabels.innerHTML = "";
+    const hasLines = K > K_EDGE;
+    if (hasLines) {
+      const va = pts.find(p => Math.abs(p[0] - KA) < 0.01)[1], vb = pts.find(p => Math.abs(p[0] - KB) < 0.01)[1];
+      const ta = el("text", { class: "linelabel", x: sx(KA) - 6, y: Math.max(sy(va) - 6, PY0 + 12), "text-anchor": "end" }, lineLabels); ta.textContent = "Kα";
+      const tb = el("text", { class: "linelabel", x: sx(KB) + 6, y: Math.max(sy(vb) - 6, PY0 + 12) }, lineLabels); tb.textContent = "Kβ";
+    }
+
+    const mx = sx(s.mean);
+    meanG.querySelector("polygon").setAttribute("points", `${mx},${PY1 - 1} ${mx - 6},${PY1 - 11} ${mx + 6},${PY1 - 11}`);
+    const mt = meanG.querySelector("text"); mt.setAttribute("x", mx); mt.setAttribute("y", PY1 - 15); mt.setAttribute("text-anchor", "middle"); mt.textContent = "mean";
+
+    document.getElementById("r-max").textContent = `${K} keV`;
+    document.getElementById("r-mean").textContent = `≈ ${Math.round(s.mean)} keV`;
+    document.getElementById("r-lines").innerHTML = hasLines ? '<span class="pill yes">Present</span>' : '<span class="pill no">Absent</span>';
+    document.getElementById("r-pin").textContent = pinned ? `× ${(s.tot / pinned.stats.tot).toFixed(2)}` : "–";
+
+    const frac = s.mean / K;
+    const sentence = `At ${K} kV, ${M} mA and ${F.toFixed(1)} mm Al the highest photon energy is ${K} keV and the mean is about ${Math.round(s.mean)} keV (${frac < 0.42 ? "a little under" : frac > 0.58 ? "a little over" : "about"} half the kV). ` +
+      (hasLines
+        ? `Tungsten's K-characteristic lines appear at about 59 keV (Kα) and 67 keV (Kβ), because the electrons now carry more than the 69.5 keV needed to eject a K-shell electron.`
+        : `There are no K-characteristic lines: the electrons carry less than the 69.5 keV needed to eject a tungsten K-shell electron.`);
+    const summary = document.getElementById("spec-summary");
+    clearTimeout(summaryTimer);
+    summaryTimer = setTimeout(() => { summary.textContent = sentence; }, 250);
+    document.getElementById("spec-d").textContent = "Relative number of photons against photon energy. " + sentence;
+  }
+  [kv, ma, fl].forEach(i => i.addEventListener("input", update));
+  const pinBtn = document.getElementById("pin"), unpinBtn = document.getElementById("unpin");
+  pinBtn.addEventListener("click", () => {
+    const pts = spectrum(+kv.value, +ma.value, +fl.value).map(([E, v]) => [E, v / REF]);
+    pinned = { pts, stats: stats(pts) };
+    unpinBtn.disabled = false; pinBtn.textContent = "Re-pin current"; update();
+  });
+  unpinBtn.addEventListener("click", () => { pinned = null; unpinBtn.disabled = true; pinBtn.textContent = "Pin for comparison"; update(); });
+  update();
+})();
+</script>

@@ -1,0 +1,44 @@
+[
+  {
+    "id": "atomic",
+    "number": 1,
+    "title": "Atomic structure & EM radiation",
+    "blurb": "The Bohr atom, shells and binding energy, ionisation and excitation, and the electromagnetic spectrum.",
+    "files": ["content/01-atomic-structure.csv"],
+    "diagrams": [
+      { "id": "bohr", "title": "The Bohr atom", "blurb": "Shells, binding energy, and tap-to-trigger excitation and ionisation.", "ready": false }
+    ]
+  },
+  {
+    "id": "production",
+    "number": 2,
+    "title": "X-ray production & the X-ray tube",
+    "blurb": "The parts of the tube, what happens during an exposure, Bremsstrahlung and characteristic radiation, and the X-ray spectrum.",
+    "files": [],
+    "diagrams": [
+      { "id": "tube", "title": "The rotating-anode tube", "blurb": "Step through an exposure, or tap a numbered part to see what it does.", "ready": true },
+      { "id": "spectrum", "title": "The X-ray spectrum", "blurb": "Change kV, mA and filtration and watch the spectrum respond.", "ready": true },
+      { "id": "target", "title": "Electron–target interactions", "blurb": "Bremsstrahlung and characteristic radiation, step by step.", "ready": false }
+    ]
+  },
+  {
+    "id": "interactions",
+    "number": 3,
+    "title": "Interactions with matter",
+    "blurb": "The photoelectric effect and Compton scatter, attenuation, and what they mean for contrast and dose.",
+    "files": [],
+    "diagrams": [
+      { "id": "pe-compton", "title": "Photoelectric effect and Compton scatter", "blurb": "Side-by-side animations of the two main interactions.", "ready": false }
+    ]
+  },
+  {
+    "id": "protection",
+    "number": 4,
+    "title": "Radiation protection & legislation",
+    "blurb": "IR(ME)R 2017, IRR17, ALARP, time, distance and shielding, and the inverse square law.",
+    "files": [],
+    "diagrams": [
+      { "id": "isl", "title": "The inverse square law", "blurb": "Watch a beam spread over a larger area as distance increases.", "ready": false }
+    ]
+  }
+]
