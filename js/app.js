@@ -1,7 +1,7 @@
 // RadPhys Revise: routes between the home, explore and practise views.
 import { CONFIG } from "./config.js";
 import { loadContent } from "./content.js";
-import { getProgress, record, resetProgress, MAX_BOX } from "./store.js";
+import { getProgress, record, resetProgress, lastResult, MAX_BOX } from "./store.js";
 import { buildSet, shuffle, parseNumber, isNumericCorrect } from "./quiz.js";
 
 const DIAGRAMS = {
@@ -13,8 +13,8 @@ const DIAGRAMS = {
   isl: () => import("./diagrams/isl.js"),
 };
 
-// A question is "secure" once it has been answered right this many times since the last slip.
-const SECURE_BOX = 4;
+// Mastery (how secure the tried questions are) shows once this many questions have been tried.
+const MASTERY_AFTER = 5;
 
 const app = document.getElementById("app");
 const side = document.getElementById("side");
@@ -35,13 +35,14 @@ const MARKS = {
   wrong: '<svg class="mark" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>',
 };
 
-function nav(active) {
+// current: the active link is this page (aria-current). Otherwise it is only highlighted, e.g. a topic while practising it.
+function nav(active, current = true) {
   const link = (href, key, label, extra = "") =>
-    `<a href="${href}"${active === key ? ' aria-current="page"' : ""}>${label}${extra}</a>`;
+    `<a href="${href}"${active === key ? (current ? ' aria-current="page"' : ' class="here"') : ""}>${label}${extra}</a>`;
   const topics = content.topics.map(t => {
-    const m = mastery(t.id);
+    const s = standing(t.id);
     return link(`#explore-${t.id}`, t.id, `<span class="n">${t.number}</span><span>${esc(t.title)}</span>`,
-      m && m.tried ? `<span class="pct">${m.pct}%</span>` : "");
+      s && s.tried ? `<span class="pct" aria-label="${s.tried} of ${s.total} tried">${s.tried}/${s.total}</span>` : "");
   }).join("");
   const fb = CONFIG.feedbackUrl ? `<a href="${esc(CONFIG.feedbackUrl)}" target="_blank" rel="noopener">Give feedback on this app</a>` : "";
   side.classList.remove("open");
@@ -69,27 +70,43 @@ function nav(active) {
 function footer() {
   return `<footer class="bottom"><span>RadPhys Revise · Created by Rhys Morris</span><span>Progress is saved on this device only</span></footer>`;
 }
-function show(html, active) {
-  nav(active);
+function show(html, active, { title = "", current = true } = {}) {
+  nav(active, current);
+  document.title = title ? `${title} · RadPhys Revise` : "RadPhys Revise";
   app.innerHTML = html;
   window.scrollTo(0, 0);
   (app.querySelector("h1") || app).focus({ preventScroll: true });
 }
 
-function mastery(topicId) {
-  const qs = questionsFor(topicId);
-  if (!qs.length) return null;
+// Where a student stands: coverage first (tried, and how the latest try at each went), then mastery,
+// the average box of the tried questions, once enough have been tried for it to mean something.
+function standing(topicId, pool = questionsFor(topicId)) {
+  if (!pool.length) return null;
   const p = getProgress();
-  let sum = 0, tried = 0;
-  for (const q of qs) if (p[q.id]) { sum += p[q.id].box; tried++; }
-  return { pct: Math.round((100 * sum) / (MAX_BOX * qs.length)), tried, total: qs.length };
+  const s = { total: pool.length, tried: 0, right: 0, partly: 0, revisit: 0, boxes: 0 };
+  for (const q of pool) {
+    const r = p[q.id];
+    if (!r) continue;
+    s.tried++;
+    s[lastResult(r)]++;
+    s.boxes += r.box;
+  }
+  s.mastery = s.tried >= MASTERY_AFTER ? Math.round((100 * s.boxes) / (MAX_BOX * s.tried)) : null;
+  return s;
 }
-function masteryBar(m, label = "Mastery") {
-  if (!m) return "";
-  const value = m.tried ? `${m.pct}%` : "Not started";
+function tally(s) {
+  const parts = [[s.right, "right"], [s.partly, "partly right"], [s.revisit, "to revisit"]].filter(([n]) => n);
+  return parts.map(([n, w]) => `${n} ${w}`).join(" · ");
+}
+// The bar shows the topic's questions: right, partly right and to revisit, then the untried remainder.
+function progressBar(s, label) {
+  if (!s) return "";
+  const seg = (n, cls) => n ? `<i class="${cls}" style="width:${((100 * n) / s.total).toFixed(2)}%"></i>` : "";
+  const said = s.tried ? `${s.tried} of ${s.total} tried: ${tally(s)}` : `none of ${s.total} tried yet`;
   return `<div class="mastery">
-    <div class="mastery-top"><span>${label ? `${label} · ` : ""}${m.tried} of ${m.total} tried</span><b>${value}</b></div>
-    <div class="bar" role="progressbar" aria-label="${label || "Mastery"}" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${m.pct}"><i style="width:${m.pct}%"></i></div>
+    <div class="mastery-top"><span>${s.tried ? `${s.tried} of ${s.total} tried` : "Not started"}</span>${s.mastery !== null ? `<span>Mastery ${s.mastery}%</span>` : ""}</div>
+    <div class="bar" role="img" aria-label="${esc(label)}: ${said}">${seg(s.right, "right")}${seg(s.partly, "partly")}${seg(s.revisit, "revisit")}</div>
+    ${s.tried ? `<p class="tally">${tally(s)}</p>` : ""}
   </div>`;
 }
 
@@ -97,50 +114,48 @@ function masteryBar(m, label = "Mastery") {
 function home() {
   const p = getProgress();
   const all = content.questions;
-  const tried = all.filter(q => p[q.id]).length;
-  const due = all.filter(q => p[q.id] && p[q.id].box === 0);
-  const secure = all.filter(q => p[q.id]?.box >= SECURE_BOX).length;
-  const overall = mastery("mixed");
+  const s = standing("mixed");
+  const revisit = all.filter(q => p[q.id] && lastResult(p[q.id]) === "revisit");
   const withQs = content.topics.filter(t => questionsFor(t.id).length);
-  const diagramsReady = content.topics.reduce((s, t) => s + t.diagrams.filter(shown).length, 0);
-  const diagramsAll = content.topics.reduce((s, t) => s + t.diagrams.length, 0);
 
   // The screen's one finding, and the topic the main button opens.
   let next = withQs[0], finding;
-  if (!tried) {
+  if (!s?.tried) {
     finding = next ? `Nothing tried yet. ${esc(next.title)} has ${plural(questionsFor(next.id).length, "question")} ready.` : "Questions are on their way.";
-  } else if (due.length) {
-    const byTopic = withQs.map(t => ({ t, n: due.filter(q => q.topic === t.id).length })).sort((a, b) => b.n - a.n);
+  } else if (revisit.length) {
+    const byTopic = withQs.map(t => ({ t, n: revisit.filter(q => q.topic === t.id).length })).sort((a, b) => b.n - a.n);
     next = byTopic[0].t;
-    finding = `${plural(due.length, "question")} to try again, most in ${esc(next.title)}.`;
+    finding = `${s.right ? `${s.right} right so far. ` : ""}${plural(revisit.length, "question")} to revisit, most in ${esc(next.title)}; they come back sooner in your sets.`;
   } else {
-    next = withQs.map(t => ({ t, m: mastery(t.id) })).sort((a, b) => a.m.pct - b.m.pct)[0].t;
-    finding = `Nothing due again. ${esc(next.title)} is your lowest topic at ${mastery(next.id).pct}%.`;
+    // Nothing to revisit: point at the topic with the most still to try.
+    next = withQs.map(t => ({ t, s: standing(t.id) })).sort((a, b) => a.s.tried / a.s.total - b.s.tried / b.s.total)[0].t;
+    finding = `${s.right} right and nothing to revisit. ${esc(next.title)} has the most questions still to try.`;
   }
 
   const tiles = [
-    ["Overall mastery", overall?.tried ? `${overall.pct}<small>%</small>` : "0<small>%</small>", "Across every question"],
-    ["Questions tried", `${tried} <small>of ${all.length}</small>`, CONFIG.reviewMode ? "Draft questions included" : "Approved questions"],
-    ["Secure", `${secure}`, `Right ${SECURE_BOX} times since your last slip`],
-    ["Due another go", `${due.length}`, "Wrong the last time you tried them", due.length ? "alert" : ""],
-  ].map(([label, value, cap, cls = ""]) =>
-    `<div class="tile s3 ${cls}"><span class="label">${label}</span><span class="value">${value}</span><span class="cap">${cap}</span></div>`).join("");
+    ["Tried", `${s?.tried ?? 0} <small>of ${all.length}</small>`, CONFIG.reviewMode ? "Draft questions included" : "Questions across every topic"],
+    ["Right last time", `${s?.right ?? 0}`, s?.partly ? `Plus ${s.partly} partly right` : "Your latest try at each question"],
+    ["To revisit", `${revisit.length}`, "These come back sooner in your sets"],
+    ["Mastery", s?.mastery != null ? `${s.mastery}<small>%</small>` : "<small>Not yet</small>",
+      s?.mastery != null ? "Grows each time you get a question right again" : `Shows once you've tried ${MASTERY_AFTER} questions`],
+  ].map(([label, value, cap]) =>
+    `<div class="tile s3"><span class="label">${label}</span><span class="value">${value}</span><span class="cap">${cap}</span></div>`).join("");
 
   const rows = content.topics.map(t => {
     const n = questionsFor(t.id).length;
-    const ready = t.diagrams.filter(shown).length;
+    const diagrams = t.diagrams.filter(shown).length;
     return `<article class="topic">
       <span class="n">${t.number}</span>
       <div class="topic-main">
-        <h3>${esc(t.title)}</h3>
+        <h3><a href="#explore-${t.id}">${esc(t.title)}</a></h3>
         <p>${esc(t.blurb)}</p>
-        <p class="counts">${plural(n, "question")}${t.diagrams.length ? ` · ${ready} of ${plural(t.diagrams.length, "diagram")} ready` : ""}</p>
+        <p class="counts">${plural(n, "question")}${diagrams ? ` · ${plural(diagrams, "diagram")} to explore` : ""}</p>
       </div>
       <div class="topic-side">
-        ${n ? masteryBar(mastery(t.id), "") : '<span class="soon">Questions coming soon</span>'}
+        ${n ? progressBar(standing(t.id), t.title) : '<span class="soon">Questions coming soon</span>'}
         <div class="controls">
-          <a class="btn" href="#explore-${t.id}" aria-label="Explore ${esc(t.title)}">Explore</a>
-          ${n ? `<a class="btn" href="#practise-${t.id}" aria-label="Practise ${esc(t.title)}">Practise</a>` : ""}
+          ${n ? `<a class="btn" href="#practise-${t.id}" aria-label="Practise ${esc(t.title)}">Practise</a>`
+            : diagrams ? `<a class="btn" href="#explore-${t.id}" aria-label="Explore ${esc(t.title)}">Explore</a>` : ""}
         </div>
       </div>
     </article>`;
@@ -152,7 +167,7 @@ function home() {
         <h1 tabindex="-1">RDR-1173 Physics Revision</h1>
         <p class="sub">${finding}</p>
       </div>
-      ${next ? `<a class="btn primary" href="#practise-${next.id}">${tried ? "Continue" : "Start"}: ${esc(next.title)}</a>` : ""}
+      ${next ? `<a class="btn primary" href="#practise-${next.id}">${s?.tried ? "Continue" : "Start"}: ${esc(next.title)}</a>` : ""}
     </section>
     <section class="grid12 tiles" aria-label="Your progress">${tiles}</section>
     <div class="grid12">
@@ -168,12 +183,12 @@ function home() {
         </section>
         <section class="box" aria-labelledby="dev-h">
           <h2 id="dev-h">On This Device</h2>
-          <p class="muted">${diagramsReady} of ${diagramsAll} diagrams are ready to explore. Your progress is saved in this browser only; clearing it or switching device starts you afresh.</p>
+          <p class="muted">Your progress stays in this browser, on this device. Nothing is sent anywhere, and there's nothing to sign in to.</p>
           <div class="reset-row" data-role="reset-row"><button type="button" class="link" data-role="reset">Reset my progress</button></div>
         </section>
       </div>
     </div>
-    ${footer()}`, "home");
+    ${footer()}`, "home", { title: "Home" });
 
   const row = app.querySelector('[data-role="reset-row"]');
   row.addEventListener("click", e => {
@@ -191,42 +206,41 @@ async function explore(id) {
   const t = topicById(id);
   if (!t) return home();
   const qs = questionsFor(id);
-  const m = mastery(id);
+  const visible = t.diagrams.filter(shown);
+  const later = t.diagrams.filter(d => !shown(d));
 
-  const status = d => !shown(d) ? ["later", "Coming soon"] : d.approved ? ["ready", "Ready"] : ["review", "Awaiting sign-off"];
-  const diagramRows = t.diagrams.map(d => `<li><div>${shown(d) ? `<a href="#d-${d.id}" data-jump="d-${d.id}">${esc(d.title)}</a>` : `<span>${esc(d.title)}</span>`}<p>${esc(d.blurb)}</p></div>
-    <span class="status ${status(d)[0]}">${status(d)[1]}</span></li>`).join("");
+  // The diagrams lead the page; a row of jump links when there is more than one.
+  const jumps = visible.length > 1
+    ? `<nav class="jumps" aria-label="Diagrams on this page">${visible.map(d => `<a href="#d-${d.id}" data-jump="d-${d.id}">${esc(d.title)}</a>`).join("")}</nav>` : "";
+  const laterNote = later.length ? `<p class="later">Coming later: ${later.map(d => esc(d.title)).join(", ")}.</p>` : "";
+  // Sign-off status is for the reviewer only; students see just the diagrams.
+  const reviewChip = d => CONFIG.reviewMode && !d.approved ? ' <span class="status review">Awaiting sign-off</span>' : "";
+  const modules = visible.map(d =>
+    `<section class="module" id="d-${d.id}" aria-labelledby="dh-${d.id}"><div class="module-head"><h2 id="dh-${d.id}">${esc(d.title)}${reviewChip(d)}</h2><p>${esc(d.blurb)}</p></div><div data-diagram="${d.id}"><p class="muted">Loading diagram…</p></div></section>`).join("");
 
+  // Each question area starts a set on just that area.
   const areas = [...qs.reduce((map, q) => map.set(q.subtopic || "General", (map.get(q.subtopic || "General") || 0) + 1), new Map())]
     .sort((a, b) => b[1] - a[1]);
-  const areaRows = areas.length
-    ? `<ul class="list">${areas.map(([name, n]) => `<li><span>${esc(name)}</span><span class="meta">${plural(n, "question")}</span></li>`).join("")}</ul>`
-    : '<p class="muted">Questions for this topic are being written. Use the diagrams to get ahead.</p>';
-
-  const modules = t.diagrams.filter(shown).map(d =>
-    `<section class="module" id="d-${d.id}" aria-labelledby="dh-${d.id}"><div class="module-head"><h2 id="dh-${d.id}">${esc(d.title)}</h2><p>${esc(d.blurb)}</p></div><div data-diagram="${d.id}"><p class="muted">Loading diagram…</p></div></section>`).join("");
+  const practiseBox = `<section class="box" aria-labelledby="qa-h">
+      <div class="box-head"><h2 id="qa-h">Practise by area</h2></div>
+      ${qs.length ? progressBar(standing(id), t.title) : ""}
+      ${areas.length
+        ? `<ul class="areas">${areas.map(([name, n]) => `<li><a class="area" href="#practise-${id}/${encodeURIComponent(name)}"><span>${esc(name)}</span><span class="meta">${plural(n, "question")}</span></a></li>`).join("")}</ul>`
+        : '<p class="muted">Questions for this topic are being written. Use the diagrams to get ahead.</p>'}
+    </section>`;
 
   show(`
     <section class="title-row">
       <div>
         <h1 tabindex="-1">${esc(t.title)}</h1>
-        <p class="sub">${esc(t.blurb)} Diagrams are schematic and not to scale.</p>
+        <p class="sub">${esc(t.blurb)}${visible.length ? " Diagrams are schematic and not to scale." : ""}</p>
       </div>
       ${qs.length ? `<a class="btn primary" href="#practise-${id}">Practise this topic</a>` : ""}
     </section>
-    <div class="grid12">
-      <section class="box s6" aria-labelledby="dg-h">
-        <div class="box-head"><h2 id="dg-h">Diagrams</h2><span class="count">${t.diagrams.length}</span></div>
-        <ul class="list">${diagramRows}</ul>
-      </section>
-      <section class="box s6" aria-labelledby="qa-h">
-        <div class="box-head"><h2 id="qa-h">Question Areas</h2><span class="count">${qs.length}</span></div>
-        ${m ? masteryBar(m) : ""}
-        ${areaRows}
-      </section>
-    </div>
+    ${jumps || laterNote ? `<div class="explore-intro">${jumps}${laterNote}</div>` : ""}
     ${modules}
-    ${footer()}`, id);
+    ${practiseBox}
+    ${footer()}`, id, { title: t.title });
 
   // In-page jumps without changing the hash, which drives the router.
   for (const a of app.querySelectorAll("[data-jump]")) {
@@ -254,16 +268,19 @@ async function explore(id) {
 }
 
 /* ---------- Practise ---------- */
-function practise(scope) {
-  const t = scope === "mixed" ? { title: "Mixed Practice", number: "" } : topicById(scope);
-  if (!t) return home();
-  const pool = questionsFor(scope);
+// scope: a topic id or "mixed". area: one question area within the topic.
+// retry: a fixed list of questions (the ones missed in the last set) instead of a fresh set.
+function practise(scope, area = null, retry = null) {
+  const topic = scope === "mixed" ? { title: "Mixed Practice", number: "" } : topicById(scope);
+  if (!topic) return home();
+  const t = { ...topic, title: area ? `${topic.title}: ${area}` : topic.title };
+  const pool = questionsFor(scope).filter(q => !area || (q.subtopic || "General") === area);
   if (!pool.length) {
-    show(`<section class="empty"><h1 tabindex="-1">${esc(t.title)}</h1><p>There are no questions for this topic yet.</p><div class="controls"><a class="btn" href="#explore-${scope}">Explore the diagrams</a><a class="btn" href="#home">Back to home</a></div></section>${footer()}`, scope);
+    show(`<section class="empty"><h1 tabindex="-1">${esc(t.title)}</h1><p>There are no questions here yet.</p><div class="controls"><a class="btn" href="#explore-${scope}">Explore the diagrams</a><a class="btn" href="#home">Back to home</a></div></section>${footer()}`, scope, { title: t.title, current: false });
     return;
   }
 
-  const set = buildSet(pool, getProgress(), CONFIG);
+  const set = retry ? shuffle(retry) : buildSet(pool, getProgress(), CONFIG);
   const results = [];
   let i = 0;
 
@@ -273,16 +290,16 @@ function practise(scope) {
       const r = results[k];
       let cls = "wait", label = "–";
       if (r) {
-        if (r.kind === "self") { cls = "self"; label = `${r.ticked} of ${r.q.points.length}`; }
+        if (r.kind === "self") { cls = "self"; label = `${r.ticked} of ${r.q.points.length} points`; }
         else if (r.score) { cls = "good"; label = `${MARKS.right}Right`; }
-        else { cls = "bad"; label = `${MARKS.wrong}Wrong`; }
+        else { cls = "bad"; label = `${MARKS.wrong}Not quite`; }
       } else if (k === i && q) { cls = "now"; label = "Now"; }
       return `<li class="${cls}"><span class="k">${k + 1}</span><span class="r">${label}</span></li>`;
     }).join("");
     const facts = q ? `<section class="box" aria-labelledby="tq-h"><h2 id="tq-h">This Question</h2><dl class="facts">
         <div><dt>Topic</dt><dd>${esc(topicById(q.topic)?.title || "")}</dd></div>
         ${q.subtopic ? `<div><dt>Area</dt><dd>${esc(q.subtopic)}</dd></div>` : ""}
-        <div><dt>Level</dt><dd>${q.difficulty === "stretch" ? "Stretch" : "Core"}</dd></div>
+        <div><dt>Level</dt><dd>${q.difficulty === "stretch" ? "Stretch: beyond the core" : "Core"}</dd></div>
         ${q.status !== "approved" ? `<div><dt>Status</dt><dd class="draft">Draft · ${esc(q.id)}</dd></div>` : ""}
       </dl></section>` : "";
     return `<aside class="stack s4" aria-label="This set">
@@ -294,7 +311,8 @@ function practise(scope) {
   function frame(main, q) {
     const dots = set.map((_, k) => `<i class="${k < i ? "done" : k === i ? "now" : ""}"></i>`).join("");
     show(`<div class="q-meta"><span>${esc(t.title)} · Question ${Math.min(i + 1, set.length)} of ${set.length}</span><div class="progress-dots" aria-hidden="true">${dots}</div></div>
-      <div class="grid12"><div class="stack s8">${main}</div>${rail(q)}</div>${footer()}`, scope);
+      <div class="grid12"><div class="stack s8">${main}</div>${rail(q)}</div>${footer()}`, scope,
+      { title: `Question ${i + 1} of ${set.length} · ${t.title}`, current: scope === "mixed" });
   }
 
   function next() {
@@ -353,7 +371,7 @@ function practise(scope) {
         if (!chosen) return;
         const right = chosen === q.answer;
         record(q.id, right);
-        results.push({ q, score: right ? 1 : 0, kind: "auto" });
+        results.push({ q, score: right ? 1 : 0, kind: "auto", chosen });
         card.querySelector("fieldset").disabled = true;
         card.querySelector("fieldset").classList.add("locked");
         for (const lab of card.querySelectorAll(".opt")) {
@@ -376,10 +394,10 @@ function practise(scope) {
         const value = parseNumber(input.value);
         const right = isNumericCorrect(value, inst.answer, inst.tolerance);
         record(q.id, right);
-        results.push({ q, score: right ? 1 : 0, kind: "auto", stem: inst.question });
+        const answerText = String(+inst.answer.toFixed(2));
+        results.push({ q, score: right ? 1 : 0, kind: "auto", stem: inst.question, inst, given: input.value.trim(), answerText });
         input.readOnly = true;
         check.parentElement.remove();
-        const answerText = String(+inst.answer.toFixed(2));
         fb.innerHTML = `<p class="verdict ${right ? "good" : "bad"}">${right ? `${MARKS.right}Correct` : value === null ? `${MARKS.wrong}That isn't a number` : `${MARKS.wrong}Not quite`}</p>
           <p><b>Answer:</b> ${answerText} ${esc(inst.unit)}</p>
           <ol class="working">${inst.working.map(w => `<li>${esc(w)}</li>`).join("")}</ol>
@@ -403,7 +421,7 @@ function practise(scope) {
           const ticked = fb.querySelectorAll(".points input:checked").length;
           const score = ticked / q.points.length;
           record(q.id, score);
-          results.push({ q, score, kind: "self", ticked });
+          results.push({ q, score, kind: "self", ticked, written: card.querySelector("#written").value.trim() });
           fb.querySelector(".points").disabled = true;
           e.target.parentElement.remove();
           fb.insertAdjacentHTML("beforeend", `<p class="verdict self">You covered ${ticked} of ${q.points.length} points</p>
@@ -414,24 +432,75 @@ function practise(scope) {
     }
   }
 
+  // What the student answered and why, shown again when a row on the results screen is opened.
+  function detail(r) {
+    const q = r.q, parts = [];
+    if (r.kind === "self") {
+      if (r.written) parts.push(`<div class="model"><b>Your answer</b><p>${text(r.written)}</p></div>`);
+      parts.push(`<div class="model"><b>Model answer</b><p>${text(q.model)}</p></div>`);
+    } else if (q.kind === "mcq") {
+      const opt = k => q.options.find(o => o.key === k);
+      if (!r.score) {
+        parts.push(`<p><b>Your answer:</b> ${text(opt(r.chosen)?.text)}</p>`);
+        if (opt(r.chosen)?.feedback) parts.push(`<p class="why"><span><b>Why not:</b> ${text(opt(r.chosen).feedback)}</span></p>`);
+      }
+      parts.push(`<p><b>Correct answer:</b> ${text(opt(q.answer)?.text)}</p>`);
+    } else if (r.inst) {
+      parts.push(`<p><b>Your answer:</b> ${esc(r.given)} ${esc(r.inst.unit)} · <b>Answer:</b> ${r.answerText} ${esc(r.inst.unit)}</p>`,
+        `<ol class="working">${r.inst.working.map(w => `<li>${esc(w)}</li>`).join("")}</ol>`);
+    }
+    if (q.explanation) parts.push(`<p>${text(q.explanation)}</p>`);
+    return parts.join("");
+  }
+
   function renderResults() {
-    const total = results.reduce((s, r) => s + r.score, 0);
-    const pct = Math.round((100 * total) / results.length);
+    const n = results.length;
+    const right = results.filter(r => r.score >= 0.7).length;
+    const partly = results.filter(r => r.score >= 0.4 && r.score < 0.7).length;
+    const missed = results.filter(r => r.score < 0.7).map(r => r.q);
+    // Lead with what went right; the missed ones are framed as what comes next, not as failure.
+    const lead = right === n ? `All ${n} right. These questions will now come back less often.`
+      : !right && !partly ? `None right this time, and that's normal on a first go. Open any question below to read why; they'll all come back sooner.`
+      : `${right} right${partly ? `, ${partly} partly right` : ""}. The ${missed.length === 1 ? "one" : missed.length} you didn't fully get will come back sooner, so each set moves you on.`;
+
     const rows = results.map(r => {
-      const cls = r.kind === "self" ? "self" : r.score ? "good" : "bad";
-      const label = r.kind === "self" ? `${r.ticked} of ${r.q.points.length}` : r.score ? `${MARKS.right}Right` : `${MARKS.wrong}Wrong`;
+      const good = r.score >= 0.7;
+      const cls = r.kind === "self" ? "self" : good ? "good" : "bad";
+      const label = r.kind === "self" ? `${r.ticked} of ${r.q.points.length} points` : good ? `${MARKS.right}Right` : `${MARKS.wrong}Not quite`;
       const stem = r.stem || r.q.question;
-      return `<li><span class="res ${cls}">${label}</span><span>${esc(stem.length > 140 ? stem.slice(0, 137) + "…" : stem)}</span></li>`;
+      return `<li><details><summary><span class="res ${cls}">${label}</span><span class="stem">${esc(stem.length > 140 ? stem.slice(0, 137) + "…" : stem)}</span></summary>
+        <div class="detail">${detail(r)}</div></details></li>`;
     }).join("");
-    frame(`<section class="title-row">
-        <div><h1 tabindex="-1">Set Complete: ${esc(t.title)}</h1>
-        <p class="sub">Written answers count by the share of marking points you ticked. Questions you got wrong will come back more often.</p></div>
-        <span class="score" aria-label="Score ${pct}%">${pct}%</span>
+
+    const actions = missed.length
+      ? `<button type="button" class="primary" data-role="retry">Practise the ${missed.length === 1 ? "one" : missed.length} I missed</button><button type="button" data-role="again">New set</button>`
+      : `<button type="button" class="primary" data-role="again">New set</button>`;
+    const progress = standing(scope);
+    show(`<section class="title-row">
+        <div><h1 tabindex="-1">Set complete</h1>
+        <p class="sub">${esc(t.title)}</p></div>
       </section>
-      ${scope !== "mixed" ? masteryBar(mastery(scope), "Topic mastery") : ""}
-      <ul class="review-list">${rows}</ul>
-      <div class="controls"><button type="button" class="primary" data-role="again">Practise again</button><a class="btn" href="#home">Back to home</a></div>`, null);
-    app.querySelector('[data-role="again"]').addEventListener("click", () => practise(scope));
+      <div class="grid12">
+        <div class="stack s8">
+          <div class="result-lead">
+            <p class="score">${right ? `${right}<small> of ${n} right</small>` : `${n}<small> ${n === 1 ? "question" : "questions"} tried</small>`}</p>
+            <p>${lead}</p>
+            <div class="controls">${actions}<a class="btn" href="#home">Back to home</a></div>
+          </div>
+          <section aria-labelledby="rv-h" class="stack">
+            <h2 id="rv-h">Your answers <span class="muted">· open one to see why</span></h2>
+            <ul class="review-list">${rows}</ul>
+          </section>
+        </div>
+        <aside class="stack s4" aria-label="Progress">
+          <section class="box" aria-labelledby="tp-h"><h2 id="tp-h">${scope === "mixed" ? "All topics" : esc(topic.title)}</h2>
+            ${progressBar(progress, scope === "mixed" ? "All topics" : topic.title)}
+            ${progress.mastery === null ? `<p class="muted">Mastery shows once you've tried ${MASTERY_AFTER} questions.</p>` : ""}
+          </section>
+        </aside>
+      </div>${footer()}`, scope, { title: `Set complete · ${t.title}`, current: scope === "mixed" });
+    app.querySelector('[data-role="again"]').addEventListener("click", () => practise(scope, area));
+    app.querySelector('[data-role="retry"]')?.addEventListener("click", () => practise(scope, area, missed));
   }
 
   renderQuestion();
@@ -444,7 +513,7 @@ function route() {
   const h = location.hash.slice(1) || "home";
   let m;
   if ((m = h.match(/^explore-([\w-]+)$/))) explore(m[1]);
-  else if ((m = h.match(/^practise-([\w-]+)$/))) practise(m[1]);
+  else if ((m = h.match(/^practise-([\w-]+)(?:\/(.+))?$/))) practise(m[1], m[2] ? decodeURIComponent(m[2]) : null);
   else home();
 }
 
@@ -457,6 +526,13 @@ async function start() {
     return;
   }
   window.addEventListener("hashchange", route);
+  // Skip link past the sidebar. It focuses the sheet directly, because the hash drives the router.
+  const skip = document.createElement("a");
+  skip.className = "skip";
+  skip.href = "#";
+  skip.textContent = "Skip to content";
+  skip.addEventListener("click", e => { e.preventDefault(); (app.querySelector("h1") || app).focus(); });
+  document.body.prepend(skip);
   route();
 }
 

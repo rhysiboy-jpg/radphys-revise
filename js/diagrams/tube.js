@@ -204,7 +204,10 @@ export function mount(root) {
   const dots = [...$("dots").children];
   function render() {
     for (let i = 1; i <= 5; i++) tube.classList.toggle("on-" + i, step >= i);
-    cap.innerHTML = `<strong>${STEPS[step].t}</strong><p>${STEPS[step].d}</p>`;
+    // Every step is laid out in the same grid cell, hidden, so the caption keeps the tallest step's height
+    // and the controls below never jump as the text changes.
+    const block = (s, hide) => `<div class="cap-step${hide ? " sizer" : ""}"${hide ? ' aria-hidden="true"' : ""}><strong>${s.t}</strong><p>${s.d}</p></div>`;
+    cap.innerHTML = block(STEPS[step], false) + STEPS.map(s => block(s, true)).join("");
     count.textContent = `Step ${step} of 5`;
     dots.forEach((d, i) => d.classList.toggle("on", i < step));
     back.disabled = step === 0;

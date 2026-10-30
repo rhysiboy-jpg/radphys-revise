@@ -24,8 +24,16 @@ export function record(id, outcome) {
   else if (score < 0.4) { r.box = 0; r.lastWrong = Date.now(); }
   r.seen++;
   r.last = Date.now();
+  r.lastScore = score;
   p[id] = r;
   save();
+}
+
+// How the latest try went: "right" (0.7 or more), "partly" (0.4 to 0.7) or "revisit" (below 0.4).
+// Records saved before lastScore existed fall back to the box: above 0 means the last try was right.
+export function lastResult(r) {
+  const s = r.lastScore ?? (r.box > 0 ? 1 : 0);
+  return s >= 0.7 ? "right" : s >= 0.4 ? "partly" : "revisit";
 }
 
 export function resetProgress() {
