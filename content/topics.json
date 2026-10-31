@@ -233,8 +233,9 @@
       {
         "id": "qa-check",
         "title": "QA checker",
-        "blurb": "Is a test result fine, remedial or suspension?",
-        "ready": false
+        "blurb": "Set a test result and see whether it is within tolerance, at the remedial level or at the suspension level; then test yourself.",
+        "ready": true,
+        "approved": false
       }
     ]
   }

@@ -21,6 +21,7 @@ const DIAGRAMS = {
   rectification: () => import("./diagrams/rectification.js"),
   detectors: () => import("./diagrams/detectors.js"),
   geometry: () => import("./diagrams/geometry.js"),
+  "qa-check": () => import("./diagrams/qa.js"),
 };
 
 // Mastery (how secure the tried questions are) shows once this many questions have been tried.

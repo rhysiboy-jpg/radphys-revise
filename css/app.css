@@ -619,3 +619,13 @@ details.try[open] summary::after { content: " −"; }
 .legend i.umbra-key { height: 10px; border: 0; background: var(--muted); }
 .legend i.penumbra-key { height: 10px; border: 0; background: var(--muted); opacity: 0.4; }
 .legend i.dash.geo { border-top-color: var(--photon); }
+
+/* ---------- Diagrams: QA checker ---------- */
+.qa-zone { stroke: var(--line); }
+.qa-zone.ok { fill: var(--good-tint); }
+.qa-zone.rem { fill: var(--sun-tint); }
+.qa-zone.sus { fill: var(--bad-tint); }
+.qa-zone-t { font: 600 13px var(--font-body); --fs: 13px; fill: var(--ink); }
+.qa-tick { stroke: var(--muted); }
+.qa-marker { fill: none; stroke: var(--ink); stroke-width: 3; }
+.qa-pointer { fill: var(--ink); }
