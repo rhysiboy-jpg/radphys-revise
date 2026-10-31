@@ -196,10 +196,18 @@
     ],
     "diagrams": [
       {
+        "id": "halflife",
+        "title": "Half-life",
+        "blurb": "Watch a sample of nuclei decay at random, and see the number left halve with each half-life.",
+        "ready": true,
+        "approved": false
+      },
+      {
         "id": "decay",
-        "title": "Decay and half-life",
-        "blurb": "Watch a sample decay, and see how each decay changes Z and A.",
-        "ready": false
+        "title": "Decay builder",
+        "blurb": "Work out the daughter nucleus for alpha, beta-minus, beta-plus, electron capture and gamma decay.",
+        "ready": true,
+        "approved": false
       }
     ]
   },

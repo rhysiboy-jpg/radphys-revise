@@ -328,7 +328,7 @@ textarea { min-height: 9rem; resize: vertical; }
 /* ---------- Diagrams: shared ---------- */
 /* Diagram text keeps a readable size on screen. --u is drawing units per screen pixel, set by app.js as the drawing scales,
    so on a phone a label grows within the drawing rather than shrinking below --min-fs. --fs is each label's size at full width. */
-.stage svg text { font-size: max(var(--fs, 12px), calc(var(--min-fs, 11px) * var(--u, 0))); }
+.stage svg text { font-size: max(var(--fs, 12px), calc(var(--min-fs, 11px) * var(--u, 0))); stroke: none; }   /* text is filled only, never outlined */
 .stage svg .badge circle { r: max(13px, calc(11px * var(--u, 0))); }
 /* Where a drawing is too narrow for its full labels, words marked wide-only drop out and narrow-only ones appear.
    The interactions diagram also drops its closing notes (the step caption says the same) and its outer-shell count there. */
@@ -436,8 +436,9 @@ input[type="range"] { width: 100%; accent-color: var(--dg-accent); min-height: 3
 .modes button { min-height: 40px; padding: 8px 14px; border-radius: var(--r-row); font-weight: 500; }
 .modes button[aria-pressed="true"] { border-color: var(--dg-accent); box-shadow: inset 0 -3px 0 var(--dg-accent); font-weight: 600; }
 .select { font: 400 1rem var(--font-body); color: var(--ink); background: var(--raised); border: 1px solid var(--control); border-radius: var(--r-row); padding: 9px 12px; width: 100%; min-height: 44px; }
-.shell { fill: none; stroke: var(--glass); stroke-width: 1.6; }
-.shell.empty, .shell.outer { stroke-dasharray: 4 5; opacity: 0.7; }
+/* circle.shell, not .shell: the app's page frame is also called "shell", and SVG text would inherit this outline. */
+circle.shell { fill: none; stroke: var(--glass); stroke-width: 1.6; }
+circle.shell.empty, circle.shell.outer { stroke-dasharray: 4 5; opacity: 0.7; }
 .shell-label { font: 600 13px var(--font-body); fill: var(--muted); --fs: 13px; }
 .nucleus { fill: var(--copper); stroke: var(--lead); stroke-width: 1.5; }
 .nucleus-t { font: 700 11px var(--font-body); fill: var(--on-copper); text-anchor: middle; dominant-baseline: central; --fs: 11px; --min-fs: 0px; }
@@ -529,3 +530,39 @@ fieldset legend { margin-bottom: 4px; }
 .sort-text { font-weight: 600; }
 .sort-why { font-size: 0.92rem; }
 .sort-card .controls button:disabled[aria-pressed="true"] { opacity: 1; }
+
+/* ---------- Diagrams: half-life ---------- */
+.nuc { fill: var(--copper); }
+.nuc.done { fill: none; stroke: var(--muted); stroke-width: 1.2; }
+.hl-expect { fill: none; stroke: var(--muted); stroke-width: 2; stroke-dasharray: 6 5; }
+.hl-run { fill: none; stroke: var(--dg-accent); stroke-width: 2.4; stroke-linejoin: round; }
+.hl-now { fill: var(--dg-accent); }
+.legend i.nuc-key { width: 10px; height: 10px; border: 0; border-radius: 50%; background: var(--copper); }
+.legend i.nuc-key.done { background: none; border: 1.5px solid var(--muted); }
+.legend i.run-key { border-top-color: var(--dg-accent); }
+
+/* ---------- Diagrams: decay builder ---------- */
+.dec-nuc-t { font: 600 15px var(--font-body); --fs: 15px; --min-fs: 14px; fill: var(--on-copper); dominant-baseline: central; }
+.dec-track { fill: none; stroke: var(--ink); stroke-width: 2; }
+.dec-nu { fill: none; stroke: var(--muted); stroke-width: 1.6; stroke-dasharray: 3 4; }
+.equation { font: 600 1.35rem/1.4 var(--font-body); display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 0.25em; }
+.nuc-build { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; align-items: end; }
+.nuc-build .label { font-weight: 600; font-size: 0.9rem; }
+.num-step { display: flex; align-items: center; gap: 6px; }
+.num-step button { min-width: 44px; padding: 8px; }
+.num-step output { min-width: 2.6ch; text-align: center; font: 600 1.2rem var(--font-body); }
+.nuc-sym { font: 600 1.6rem/44px var(--font-display); }
+details.try summary { cursor: pointer; list-style: none; }
+details.try summary h3 { display: inline; }
+details.try summary::-webkit-details-marker { display: none; }
+details.try summary::after { content: " +"; color: var(--muted); }
+details.try[open] summary::after { content: " −"; }
+.rules { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+.rules th, .rules td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--edge); }
+.rules th { color: var(--muted); font-weight: 600; }
+@container (max-width: 480px) { .equation { font-size: 1.1rem; } }
+@media (max-width: 600px) { .nuc-build { grid-template-columns: 1fr 1fr; } }
+.dec-az { font: 600 10px var(--font-body); --fs: 10px; --min-fs: 9px; fill: var(--on-copper); }
+.dec-alpha { font: 700 16px var(--font-body); --fs: 16px; --min-fs: 12px; fill: var(--on-copper); text-anchor: middle; dominant-baseline: central; }
+.iso { display: inline-flex; align-items: center; gap: 1px; white-space: nowrap; }
+.iso-az { display: inline-grid; font-size: 0.62em; line-height: 1.05; text-align: right; }
