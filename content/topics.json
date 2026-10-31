@@ -154,8 +154,9 @@
       {
         "id": "geometry",
         "title": "Focal spot and geometry",
-        "blurb": "Focal spot size, object–receptor distance and penumbra.",
-        "ready": false
+        "blurb": "Change the focal spot, ORD and FRD and watch the penumbra and magnification of the shadow.",
+        "ready": true,
+        "approved": false
       }
     ]
   },

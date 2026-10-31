@@ -20,6 +20,7 @@ const DIAGRAMS = {
   transformer: () => import("./diagrams/transformer.js"),
   rectification: () => import("./diagrams/rectification.js"),
   detectors: () => import("./diagrams/detectors.js"),
+  geometry: () => import("./diagrams/geometry.js"),
 };
 
 // Mastery (how secure the tried questions are) shows once this many questions have been tried.

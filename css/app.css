@@ -607,3 +607,15 @@ details.try[open] summary::after { content: " −"; }
 .theme-switch button { min-height: 36px; padding: 6px 12px; border: 0; background: transparent; font-size: 0.82rem; font-weight: 500; color: var(--muted); }
 .theme-switch button:hover:not([aria-pressed="true"]) { color: var(--ink); }
 .theme-switch button[aria-pressed="true"] { background: var(--raised); color: var(--ink); font-weight: 600; box-shadow: 0 0 0 1px var(--control); }
+
+/* ---------- Diagrams: focal spot and geometry ---------- */
+.geo-ray { fill: none; stroke: var(--photon); stroke-width: 1.2; stroke-dasharray: 5 4; }
+.geo-spot { fill: var(--tungsten); }
+.geo-object { fill: var(--lead); }
+.geo-detector { stroke: var(--ink); stroke-width: 2; }
+.geo-umbra { fill: var(--muted); }   /* the same grey in both themes: shadow means fewer X-rays */
+.geo-penumbra { fill: var(--muted); fill-opacity: 0.4; }
+.geo-dim { fill: none; stroke: var(--muted); stroke-width: 1.2; }
+.legend i.umbra-key { height: 10px; border: 0; background: var(--muted); }
+.legend i.penumbra-key { height: 10px; border: 0; background: var(--muted); opacity: 0.4; }
+.legend i.dash.geo { border-top-color: var(--photon); }
