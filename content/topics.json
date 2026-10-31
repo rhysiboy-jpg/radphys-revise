@@ -129,8 +129,9 @@
       {
         "id": "detectors",
         "title": "CR and DR detectors",
-        "blurb": "Follow an X-ray photon to a pixel value, direct and indirect.",
-        "ready": false
+        "blurb": "Follow an X-ray photon to a pixel value in CR, indirect DR and direct DR, and see how far the signal spreads.",
+        "ready": true,
+        "approved": false
       }
     ]
   },

@@ -579,3 +579,31 @@ details.try[open] summary::after { content: " −"; }
 .rc-bracket { fill: none; stroke: var(--ink); stroke-width: 1.5; }
 .legend i.part-key { border-top: 1px solid var(--muted); opacity: 0.6; }
 @media (prefers-reduced-motion: reduce) { .flux { animation: none; } }
+
+/* ---------- Diagrams: detectors ---------- */
+.det-layer { fill: var(--paper); stroke: var(--line); stroke-width: 1; }
+.det-layer.on { stroke: var(--dg-accent); stroke-width: 2.5; }
+.det-phosphor, .det-scint, .det-scint-gos { fill: color-mix(in srgb, var(--glass) 35%, var(--surface)); }
+.det-se { fill: color-mix(in srgb, var(--copper) 28%, var(--surface)); }
+.det-asi, .det-tft { fill: color-mix(in srgb, var(--metal) 50%, var(--surface)); }
+.det-electrode { fill: var(--lead); }
+.det-t { font: 500 12px var(--font-body); --fs: 12px; fill: var(--ink); }
+.needle { stroke: var(--surface); stroke-width: 1.5; }
+.grain { fill: var(--muted); opacity: 0.5; }
+.trap { fill: var(--electron); }
+.laser { fill: none; stroke: var(--heat); stroke-width: 2.5; }
+.light-ray { fill: none; stroke: var(--dg-accent); stroke-width: 2.5; stroke-dasharray: 6 4; }
+.light-cone { fill: var(--dg-accent); fill-opacity: 0.25; stroke: var(--dg-accent); stroke-width: 1.2; }
+.flash { fill: var(--sun); stroke: var(--lead); stroke-width: 1; }
+.det-box { fill: var(--surface); stroke: var(--ink); stroke-width: 1.5; }
+.erase { fill: var(--sun); fill-opacity: 0.3; }
+.field { fill: none; stroke: var(--muted); stroke-width: 1.2; stroke-dasharray: 3 4; }
+.drift { fill: none; stroke: var(--electron); stroke-width: 2.5; }
+.pixel { fill: var(--dg-accent); fill-opacity: 0.08; stroke: var(--line); }   /* more signal, stronger tint, in both themes */
+.pix-bar { fill: var(--dg-accent); }
+
+/* ---------- Theme switch ---------- */
+.theme-switch { display: inline-flex; justify-self: start; padding: 3px; gap: 2px; border-radius: var(--pill); background: var(--panel); border: 1px solid var(--edge); }
+.theme-switch button { min-height: 36px; padding: 6px 12px; border: 0; background: transparent; font-size: 0.82rem; font-weight: 500; color: var(--muted); }
+.theme-switch button:hover:not([aria-pressed="true"]) { color: var(--ink); }
+.theme-switch button[aria-pressed="true"] { background: var(--raised); color: var(--ink); font-weight: 600; box-shadow: 0 0 0 1px var(--control); }

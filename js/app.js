@@ -19,6 +19,7 @@ const DIAGRAMS = {
   decay: () => import("./diagrams/decay.js"),
   transformer: () => import("./diagrams/transformer.js"),
   rectification: () => import("./diagrams/rectification.js"),
+  detectors: () => import("./diagrams/detectors.js"),
 };
 
 // Mastery (how secure the tried questions are) shows once this many questions have been tried.
@@ -65,13 +66,37 @@ function nav(active, current = true) {
     </div>
     <div class="side-foot">
       ${CONFIG.reviewMode ? '<span class="flag">Review mode: drafts showing</span>' : ""}
+      <div class="theme-switch" role="group" aria-label="Theme">
+        ${THEMES.map(([id, label]) => `<button type="button" data-theme-choice="${id}" aria-pressed="${theme() === id}">${label}</button>`).join("")}
+      </div>
       <span>Created by Rhys Morris</span>${fb}
     </div>`;
+  side.querySelectorAll("[data-theme-choice]").forEach(b => b.addEventListener("click", () => {
+    setTheme(b.dataset.themeChoice);
+    side.querySelectorAll("[data-theme-choice]").forEach(x => x.setAttribute("aria-pressed", x === b));
+  }));
   const btn = side.querySelector(".menu-btn");
   btn.addEventListener("click", () => {
     const open = side.classList.toggle("open");
     btn.setAttribute("aria-expanded", open);
     btn.textContent = open ? "Close" : "Menu";
+  });
+}
+
+// Theme: Auto follows the device; Light and Dark override it. The choice is kept on this device only.
+const THEMES = [["auto", "Auto"], ["light", "Light"], ["dark", "Dark"]];
+const THEME_KEY = "radphys-theme";
+function theme() {
+  try { const t = localStorage.getItem(THEME_KEY); return t === "light" || t === "dark" ? t : "auto"; } catch { return "auto"; }
+}
+function setTheme(t) {
+  try { if (t === "auto") localStorage.removeItem(THEME_KEY); else localStorage.setItem(THEME_KEY, t); } catch { /* storage blocked: lasts for this visit */ }
+  if (t === "auto") delete document.documentElement.dataset.theme;
+  else document.documentElement.dataset.theme = t;
+  // The phone's status bar follows the chosen theme too.
+  const bar = { light: "#ECEEF1", dark: "#0E0F11" };
+  document.querySelectorAll('meta[name="theme-color"]').forEach(m => {
+    m.content = t === "auto" ? (m.media.includes("dark") ? bar.dark : bar.light) : bar[t];
   });
 }
 
