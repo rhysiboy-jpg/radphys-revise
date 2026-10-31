@@ -566,3 +566,16 @@ details.try[open] summary::after { content: " −"; }
 .dec-alpha { font: 700 16px var(--font-body); --fs: 16px; --min-fs: 12px; fill: var(--on-copper); text-anchor: middle; dominant-baseline: central; }
 .iso { display: inline-flex; align-items: center; gap: 1px; white-space: nowrap; }
 .iso-az { display: inline-grid; font-size: 0.62em; line-height: 1.05; text-align: right; }
+
+/* ---------- Diagrams: transformer and rectification ---------- */
+.core { fill: var(--metal); stroke: var(--lead); stroke-width: 1.5; }
+.core-hole { fill: var(--surface); stroke: var(--lead); stroke-width: 1.5; }
+.flux { fill: none; stroke: var(--dg-accent); stroke-width: 2; stroke-dasharray: 10 7; animation: flow 1.2s linear infinite; }
+.winding { fill: none; stroke: var(--copper); stroke-width: 3; stroke-linecap: round; }
+.lead-wire { fill: none; stroke: var(--copper); stroke-width: 2.5; }
+.rc-ac { fill: none; stroke: var(--muted); stroke-width: 1.5; stroke-dasharray: 5 5; }
+.rc-wave { fill: none; stroke: var(--dg-accent); stroke-width: 3; stroke-linejoin: round; }
+.rc-part { fill: none; stroke: var(--muted); stroke-width: 1; opacity: 0.5; }
+.rc-bracket { fill: none; stroke: var(--ink); stroke-width: 1.5; }
+.legend i.part-key { border-top: 1px solid var(--muted); opacity: 0.6; }
+@media (prefers-reduced-motion: reduce) { .flux { animation: none; } }

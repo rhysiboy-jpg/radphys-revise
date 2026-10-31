@@ -27,10 +27,18 @@
     ],
     "diagrams": [
       {
-        "id": "circuits",
-        "title": "Transformers and rectification",
-        "blurb": "Change the turns ratio and the rectification, and watch the voltage and waveform respond.",
-        "ready": false
+        "id": "transformer",
+        "title": "The transformer",
+        "blurb": "Change the turns ratio and the primary voltage, and see the voltage and current on the secondary side.",
+        "ready": true,
+        "approved": false
+      },
+      {
+        "id": "rectification",
+        "title": "Rectification",
+        "blurb": "Turn AC into the one-way voltage the tube needs, from half-wave to high-frequency, and compare the ripple.",
+        "ready": true,
+        "approved": false
       }
     ]
   },

@@ -17,6 +17,8 @@ const DIAGRAMS = {
   sorter: () => import("./diagrams/sorter.js"),
   halflife: () => import("./diagrams/halflife.js"),
   decay: () => import("./diagrams/decay.js"),
+  transformer: () => import("./diagrams/transformer.js"),
+  rectification: () => import("./diagrams/rectification.js"),
 };
 
 // Mastery (how secure the tried questions are) shows once this many questions have been tried.
