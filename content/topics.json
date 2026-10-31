@@ -74,7 +74,15 @@
     "files": [
       "content/04-effects-of-radiation.csv"
     ],
-    "diagrams": []
+    "diagrams": [
+      {
+        "id": "sorter",
+        "title": "Stochastic or deterministic?",
+        "blurb": "Sort effects and properties into stochastic and deterministic, with an explanation for each.",
+        "ready": true,
+        "approved": false
+      }
+    ]
   },
   {
     "id": "interactions",
@@ -154,8 +162,9 @@
       {
         "id": "dose-ladder",
         "title": "The dose ladder",
-        "blurb": "Typical effective doses compared with background radiation, for explaining risk to patients.",
-        "ready": false
+        "blurb": "Typical effective doses as time of natural background radiation and lifetime risk, with a way of explaining each one to a patient.",
+        "ready": true,
+        "approved": false
       }
     ]
   },

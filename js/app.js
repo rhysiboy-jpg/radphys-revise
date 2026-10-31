@@ -13,6 +13,8 @@ const DIAGRAMS = {
   isl: () => import("./diagrams/isl.js"),
   console: () => import("./diagrams/console.js"),
   windowing: () => import("./diagrams/windowing.js"),
+  "dose-ladder": () => import("./diagrams/dose.js"),
+  sorter: () => import("./diagrams/sorter.js"),
 };
 
 // Mastery (how secure the tried questions are) shows once this many questions have been tried.
