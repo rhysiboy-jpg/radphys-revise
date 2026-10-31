@@ -68,9 +68,9 @@
       {
         "id": "target",
         "title": "Electron–target interactions",
-        "blurb": "Bremsstrahlung and characteristic radiation, step by step.",
+        "blurb": "The four things that can happen when an electron reaches a tungsten atom: excitation, outer and inner ionisation, and braking, with the Auger alternative.",
         "ready": true,
-        "approved": true
+        "approved": false
       }
     ]
   },

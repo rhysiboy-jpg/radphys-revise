@@ -1,9 +1,13 @@
-// Explorer: what happens when one electron reaches a tungsten atom in the target. Heat, Bremsstrahlung or characteristic radiation.
-import { svgEl as el, wavy, tween } from "./util.js";
+// Explorer: what happens when one electron reaches a tungsten atom in the target. The lecture's four interactions:
+// outer-shell excitation and outer-shell ionisation (both heat), inner-shell ionisation (characteristic radiation, or an
+// Auger electron), and braking (Bremsstrahlung).
+import { svgEl as el, wavy, tween, setLines } from "./util.js";
 import { drawAtom, electron, moveTo, vacancy } from "./atom.js";
 
-const W = { K: 69.5, L: 10.2 };           // tungsten binding energies, keV (L3, the sub-shell Kα comes from)
+const W = { K: 69.5, L: 10.2, L2: 11.5 }; // tungsten binding energies, keV (L3 is the sub-shell Kα comes from; L2 for the Auger estimate)
 const KA = +(W.K - W.L).toFixed(1);      // 59.3 keV
+const AUGER = Math.round(W.K - W.L - W.L2);   // a KLL Auger electron, roughly 48 keV
+const YIELD = 95;                        // % of K-shell vacancies in tungsten that give a photon (fluorescence yield ≈ 0.95)
 const CX = 330, CY = 214, RADII = [42, 72, 102], OUTER = 132;
 
 // Bremsstrahlung: how close the electron passes the nucleus. Closer means a sharper turn and a bigger photon.
@@ -15,7 +19,8 @@ const CLOSE = [
   { label: "Very close", b: 38, turn: 80, f: 0.75 },
   { label: "Direct hit on the nucleus (rare)", b: 0, turn: 0, f: 1 },
 ];
-const MODES = { heat: "Heat", brems: "Bremsstrahlung", char: "Characteristic" };
+const MODES = { excite: "1 Excitation", ionise: "2 Outer ionisation", char: "3 Inner ionisation", brems: "4 Braking" };
+const MODE_NAME = { excite: "Excitation (outer shell)", ionise: "Ionisation (outer shell)", char: "Ionisation (inner shell)", brems: "Electron braking" };
 
 const MARKUP = `
 <div class="grid">
@@ -43,6 +48,13 @@ const MARKUP = `
         <input type="range" id="tgt-kv" min="40" max="150" step="1" value="80">
         <small>Each electron arrives with this energy in keV.</small>
       </div>
+      <div class="slider" data-role="after-row">
+        <div class="slider-top"><span class="label">When the K-shell vacancy fills</span></div>
+        <div class="modes" role="group" aria-label="When the K-shell vacancy fills">
+          <button type="button" data-after="photon" aria-pressed="true">X-ray photon (about ${YIELD}%)</button>
+          <button type="button" data-after="auger" aria-pressed="false">Auger electron (about ${100 - YIELD}%)</button>
+        </div>
+      </div>
       <div class="slider" data-role="close-row">
         <div class="slider-top"><label for="tgt-b">Path past the nucleus</label><output for="tgt-b" data-role="b-o"></output></div>
         <input type="range" id="tgt-b" min="0" max="4" step="1" value="2">
@@ -61,6 +73,8 @@ const MARKUP = `
         <li><b>Fire Bremsstrahlung at every distance.</b> Each one gives a different photon energy, which is why the spectrum is a continuous curve.</li>
         <li><b>Set a direct hit.</b> The photon takes all the electron's energy: this is the maximum photon energy, equal to the kVp.</li>
         <li><b>Characteristic below 70 kVp.</b> The electron can't remove a K-shell electron, so there's no 59 keV line.</li>
+        <li><b>Compare 1 and 2.</b> Both end as heat: the two outer-shell interactions are why about 99% of the energy is lost as heat.</li>
+        <li><b>Try the Auger electron.</b> The same energy that would make a 59 keV photon throws out an outer electron instead. In tungsten that happens only about 1 time in 20.</li>
       </ol>
     </div>
   </div>
@@ -71,7 +85,7 @@ export function mount(root) {
   const $ = r => root.querySelector(`[data-role="${r}"]`);
   const kvIn = root.querySelector("#tgt-kv"), bIn = root.querySelector("#tgt-b");
   const atomLayer = $("atom"), fx = $("fx");
-  let alive = true, gen = 0, mode = "brems";
+  let alive = true, gen = 0, mode = "brems", after = "photon";
   let atom;
   drawScene();
 
@@ -90,10 +104,14 @@ export function mount(root) {
   // The outcome of firing with the current settings, used by the caption and readouts before and after firing.
   function outcome() {
     const kV = +kvIn.value, c = CLOSE[+bIn.value];
-    if (mode === "heat") return {
-      t: "Interaction with an outer-shell electron",
-      d: `The electron passes through the outer shells and nudges an outer electron, exciting or ionising it. It loses only a few tens of electronvolts and carries on to do the same again, thousands of times. Each small loss ends up as <b>heat</b>. This is why about <b>99%</b> of the electrons' energy becomes heat in the target.`,
-      ph: "None", out: `≈ ${kV} keV (tiny loss)`, often: "Almost every interaction" };
+    if (mode === "excite") return {
+      t: "1 · Excitation (outer shell)",
+      d: `The electron gives a small amount of its energy to an outer-shell electron, lifting it to a higher level. That electron soon drops back, and the energy ends up as <b>heat</b>. The incident electron loses only a few electronvolts and carries on to do the same again, thousands of times.`,
+      ph: "None: heat", out: `≈ ${kV} keV (tiny loss)`, often: "Very common" };
+    if (mode === "ionise") return {
+      t: "2 · Ionisation (outer shell)",
+      d: `A larger share of energy goes to an outer-shell electron, enough to remove it from the atom. It may go on to ionise other atoms. A free electron fills the gap, releasing its excess energy as <b>heat</b>. Together with excitation, this is why about <b>99%</b> of the electrons' energy becomes heat in the target.`,
+      ph: "None: heat", out: `≈ ${kV} keV (small loss)`, often: "Very common" };
     if (mode === "brems") {
       const e = +(kV * c.f).toFixed(1);
       return {
@@ -107,10 +125,14 @@ export function mount(root) {
       t: "Not enough energy for the K shell",
       d: `The electron carries ${kV} keV, less than the <b>${W.K} keV</b> holding a tungsten K-shell electron. It cannot remove it, so there's no K-characteristic radiation. It can still remove L-shell electrons, but the resulting 8–12 keV photons are absorbed by the tube window and filtration.`,
       ph: "None from the K shell", out: `≈ ${kV} keV`, often: "Only above 69.5 kVp" };
+    if (after === "auger") return {
+      t: "3 · Inner ionisation, then an Auger electron",
+      d: `The electron knocks out a K-shell electron and an L-shell electron drops into the vacancy, as before. This time the ${KA} keV of excess energy is not given out as a photon: it pushes out a loosely bound outer electron, an <b>Auger electron</b>, with roughly ${AUGER} keV. In heavy elements such as tungsten this happens only about ${100 - YIELD}% of the time; in light elements it is the usual outcome.`,
+      ph: "None: an Auger electron instead", out: `${+(kV - W.K).toFixed(1)} keV or less`, often: `About ${100 - YIELD}% of K vacancies in tungsten` };
     return {
-      t: "Characteristic radiation",
+      t: "3 · Inner ionisation: characteristic radiation",
       d: `The electron carries ${kV} keV, more than the <b>${W.K} keV</b> K-shell binding energy, so it knocks a K-shell electron out of the atom. An L-shell electron drops into the vacancy and gives out the difference as a photon: ${W.K} − ${W.L} ≈ <b>${KA} keV</b> (Kα). The energy is the same every time, whatever the kVp, which is why it shows as a sharp line on the spectrum.`,
-      ph: `${KA} keV (Kα)`, out: `${+(kV - W.K).toFixed(1)} keV or less`, often: "A small part of the beam" };
+      ph: `${KA} keV (Kα)`, out: `${+(kV - W.K).toFixed(1)} keV or less`, often: `A small part of the beam (about ${YIELD}% of K vacancies give a photon)` };
   }
 
   function describe(fired) {
@@ -118,13 +140,15 @@ export function mount(root) {
     $("kv-o").textContent = `${kV} kVp`;
     $("b-o").textContent = CLOSE[+bIn.value].label;
     $("close-row").hidden = mode !== "brems";
+    $("after-row").hidden = mode !== "char";
+    root.querySelectorAll("[data-after]").forEach(b => b.setAttribute("aria-pressed", b.dataset.after === after));
     $("caption").innerHTML = `<strong>${o.t}</strong><p>${fired ? "" : "Press Fire an electron to see this. "}${o.d}</p>`;
     $("r-in").textContent = `${kV} keV`;
     $("r-ph").textContent = o.ph;
     $("r-out").textContent = o.out;
     $("r-often").textContent = o.often;
     $("inlabel").textContent = `incoming electron: ${kV} keV`;
-    $("desc").textContent = `A single tungsten atom with K, L and M shells. ${MODES[mode]}. ${$("caption").textContent}`;
+    $("desc").textContent = `A single tungsten atom with K, L and M shells. ${MODE_NAME[mode]}. ${$("caption").textContent}`;
   }
 
   async function fire() {
@@ -134,15 +158,33 @@ export function mount(root) {
     const kV = +kvIn.value;
     const e = electron(fx, 20, 0);
     let path;
-    if (mode === "heat") {
+    if (mode === "excite" || mode === "ionise") {
       const y = CY - OUTER + 10, target = atom.shells[2].dots[4];
       path = el("path", { class: "e-path", d: `M20 ${y} L${CX - 40} ${y} Q${CX} ${y - 4} 600 ${y - 34}` }, fx);
       await tween(1400, along(path, e), ok);
       if (!ok()) return;
-      const glow = el("circle", { class: "heat-glow", cx: target._x, cy: target._y, r: 22, opacity: 0 }, fx);
-      el("text", { class: "fxlabel heat-t", x: target._x - 30, y: target._y - 26, "text-anchor": "end" }, fx).textContent = "heat";
       const tx = target._x, ty = target._y, ux = (tx - CX) / Math.hypot(tx - CX, ty - CY), uy = (ty - CY) / Math.hypot(tx - CX, ty - CY);
-      await tween(600, t => { glow.setAttribute("opacity", t * 0.8); moveTo(target, tx + ux * 18 * t, ty + uy * 18 * t); }, ok);   // the outer electron is pushed up a level
+      const glow = el("circle", { class: "heat-glow", cx: tx, cy: ty, r: 16, opacity: 0 }, fx);
+      if (mode === "excite") {
+        // Lifted to a higher level, then back down: the energy ends as heat.
+        await tween(600, t => moveTo(target, tx + ux * 22 * t, ty + uy * 22 * t), ok);
+        if (!ok()) return;
+        const lift = el("text", { class: "fxlabel", x: tx + ux * 22 + 14, y: ty + uy * 22 - 8 }, fx);
+        lift.textContent = "excited";
+        await tween(700, t => { moveTo(target, tx + ux * 22 * (1 - t), ty + uy * 22 * (1 - t)); glow.setAttribute("opacity", t * 0.5); }, ok);
+        lift.remove();   // back in its shell
+      } else {
+        // Removed from the atom; a free electron fills the gap.
+        const hole = vacancy(fx, tx, ty);
+        await tween(900, t => { moveTo(target, tx + ux * 170 * t, ty + uy * 170 * t); hole.setAttribute("opacity", t); }, ok);
+        if (!ok()) return;
+        el("text", { class: "fxlabel", x: tx + ux * 170 - 12, y: ty + uy * 170 + 24, "text-anchor": "end" }, fx).textContent = "ejected electron";
+        const free = electron(fx, 40, 40);
+        await tween(900, t => { moveTo(free, 40 + (tx - 40) * t, 40 + (ty - 40) * t); glow.setAttribute("opacity", t * 0.5); }, ok);
+        hole.remove();
+      }
+      if (!ok()) return;
+      el("text", { class: "fxlabel", x: tx - 30, y: ty - 26, "text-anchor": "end" }, fx).textContent = "heat";
     } else if (mode === "brems") {
       const c = CLOSE[+bIn.value];
       if (!c.b) {
@@ -173,8 +215,18 @@ export function mount(root) {
       const hole = vacancy(fx, kx, ky);
       await tween(900, t => { moveTo(e, kx + t * 250, ky - t * 150); moveTo(k, kx + t * 230, ky - t * 110); hole.setAttribute("opacity", t); }, ok);
       if (!ok()) return;
-      const ph = photon(kx + 6, ky + 8, 590, 330, `Kα ${KA} keV`, true);
-      await tween(900, t => { moveTo(l, lx + (kx - lx) * t, ly + (ky - ly) * t); hole.setAttribute("cx", kx + (lx - kx) * t); hole.setAttribute("cy", ky + (ly - ky) * t); ph.setAttribute("opacity", t); }, ok);
+      if (after === "photon") {
+        const ph = photon(kx + 6, ky + 8, 590, 330, `Kα ${KA} keV`, true);
+        await tween(900, t => { moveTo(l, lx + (kx - lx) * t, ly + (ky - ly) * t); hole.setAttribute("cx", kx + (lx - kx) * t); hole.setAttribute("cy", ky + (ly - ky) * t); ph.setAttribute("opacity", t); }, ok);
+      } else {
+        // The excess energy throws out an outer electron instead of making a photon.
+        await tween(900, t => { moveTo(l, lx + (kx - lx) * t, ly + (ky - ly) * t); hole.setAttribute("cx", kx + (lx - kx) * t); hole.setAttribute("cy", ky + (ly - ky) * t); }, ok);
+        if (!ok()) return;
+        const out = atom.shells[2].dots[10], ox = out._x, oy = out._y;
+        await tween(900, t => moveTo(out, ox + (590 - ox) * t, oy + (262 - oy) * t), ok);
+        if (!ok()) return;
+        setLines(el("text", { class: "fxlabel", x: 612, y: 296, "text-anchor": "end" }, fx), "Auger electron", `≈ ${AUGER} keV`);
+      }
     }
   }
 
@@ -183,6 +235,7 @@ export function mount(root) {
     root.querySelectorAll("[data-mode]").forEach(x => x.setAttribute("aria-pressed", x === b));
     gen++; drawScene(); describe(false);
   }));
+  root.querySelectorAll("[data-after]").forEach(b => b.addEventListener("click", () => { after = b.dataset.after; gen++; drawScene(); describe(false); }));
   [kvIn, bIn].forEach(i => i.addEventListener("input", () => { gen++; drawScene(); describe(false); }));
   $("fire").addEventListener("click", fire);
   describe(false);
