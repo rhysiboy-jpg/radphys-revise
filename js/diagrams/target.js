@@ -4,8 +4,9 @@
 import { svgEl as el, wavy, tween, setLines } from "./util.js";
 import { drawAtom, electron, moveTo, vacancy } from "./atom.js";
 
-const W = { K: 69.5, L: 10.2, L2: 11.5 }; // tungsten binding energies, keV (L3 is the sub-shell Kα comes from; L2 for the Auger estimate)
+const W = { K: 69.5, L: 10.2, L2: 11.5, M: 1.8 }; // tungsten binding energies, keV (L3 is the sub-shell Kα comes from; L2 for the Auger estimate; M5 for the L-line)
 const KA = +(W.K - W.L).toFixed(1);      // 59.3 keV
+const LA = +(W.L - W.M).toFixed(1);      // 8.4 keV: the L-line from the M electron that fills the L-shell gap
 const AUGER = Math.round(W.K - W.L - W.L2);   // a KLL Auger electron, roughly 48 keV
 const YIELD = 95;                        // % of K-shell vacancies in tungsten that give a photon (fluorescence yield ≈ 0.95)
 const CX = 330, CY = 214, RADII = [42, 72, 102], OUTER = 132;
@@ -74,6 +75,7 @@ const MARKUP = `
         <li><b>Set a direct hit.</b> The photon takes all the electron's energy: this is the maximum photon energy, equal to the kVp.</li>
         <li><b>Characteristic below 70 kVp.</b> The electron can't remove a K-shell electron, so there's no 59 keV line.</li>
         <li><b>Compare 1 and 2.</b> Both end as heat: the two outer-shell interactions are why about 99% of the energy is lost as heat.</li>
+        <li><b>Watch the second drop.</b> After the Kα photon, an M-shell electron fills the gap left in the L shell and gives out a weak ${LA} keV photon, too weak to leave the tube.</li>
         <li><b>Try the Auger electron.</b> The same energy that would make a 59 keV photon throws out an outer electron instead. In tungsten that happens only about 1 time in 20.</li>
       </ol>
     </div>
@@ -93,9 +95,9 @@ export function mount(root) {
     atomLayer.innerHTML = ""; fx.innerHTML = "";
     atom = drawAtom(atomLayer, { cx: CX, cy: CY, counts: [2, 8, 18, 32, 12, 2], radii: RADII, outerR: OUTER, z: 74 });
   }
-  const photon = (x1, y1, x2, y2, label, below) => {
+  const photon = (x1, y1, x2, y2, label, below, weak = false) => {
     const g = el("g", { opacity: 0 }, fx);
-    el("path", { class: "photon", d: wavy(x1, y1, x2, y2) }, g);
+    el("path", { class: weak ? "photon weak" : "photon", d: wavy(x1, y1, x2, y2) }, g);
     el("text", { class: "fxlabel ph-t", x: x2 - 4, y: below ? y2 + 20 : y2 - 10, "text-anchor": "end" }, g).textContent = label;
     return g;
   };
@@ -131,8 +133,8 @@ export function mount(root) {
       ph: "None: an Auger electron instead", out: `${+(kV - W.K).toFixed(1)} keV or less`, often: `About ${100 - YIELD}% of K vacancies in tungsten` };
     return {
       t: "3 · Inner ionisation: characteristic radiation",
-      d: `The electron carries ${kV} keV, more than the <b>${W.K} keV</b> K-shell binding energy, so it knocks a K-shell electron out of the atom. An L-shell electron drops into the vacancy and gives out the difference as a photon: ${W.K} − ${W.L} ≈ <b>${KA} keV</b> (Kα). The energy is the same every time, whatever the kVp, which is why it shows as a sharp line on the spectrum.`,
-      ph: `${KA} keV (Kα)`, out: `${+(kV - W.K).toFixed(1)} keV or less`, often: `A small part of the beam (about ${YIELD}% of K vacancies give a photon)` };
+      d: `The electron carries ${kV} keV, more than the <b>${W.K} keV</b> K-shell binding energy, so it knocks a K-shell electron out of the atom. An L-shell electron drops into the vacancy and gives out the difference as a photon: ${W.K} − ${W.L} ≈ <b>${KA} keV</b> (Kα). The energy is the same every time, whatever the kVp, which is why it shows as a sharp line on the spectrum. The drop leaves a gap in the L shell, so the cascade carries on: an M-shell electron drops into it and gives out a much weaker <b>L-line</b> photon, ${W.L} − ${W.M} ≈ <b>${LA} keV</b>. Photons this weak are absorbed by the tube window and filtration, so only the K-lines show in the beam.`,
+      ph: `${KA} keV (Kα), then ≈ ${LA} keV (L)`, out: `${+(kV - W.K).toFixed(1)} keV or less`, often: `A small part of the beam (about ${YIELD}% of K vacancies give a photon)` };
   }
 
   function describe(fired) {
@@ -216,8 +218,13 @@ export function mount(root) {
       await tween(900, t => { moveTo(e, kx + t * 250, ky - t * 150); moveTo(k, kx + t * 230, ky - t * 110); hole.setAttribute("opacity", t); }, ok);
       if (!ok()) return;
       if (after === "photon") {
-        const ph = photon(kx + 6, ky + 8, 590, 330, `Kα ${KA} keV`, true);
+        const ph = photon(kx + 6, ky + 8, 600, 296, `Kα ${KA} keV`, true);   // ends high enough that its label clears the outer-shell note on a phone
         await tween(900, t => { moveTo(l, lx + (kx - lx) * t, ly + (ky - ly) * t); hole.setAttribute("cx", kx + (lx - kx) * t); hole.setAttribute("cy", ky + (ly - ky) * t); ph.setAttribute("opacity", t); }, ok);
+        if (!ok()) return;
+        // The cascade: an M electron fills the new L-shell gap, giving a weak L-line photon. The gap moves out to the M shell.
+        const m = atom.shells[2].dots[0], mx = m._x, my = m._y;
+        const lph = photon(lx - 6, ly - 6, 170, 52, `L-line ≈ ${LA} keV`, false, true);
+        await tween(900, t => { moveTo(m, mx + (lx - mx) * t, my + (ly - my) * t); hole.setAttribute("cx", lx + (mx - lx) * t); hole.setAttribute("cy", ly + (my - ly) * t); lph.setAttribute("opacity", t); }, ok);
       } else {
         // The excess energy throws out an outer electron instead of making a photon.
         await tween(900, t => { moveTo(l, lx + (kx - lx) * t, ly + (ky - ly) * t); hole.setAttribute("cx", kx + (lx - kx) * t); hole.setAttribute("cy", ky + (ly - ky) * t); }, ok);
