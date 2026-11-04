@@ -288,6 +288,27 @@
         "blurb": "Typical effective doses as time of natural background radiation and lifetime risk, with a way of explaining each one to a patient.",
         "ready": true,
         "approved": false
+      },
+      {
+        "id": "dap",
+        "title": "ESD and DAP",
+        "blurb": "Change the exposure and the field size, and see why opening the collimators leaves the skin dose alone but raises the DAP.",
+        "ready": true,
+        "approved": false
+      },
+      {
+        "id": "gas-detector",
+        "title": "Ionisation chamber or Geiger–Müller?",
+        "blurb": "Turn up the voltage across a gas-filled detector and see why an ionisation chamber measures dose while a GM tube only counts.",
+        "ready": true,
+        "approved": false
+      },
+      {
+        "id": "dosimeters",
+        "title": "Film badges and TLDs",
+        "blurb": "Expose a film badge to different radiations and read the pattern behind its filters, then heat a TLD and watch its glow curve.",
+        "ready": true,
+        "approved": false
       }
     ]
   },

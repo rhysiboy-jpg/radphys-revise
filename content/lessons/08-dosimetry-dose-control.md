@@ -32,6 +32,7 @@ That makes effective dose useful for **comparing** the risk of different examina
 id: esd-dap-drl
 summary: How patient dose is measured in practice, and the benchmarks it is checked against.
 areas: ESD and DAP; Diagnostic reference levels
+diagram: dap
 status: draft
 sources: 12-2 s19–20, s24–30
 
@@ -40,6 +41,11 @@ sources: 12-2 s19–20, s24–30
 A **dose–area product** (DAP) meter is a large, flat **ionisation chamber** just beyond the collimators, through which the whole beam passes. Its reading is the dose multiplied by the area of the beam, in **Gy cm²**. DAP is often a better indicator of risk than ESD alone: two exposures with the same skin dose carry different risk if one irradiates a much larger area. DAP combines dose and area, so it reflects the total energy put into the patient.
 
 **Diagnostic reference levels** (DRLs) are benchmark doses (such as ESD or DAP) for standard examinations on typical patients, set nationally and locally and reviewed regularly. They are **not limits** for individual patients. But if a department **consistently exceeds** a DRL, it must investigate and take **corrective action**, such as changing techniques, equipment settings or training.
+
+## Try this
+- Open the field from 20 to 40 cm: the ESD stays the same while the DAP rises past the reference level.
+- Double the **exposure**: now ESD and DAP both double.
+- Switch between measuring at **the DAP meter** and at **the skin**: dose × area comes out the same.
 
 ## Key points
 - ESD: absorbed dose at the skin where the beam enters, in mGy.
@@ -50,12 +56,18 @@ A **dose–area product** (DAP) meter is a large, flat **ionisation chamber** ju
 id: measuring
 summary: Ionisation chambers and Geiger–Müller tubes.
 areas: Measuring radiation
+diagram: gas-detector
 status: draft
 sources: 12-2 s27, s31
 
 Most radiation measurement relies on **ionisation**. In an **ionisation chamber**, radiation ionises the gas inside. A voltage across the chamber collects all the ions, and the current that flows is **proportional to the radiation**. Ionisation chambers are accurate, which is why they are used in **DAP meters**, **AEC** systems and for **calibrating** equipment.
 
 A **Geiger–Müller (GM) tube** works at a much higher voltage, so each ionising event sets off an avalanche of ions and a pulse that can be counted. That makes it very **sensitive**: good for **detecting** low levels of radiation or **contamination**. But it can't tell a small event from a large one, so it doesn't measure **dose** accurately.
+
+## Try this
+- In the **ionisation chamber** region, compare the two events: the larger one gives a proportionally larger signal.
+- Move into the **Geiger–Müller** region: both events give the same huge pulse.
+- Why is the ionisation chamber used in DAP meters and AEC systems?
 
 ## Key points
 - Ionisation chamber: collects the ions made in a gas; the current is proportional to the radiation. Accurate: used in DAP meters, AEC and calibration.
@@ -65,6 +77,7 @@ A **Geiger–Müller (GM) tube** works at a much higher voltage, so each ionisin
 id: personal-monitoring
 summary: Who must be monitored, and how film badges, TLDs and electronic dosimeters work.
 areas: Personal monitoring
+diagram: dosimeters
 status: draft
 sources: 12-2 s32–41
 
@@ -75,6 +88,11 @@ Under **IRR17**, workers likely to receive an effective dose of more than **6 mS
 A **thermoluminescent dosimeter** (TLD) uses a crystal, usually **lithium fluoride**. Radiation frees electrons that become **trapped** at imperfections in the crystal. When the TLD is **heated**, they are released and give off **light** in proportion to the dose. Lithium fluoride has an effective atomic number close to **soft tissue**, so it absorbs radiation much as tissue does: a more accurate dosimeter than film.
 
 **Pocket and electronic dosimeters** give an **immediate reading**, useful during procedures, though they cost more and some types keep no permanent record.
+
+## Try this
+- Compare **low-energy X-rays** with **gamma rays** on the film badge: the filters tell them apart.
+- Choose **beta particles**: only the open window and thin plastic darken.
+- Open the **TLD**, wear it, then heat and read it. Read it again: it has been emptied.
 
 ## Key points
 - IRR17: workers likely to exceed 6 mSv a year are classified and monitored by an approved dosimetry service.

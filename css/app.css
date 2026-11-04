@@ -882,3 +882,35 @@ details.try[open] summary::after { content: " −"; }
 .aec-ch.on rect:first-child { stroke: var(--dg-accent); stroke-width: 3; stroke-dasharray: none; fill: color-mix(in srgb, var(--dg-accent) 12%, transparent); }
 .aec-bar { fill: var(--dg-accent); }
 .aec-ch-t { font: 600 12px var(--font-body); fill: var(--ink); text-anchor: middle; --fs: 12px; }
+
+/* ESD and DAP */
+.dap-coll { fill: var(--lead); }
+.dap-chamber { fill: color-mix(in srgb, var(--dg-accent) 20%, var(--surface)); stroke: var(--dg-accent); stroke-width: 1.5; }
+.dap-patient { fill: color-mix(in srgb, var(--heat) 14%, var(--surface)); stroke: var(--heat); stroke-width: 1.2; }
+.dap-plane { stroke: var(--ink); stroke-width: 1.6; stroke-dasharray: 6 4; }
+
+/* Gas-filled detectors */
+.gd-band.b0 { fill: color-mix(in srgb, var(--dg-accent) 7%, transparent); }
+.gd-band.b1 { fill: transparent; }
+.gd-num { font: 600 12px var(--font-body); fill: var(--muted); text-anchor: middle; --fs: 12px; }
+.gd-big { fill: none; stroke: var(--photon); stroke-width: 2.6; }
+.gd-small { fill: none; stroke: var(--electron); stroke-width: 2.6; stroke-dasharray: 8 4; }
+.gd-pt.big { fill: var(--photon); }
+.gd-pt.small { fill: var(--electron); }
+.legend i.gd-key-big { border-top: 2.6px solid var(--photon); }
+.legend i.gd-key-small { border-top: 2.6px dashed var(--electron); }
+
+/* Personal dosimeters */
+.dm-tabs { margin-bottom: 12px; }
+.dm-holder { fill: var(--surface); stroke: var(--ink); stroke-width: 1.5; }
+.dm-film { stroke: var(--line); }
+.dm-filter { fill: transparent; stroke-width: 2; stroke: var(--line); }
+.dm-filter.f1 { fill: color-mix(in srgb, var(--dg-accent) 6%, transparent); }
+.dm-filter.f2 { fill: color-mix(in srgb, var(--dg-accent) 14%, transparent); }
+.dm-filter.f3 { fill: color-mix(in srgb, var(--al) 40%, transparent); stroke: var(--al); }
+.dm-filter.f4, .dm-filter.f5 { fill: color-mix(in srgb, var(--lead) 30%, transparent); stroke: var(--lead); }
+.dm-f-t { font: 600 12px var(--font-body); fill: var(--ink); text-anchor: middle; --fs: 12px; }
+.dm-heater { fill: var(--heat); opacity: 0.7; }
+.dm-chip { fill: var(--surface); stroke: var(--ink); stroke-width: 1.5; }
+.dm-glow { fill: none; stroke: var(--sun-ink); stroke-width: 2.4; }
+.dm-glow-fill { fill: var(--sun); opacity: 0.35; }
