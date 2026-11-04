@@ -20,6 +20,7 @@ const DIAGRAMS = {
   "cell-damage": () => import("./diagrams/cell.js"),
   "dose-response": () => import("./diagrams/doseresponse.js"),
   "population-risk": () => import("./diagrams/population.js"),
+  "tissue-weights": () => import("./diagrams/tissues.js"),
   halflife: () => import("./diagrams/halflife.js"),
   decay: () => import("./diagrams/decay.js"),
   transformer: () => import("./diagrams/transformer.js"),

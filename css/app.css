@@ -711,3 +711,23 @@ details.try[open] summary::after { content: " −"; }
 .legend i.pop-key.bg { background: var(--line); }
 .check-row { display: flex; gap: 10px; align-items: center; font-size: 0.95rem; cursor: pointer; }
 .check-row input { width: 20px; height: 20px; accent-color: var(--ink); }
+
+/* ---------- Diagrams: tissue weighting ---------- */
+.tw-stage { justify-items: center; }
+.tw-svg { max-width: 340px; }
+.tw-body * { fill: color-mix(in srgb, var(--copper) 16%, var(--surface)); stroke: var(--copper); stroke-width: 2; }
+.tw-bones line { stroke: var(--line); stroke-width: 9; stroke-linecap: round; }
+.tw-organ { fill: var(--paper); stroke: var(--muted); stroke-width: 1.5; cursor: pointer; }
+.tw-organ.shaded { fill: color-mix(in srgb, var(--photon) calc(var(--tw, 0) * 75%), var(--paper)); }
+.tw-tube { fill: none; stroke: var(--muted); stroke-width: 6; stroke-linecap: round; }
+.tw-tube.wide { stroke-width: 10; }
+.tw-organ.sel { stroke: var(--dg-accent); stroke-width: 3.5; }
+.tw-tube.sel { stroke: var(--dg-accent); }
+.tw-body.sel * { stroke: var(--dg-accent); stroke-width: 3.5; }
+.tw-bones.sel line { stroke: var(--dg-accent); }
+.tw-body, .tw-bones { cursor: pointer; }
+.tw-band { fill: var(--sun); fill-opacity: 0.18; stroke: var(--sun-ink); stroke-width: 1.5; stroke-dasharray: 6 4; }
+.tw-tube.shaded { fill: none; stroke: color-mix(in srgb, var(--photon) calc(var(--tw, 0) * 75%), var(--muted)); }
+.tw-tube.sel { fill: none; }
+.tw-tube.sel, .tw-tube.sel.shaded { stroke: var(--dg-accent); }
+.tw-band { pointer-events: none; }

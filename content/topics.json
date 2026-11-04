@@ -110,6 +110,13 @@
         "blurb": "Give a population the same dose and see how many radiation-induced cancers to expect, and why nobody can say who.",
         "ready": true,
         "approved": false
+      },
+      {
+        "id": "tissue-weights",
+        "title": "Which tissues matter most?",
+        "blurb": "Explore tissue weighting factors on a cartoon body, put an area in the beam, and rank the organs.",
+        "ready": true,
+        "approved": false
       }
     ]
   },
