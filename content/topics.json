@@ -255,6 +255,7 @@
     "files": [
       "content/10-radioactivity.csv"
     ],
+    "lessons": "content/lessons/10-radioactivity.md",
     "diagrams": [
       {
         "id": "halflife",
@@ -280,6 +281,7 @@
     "files": [
       "content/11-qa-qc.csv"
     ],
+    "lessons": "content/lessons/11-qa-qc.md",
     "diagrams": [
       {
         "id": "qa-check",
