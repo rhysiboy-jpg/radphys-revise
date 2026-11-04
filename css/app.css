@@ -914,3 +914,17 @@ details.try[open] summary::after { content: " −"; }
 .dm-chip { fill: var(--surface); stroke: var(--ink); stroke-width: 1.5; }
 .dm-glow { fill: none; stroke: var(--sun-ink); stroke-width: 2.4; }
 .dm-glow-fill { fill: var(--sun); opacity: 0.35; }
+
+/* IRR17 room plan */
+.ar-zone { cursor: pointer; }
+.ar-zone rect { fill: var(--surface); stroke: var(--line); stroke-width: 1.2; }
+.ar-zone[data-zone="room"] rect { fill: color-mix(in srgb, var(--sun) 14%, var(--surface)); }
+.ar-zone.on rect { stroke: var(--dg-accent); stroke-width: 3; }
+.ar-zone[data-zone="room"].on rect { fill: color-mix(in srgb, var(--sun) 24%, var(--surface)); }
+.ar-wall { fill: none; stroke: var(--lead); stroke-width: 5; pointer-events: none; }
+.ar-table { fill: var(--oil); stroke: var(--metal); pointer-events: none; }
+.ar-tube { fill: none; stroke: var(--photon); stroke-width: 2; stroke-dasharray: 4 3; pointer-events: none; }
+.ar-stand, .ar-shield { fill: var(--lead); pointer-events: none; }
+.ar-t { font: 500 12px var(--font-body); fill: var(--ink); text-anchor: middle; --fs: 12px; pointer-events: none; }
+.ar-light { fill: var(--surface); stroke: var(--ink); stroke-width: 1.5; }
+.ar-light.on { fill: var(--brand); stroke: var(--brand); }

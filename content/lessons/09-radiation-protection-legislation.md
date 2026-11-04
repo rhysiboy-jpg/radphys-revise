@@ -6,6 +6,7 @@ Lessons for topic 9, Radiation Protection & Legislation. The README explains the
 id: regulations
 summary: IR(ME)R 2017 and IRR17: who each protects and who enforces them.
 areas: Legislation
+diagram: regulations
 status: draft
 sources: 12-2 s22–23; Medico-legal s4, s13–18, s33–34
 
@@ -17,6 +18,10 @@ The **Ionising Radiations Regulations 2017**, **IRR17**, protect **workers** and
 
 Other law applies too. Patients' personal and health information is protected by the **Data Protection Act 2018** (with UK GDPR), alongside the professional duty of **confidentiality**.
 
+## Try this
+- Sort each situation: is it about **patients**, **workers and the public**, or **personal information**?
+- Check who enforces each: HIW or the CQC, the HSE.
+
 ## Key points
 - IR(ME)R 2017 protects patients; enforced by HIW in Wales and the CQC in England.
 - IRR17 protects workers and the public; enforced by the HSE.
@@ -26,6 +31,7 @@ Other law applies too. Patients' personal and health information is protected by
 id: duty-holders
 summary: The employer, referrer, practitioner and operator, and what each is responsible for.
 areas: IR(ME)R duty holders
+diagram: duty-holders
 status: draft
 sources: Medico-legal s18–22; 12-2 s24, s45
 
@@ -37,6 +43,10 @@ IR(ME)R 2017 gives four **duty holders** their own responsibilities.
 - The **operator** carries out any **practical aspect** of the exposure, such as positioning the patient, selecting the exposure factors or making the exposure. An operator can **authorise** an exposure by following the practitioner's written authorisation guidelines.
 
 One person can hold more than one role: a radiographer is often both practitioner and operator.
+
+## Try this
+- Work through the steps in order and choose the duty holder for each.
+- Notice how many steps belong to the operator.
 
 ## Key points
 - Employer: procedures, protocols, entitlement, DRLs and training.
@@ -68,6 +78,7 @@ For patients of **childbearing potential**, IR(ME)R requires the employer to hav
 id: irr17
 summary: Dose limits, controlled and supervised areas, the RPA and RPS, and pregnant staff.
 areas: IRR17
+diagram: designated-areas
 status: draft
 sources: 12-2 s32; IRR17 Schedule 3
 
@@ -78,6 +89,11 @@ Areas are **designated**. A **controlled area** is one where special procedures 
 The employer must consult a **radiation protection adviser** (RPA), an expert who advises on complying with IRR17. A **radiation protection supervisor** (RPS) makes sure work in an area follows the local rules.
 
 Once an employee tells the employer **in writing** that she is **pregnant**, the employer must ensure the dose to the **fetus** is unlikely to exceed **1 mSv** for the rest of the pregnancy.
+
+## Try this
+- Tap the **room**, the **screen**, the **door** and the **corridor** to see how each is treated.
+- Choose each person: compare the limits for a radiographer, a pregnant radiographer and a visitor.
+- Choose **carer holding a patient**: why don't the IRR17 limits apply?
 
 ## Key points
 - Employee limit 20 mSv a year; public 1 mSv; classify workers likely to exceed 6 mSv.
@@ -116,6 +132,7 @@ Current UK guidance (from the BIR, IPEM, RCR and SCoR, 2020) **no longer recomme
 id: consent-law
 summary: Valid consent, refusal, negligence and vicarious liability.
 areas: Consent; Medico-legal
+diagram: consent
 status: draft
 sources: Medico-legal s6–12, s31–32
 
@@ -129,6 +146,10 @@ Valid **informed consent** has four elements:
 For most plain radiography, consent is given **verbally**, or by the patient's actions after an explanation; a signed form isn't needed. Consent comes from common law and professional standards; IR(ME)R requires patients to be given information on the **benefits and risks** of the exposure. If a patient with capacity **refuses** a justified examination, respect their decision: explain the benefits and risks, answer their concerns, inform the referrer and record what happened.
 
 **Negligence** is a failure to take the care a reasonably competent radiographer would take, which **causes harm**. It needs a duty of care, a breach of the expected standard, and harm caused by that breach. Under **vicarious liability**, the **employer** can be held responsible for what employees do in the course of their work.
+
+## Try this
+- For each scenario, decide which element of valid consent is missing.
+- Look closely at the refusal: is anything missing?
 
 ## Key points
 - Valid consent: disclosure, understanding, voluntariness and capacity; usually verbal for plain radiography.

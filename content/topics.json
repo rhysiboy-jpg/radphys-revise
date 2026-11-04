@@ -328,6 +328,34 @@
         "blurb": "Watch a beam spread over a larger area as distance increases.",
         "ready": true,
         "approved": true
+      },
+      {
+        "id": "regulations",
+        "title": "Which law covers it?",
+        "blurb": "Sort situations into IR(ME)R 2017, IRR17 or the Data Protection Act, and see who enforces each.",
+        "ready": true,
+        "approved": false
+      },
+      {
+        "id": "duty-holders",
+        "title": "One patient's journey",
+        "blurb": "Follow a lumbar spine X-ray from protocol to report, and name the IR(ME)R duty holder for each step.",
+        "ready": true,
+        "approved": false
+      },
+      {
+        "id": "designated-areas",
+        "title": "Inside the X-ray room",
+        "blurb": "A floor plan of an X-ray room: tap each area, and choose a person, to see what IRR17 (and IR(ME)R) require.",
+        "ready": true,
+        "approved": false
+      },
+      {
+        "id": "consent",
+        "title": "Is consent valid?",
+        "blurb": "Eight scenarios: spot the missing element of consent, or decide nothing is missing, and see what to do next.",
+        "ready": true,
+        "approved": false
       }
     ]
   },
