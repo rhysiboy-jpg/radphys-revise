@@ -22,6 +22,7 @@ const DIAGRAMS = {
   "population-risk": () => import("./diagrams/population.js"),
   "tissue-weights": () => import("./diagrams/tissues.js"),
   justify: () => import("./diagrams/justify.js"),
+  "dose-choices": () => import("./diagrams/dosechoices.js"),
   halflife: () => import("./diagrams/halflife.js"),
   decay: () => import("./diagrams/decay.js"),
   transformer: () => import("./diagrams/transformer.js"),

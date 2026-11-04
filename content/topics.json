@@ -124,6 +124,13 @@
         "blurb": "Eight imaging requests: go ahead, suggest another test, no imaging, or get more information first?",
         "ready": true,
         "approved": false
+      },
+      {
+        "id": "dose-choices",
+        "title": "What can we do?",
+        "blurb": "Make the choices for an AP pelvis and watch the dose move, then sort what affects dose by who controls it.",
+        "ready": true,
+        "approved": false
       }
     ]
   },

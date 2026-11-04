@@ -531,6 +531,8 @@ fieldset legend { margin-bottom: 4px; }
 @media (max-width: 900px) {
   [data-diagram="console"] .stage { position: sticky; top: 60px; z-index: 2; padding: 8px; gap: 4px; }
   [data-diagram="console"] .scale-note { font-size: 0.72rem; }
+  [data-diagram="dose-choices"] .dc-stage { position: sticky; top: 60px; z-index: 2; padding: 10px 12px; gap: 8px; }
+  [data-diagram="dose-choices"] .dc-stage .scale-note { display: none; }
 }
 
 /* ---------- Diagrams: windowing ---------- */
@@ -747,3 +749,18 @@ details.try[open] summary::after { content: " −"; }
 .just-opt.is-correct .tagline { color: var(--good); }
 .just-opt.is-wrong { border-color: var(--bad); background: var(--bad-tint); color: var(--ink); }
 .just-opt.is-wrong .tagline { color: var(--bad); }
+
+/* ---------- Activities: what can we do? ---------- */
+.dc-stage { align-content: start; gap: 14px; padding: 16px; }
+.meter { display: grid; gap: 6px; }
+.meter-bar { position: relative; height: 22px; border-radius: var(--pill); background: var(--paper); border: 1px solid var(--line); overflow: hidden; }
+.meter-bar i { position: absolute; inset: 0 auto 0 0; background: var(--good); border-radius: var(--pill); transition: width .3s; }
+.meter-bar i.high { background: var(--heat); }
+.meter-base { position: absolute; top: 0; bottom: 0; left: 25%; border-left: 2px dashed var(--ink); }
+.meter-scale { position: relative; height: 1.2em; font-size: 0.78rem; color: var(--muted); }
+.meter-scale span { position: absolute; }
+.meter-scale span:nth-child(1) { left: 0; }
+.meter-scale span:nth-child(2) { left: 25%; transform: translateX(-50%); }
+.meter-scale span:nth-child(3) { right: 0; }
+.dc-sort { margin-top: 20px; display: grid; gap: 10px; }
+@media (prefers-reduced-motion: reduce) { .meter-bar i { transition: none; } }
