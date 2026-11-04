@@ -1,7 +1,7 @@
 // RadPhys Revise: routes between the home, explore and practise views.
 import { CONFIG } from "./config.js";
 import { loadContent } from "./content.js";
-import { getProgress, record, resetProgress, lastResult, MAX_BOX } from "./store.js";
+import { getProgress, record, resetProgress, lastResult, MAX_BOX, visitedLessons, markVisited } from "./store.js";
 import { buildSet, shuffle, parseNumber, isNumericCorrect } from "./quiz.js";
 import { FIGURES, drawFigure } from "./figures.js";
 import { drawCritique } from "./critique.js";
@@ -253,6 +253,7 @@ function home() {
 async function explore(id) {
   const t = topicById(id);
   if (!t) return home();
+  if (t.lessonList?.length) return contents(t);   // topics with lessons open on their contents page
   const qs = questionsFor(id);
   const visible = t.diagrams.filter(shown);
   const later = t.diagrams.filter(d => !shown(d));
@@ -301,6 +302,99 @@ async function explore(id) {
     });
   }
 
+  for (const box of app.querySelectorAll("[data-diagram]")) {
+    const loader = DIAGRAMS[box.dataset.diagram];
+    if (!loader) { box.innerHTML = '<p class="muted">This diagram is not available yet.</p>'; continue; }
+    try {
+      const mod = await loader();
+      if (!box.isConnected) return;   // the user navigated away while loading
+      cleanups.push(mod.mount(box));
+      cleanups.push(trackScale(box));
+    } catch (err) {
+      console.error(err);
+      box.innerHTML = '<p class="muted">This diagram could not load. Try refreshing the page.</p>';
+    }
+  }
+}
+
+/* ---------- Lessons ---------- */
+// The "Practise by area" box, shared by a topic's contents page.
+function practiseBox(t) {
+  const qs = questionsFor(t.id);
+  const areas = [...qs.reduce((map, q) => map.set(q.subtopic || "General", (map.get(q.subtopic || "General") || 0) + 1), new Map())]
+    .sort((a, b) => b[1] - a[1]);
+  return `<section class="box" aria-labelledby="qa-h">
+      <div class="box-head"><h2 id="qa-h">Practise by area</h2></div>
+      ${qs.length ? progressBar(standing(t.id), t.title) : ""}
+      ${areas.length
+        ? `<ul class="areas">${areas.map(([name, n]) => `<li><a class="area" href="#practise-${t.id}/${encodeURIComponent(name)}"><span>${esc(name)}</span><span class="meta">${plural(n, "question")}</span></a></li>`).join("")}</ul>`
+        : '<p class="muted">Questions for this topic are being written.</p>'}
+    </section>`;
+}
+const lessonChip = l => CONFIG.reviewMode && l.status !== "approved" ? ' <span class="status review">Draft</span>' : "";
+
+// A topic's contents: its lessons in order, ticked once visited, then practice by area.
+function contents(t) {
+  const seen = visitedLessons(), list = t.lessonList;
+  const done = list.filter(l => seen.has(`${t.id}/${l.id}`)).length;
+  const nextUp = list.find(l => !seen.has(`${t.id}/${l.id}`)) || list[0];
+  const qs = questionsFor(t.id);
+  show(`
+    <section class="title-row">
+      <div>
+        <h1 tabindex="-1">${esc(t.title)}</h1>
+        <p class="sub">${esc(t.blurb)}</p>
+      </div>
+      <a class="btn primary" href="#learn-${t.id}/${nextUp.id}">${done ? (done === list.length ? "Start again" : "Continue") : "Start the lessons"}</a>
+    </section>
+    <section class="lesson-contents" aria-labelledby="lc-h">
+      <div class="box-head"><h2 id="lc-h">Lessons</h2><p class="muted">${done} of ${list.length} visited</p></div>
+      <ol class="lesson-list">${list.map((l, i) => {
+        const v = seen.has(`${t.id}/${l.id}`);
+        return `<li><a href="#learn-${t.id}/${l.id}" class="lesson-link${v ? " visited" : ""}">
+          <span class="ln">${v ? MARKS.right : i + 1}</span>
+          <span class="lt"><b>${esc(l.title)}</b>${lessonChip(l)}<span>${esc(l.summary)}</span></span>
+          <span class="lv">${v ? "Visited" : ""}</span></a></li>`;
+      }).join("")}</ol>
+    </section>
+    ${qs.length ? practiseBox(t) : ""}
+    ${footer()}`, t.id, { title: t.title });
+}
+
+// One lesson: explanation, the interactive with what to try, key points, practice for its areas, and Previous / Next.
+async function lesson(topicId, lessonId) {
+  const t = topicById(topicId);
+  const list = t?.lessonList || [], i = list.findIndex(l => l.id === lessonId);
+  if (i < 0) return t ? explore(t.id) : home();
+  const l = list[i], prev = list[i - 1], next = list[i + 1];
+  markVisited(`${t.id}/${l.id}`);
+  const d = l.diagram && t.diagrams.concat(...content.topics.map(x => x.diagrams)).find(x => x.id === l.diagram && shown(x));
+  const qs = questionsFor(t.id);
+  const areaLinks = l.areas.map(a => [a, qs.filter(q => q.subtopic === a).length]).filter(([, n]) => n);
+  show(`
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="#explore-${t.id}">${esc(t.title)}</a><span aria-hidden="true">›</span><span>Lesson ${i + 1} of ${list.length}</span></nav>
+    <article class="lesson">
+      <h1 tabindex="-1">${esc(l.title)}${lessonChip(l)}</h1>
+      ${CONFIG.reviewMode && l.sources ? `<p class="lesson-src">Lecture: ${esc(l.sources)}</p>` : ""}
+      <div class="lesson-body">${l.body}</div>
+    </article>
+    ${d ? `<section class="module lesson-diagram" aria-labelledby="ld-h">
+        <div class="module-head"><h2 id="ld-h">Explore: ${esc(d.title)}</h2>${l.tryThis ? `<div class="lesson-try"><b>Try this</b>${l.tryThis}</div>` : ""}</div>
+        <div data-diagram="${d.id}"><p class="muted">Loading diagram…</p></div>
+      </section>` : ""}
+    ${l.keyPoints ? `<section class="key-points" aria-labelledby="kp-h"><h2 id="kp-h">Key points</h2>${l.keyPoints}</section>` : ""}
+    ${areaLinks.length ? `<section class="box" aria-labelledby="cy-h"><div class="box-head"><h2 id="cy-h">Check yourself</h2></div>
+        <ul class="areas">${areaLinks.map(([a, n]) => `<li><a class="area" href="#practise-${t.id}/${encodeURIComponent(a)}"><span>Practise: ${esc(a)}</span><span class="meta">${plural(n, "question")}</span></a></li>`).join("")}</ul></section>` : ""}
+    <nav class="lesson-nav" aria-label="Lessons">
+      ${prev ? `<a class="btn" href="#learn-${t.id}/${prev.id}"><span class="dir">← Previous</span><span>${esc(prev.title)}</span></a>` : `<a class="btn" href="#explore-${t.id}"><span class="dir">← Contents</span><span>${esc(t.title)}</span></a>`}
+      ${next ? `<a class="btn primary" href="#learn-${t.id}/${next.id}"><span class="dir">Next →</span><span>${esc(next.title)}</span></a>` : (qs.length ? `<a class="btn primary" href="#practise-${t.id}"><span class="dir">Finished: practise →</span><span>${esc(t.title)}</span></a>` : "")}
+    </nav>
+    ${footer()}`, t.id, { title: `${l.title} · ${t.title}` });
+  await mountDiagrams();
+}
+
+// Loads and mounts every [data-diagram] box on the page.
+async function mountDiagrams() {
   for (const box of app.querySelectorAll("[data-diagram]")) {
     const loader = DIAGRAMS[box.dataset.diagram];
     if (!loader) { box.innerHTML = '<p class="muted">This diagram is not available yet.</p>'; continue; }
@@ -448,8 +542,12 @@ function practise(scope, area = null, retry = null) {
     const check = card.querySelector('[data-role="check"]');
     const fb = card.querySelector('[data-role="feedback"]');
     const nextBtn = `<div class="controls"><button type="button" class="primary" data-role="next">${i + 1 < set.length ? "Next question" : "See results"}</button></div>`;
-    const diagramLink = q.diagram && topicById(q.topic)?.diagrams.some(d => d.id === q.diagram && shown(d))
-      ? `<p><a href="#explore-${q.topic}">See this in the explorer →</a></p>` : "";
+    // Point to the lesson for this question's area if there is one, otherwise to the diagram.
+    const qLesson = topicById(q.topic)?.lessonList?.find(l => l.areas.includes(q.subtopic));
+    const diagramLink = qLesson
+      ? `<p><a href="#learn-${q.topic}/${qLesson.id}">Read the lesson: ${esc(qLesson.title)} →</a></p>`
+      : q.diagram && topicById(q.topic)?.diagrams.some(d => d.id === q.diagram && shown(d))
+        ? `<p><a href="#explore-${q.topic}">See this in the explorer →</a></p>` : "";
     const refreshRail = () => {
       const old = app.querySelector('aside[aria-label="This set"]');
       old.outerHTML = rail(q);
@@ -686,6 +784,7 @@ function route() {
   const h = location.hash.slice(1) || "home";
   let m;
   if ((m = h.match(/^explore-([\w-]+)$/))) explore(m[1]);
+  else if ((m = h.match(/^learn-([\w-]+)\/([\w-]+)$/))) lesson(m[1], m[2]);
   else if ((m = h.match(/^practise-([\w-]+)(?:\/(.+))?$/))) practise(m[1], m[2] ? decodeURIComponent(m[2]) : null);
   else home();
 }

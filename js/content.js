@@ -1,6 +1,7 @@
 // Loads the topic list, the question spreadsheets and the calculation templates.
 import { parseCSV } from "./csv.js";
 import { FIGURES } from "./figures.js";
+import { parseLessons } from "./lessons.js";
 import CALCULATIONS from "../content/calculations.js";
 
 const LETTERS = ["a", "b", "c", "d", "e"];
@@ -61,6 +62,17 @@ export async function loadContent(config) {
     if (!r.ok) throw new Error("Could not load the topic list.");
     return r.json();
   });
+
+  // Lessons: each topic may list a lessons file. Drafts show only in review mode.
+  for (const t of topics) {
+    t.lessonList = [];
+    if (!t.lessons) continue;
+    try {
+      const res = await fetch(t.lessons);
+      if (!res.ok) throw new Error(res.status);
+      t.lessonList = parseLessons(await res.text()).filter(l => l.status === "approved" || (config.reviewMode && l.status !== "rejected"));
+    } catch (err) { console.warn("Could not load lessons for", t.id, err); }
+  }
 
   const questions = [];
   for (const t of topics) {

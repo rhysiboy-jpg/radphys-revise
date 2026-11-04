@@ -38,5 +38,16 @@ export function lastResult(r) {
 
 export function resetProgress() {
   cache = {};
-  try { localStorage.removeItem(KEY); } catch { /* nothing to clear */ }
+  try { localStorage.removeItem(KEY); localStorage.removeItem(LESSONS); } catch { /* nothing to clear */ }
+}
+
+// Lessons visited on this device, as "topic/lesson" keys, for the ticks on a topic's contents page.
+const LESSONS = "radphys-revise.lessons.v1";
+export function visitedLessons() {
+  try { return new Set(JSON.parse(localStorage.getItem(LESSONS)) || []); } catch { return new Set(); }
+}
+export function markVisited(key) {
+  const seen = visitedLessons();
+  seen.add(key);
+  try { localStorage.setItem(LESSONS, JSON.stringify([...seen])); } catch { /* storage blocked: ticks last for this visit only */ }
 }

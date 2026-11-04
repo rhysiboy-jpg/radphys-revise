@@ -50,6 +50,7 @@
     "files": [
       "content/03-x-ray-production.csv"
     ],
+    "lessons": "content/lessons/03-x-ray-production.md",
     "diagrams": [
       {
         "id": "tube",

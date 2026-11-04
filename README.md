@@ -55,6 +55,39 @@ These are marked automatically. For order, match and label questions each part e
 
 Calculation questions (inverse square law, HVL) are in `content/calculations.js`. Claude writes these. Change `status` to `"approved"` there once you're happy with them.
 
+## Editing lessons
+
+A topic can have lessons: short pages, clicked through in order, each with an explanation, an interactive, key points and a link to practise that area. A topic with lessons opens on its list of lessons; a topic without them shows its diagrams on one page, as before.
+
+Each topic's lessons are in one text file in `content/lessons/` (for example `content/lessons/03-x-ray-production.md`), listed as `"lessons"` for that topic in `content/topics.json`. Open it in any text editor (Notepad is fine). Each lesson looks like this:
+
+```
+# The X-ray tube
+id: tube
+summary: The parts of a rotating-anode tube, and what each one does.
+areas: The X-ray tube
+diagram: tube
+status: draft
+sources: 5-2 s5–12, s20
+
+A paragraph of explanation. Put **double stars** round a word to make it bold.
+
+Another paragraph. Lines starting "- " become bullet points.
+
+## Try this
+- What to try with the interactive.
+
+## Key points
+- A point to take away.
+```
+
+- `id` goes in the web address. Don't change it once students have used the app, because their ticks are stored against it.
+- `areas` are the question areas (the `subtopic` column) the lesson leads into, separated by `;`. Each gets a "Practise" link, and a question's feedback links back to its area's lesson.
+- `diagram` is an interactive's id from `content/topics.json` (leave the line out for none). The same interactive can appear in more than one lesson.
+- `status`: students only see `approved` lessons. While a topic has none approved, it shows its diagrams page as before.
+- `sources` is shown to you in review mode only.
+- Lessons appear in the order they are written in the file.
+
 ## Before giving the link to students
 
 In `js/config.js`:
