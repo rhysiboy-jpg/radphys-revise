@@ -736,8 +736,8 @@ details.try[open] summary::after { content: " −"; }
 
 /* ---------- Activities: justify it? ---------- */
 .just-stage { align-content: start; gap: 12px; padding: 16px; }
-.request { background: var(--raised); border: 1px solid var(--edge); border-left: 6px solid var(--dg-accent); border-radius: var(--r-row); padding: 16px 18px; display: grid; gap: 10px; }
-.request-head { font: 650 1rem var(--font-display); letter-spacing: 0.02em; text-transform: uppercase; color: var(--muted); }
+.request { background: var(--raised); border: 1px solid var(--edge); border-radius: var(--r-row); padding: 16px 18px; display: grid; gap: 10px; }
+.request-head { font: 650 1rem var(--font-display); letter-spacing: 0.02em; text-transform: uppercase; color: var(--muted); padding-bottom: 8px; border-bottom: 1px solid var(--edge); }
 .request dl { margin: 0; display: grid; gap: 10px; }
 .request dt { font-size: 0.8rem; color: var(--muted); }
 .request dd { margin: 0; font-size: 1.05rem; font-weight: 500; }
