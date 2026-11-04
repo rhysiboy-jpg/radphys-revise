@@ -457,6 +457,25 @@ circle.shell.empty, circle.shell.outer { stroke-dasharray: 4 5; opacity: 0.7; }
 .share-bar { height: 10px; border-radius: var(--pill); background: var(--paper); overflow: hidden; }
 .share-bar i { display: block; height: 100%; background: var(--photon); border-radius: var(--pill); }
 .share-bar i.alt { background: var(--dg-accent); }
+.share-bar i.alt2 { background: var(--muted); }
+.view-modes { margin-bottom: 16px; }
+.coh-ring { fill: none; stroke: var(--photon); stroke-width: 2; stroke-dasharray: 3 4; }
+
+/* ---------- Diagrams: attenuation and K-edges ---------- */
+.att-view { --m-tissue: var(--heat); --m-bone: var(--dg-accent); --m-iodine: var(--photon); --m-lead: var(--lead); }
+.att-curve { fill: none; stroke-width: 2.4; stroke-linejoin: round; }
+.att-curve.part { stroke-width: 1.8; }
+.att-curve.pe { stroke-dasharray: 7 4; }
+.att-curve.inc { stroke-dasharray: 0.1 4.5; stroke-linecap: round; stroke-width: 2.4; }
+.att-curve.coh { stroke-dasharray: 9 4 2 4; }
+.att-curve.faded { opacity: 0.3; }
+.edge-l { stroke: var(--muted); stroke-width: 1.4; stroke-dasharray: 2 4; }
+.e-mark { stroke: var(--ink); stroke-width: 1.4; stroke-dasharray: 5 4; }
+.att-dot { stroke: var(--surface); stroke-width: 1.5; }
+.att-label, .edge-t, .mark-t { font: 500 12px var(--font-body); fill: var(--ink); --fs: 12px; }
+.legend .key-swatch { width: 28px; height: 8px; margin-right: 6px; vertical-align: middle; overflow: visible; }
+.legend i.edge-key { border-top: 2px dotted var(--muted); }
+.legend i.e-key { border-top: 2px dashed var(--ink); }
 .ray { stroke: var(--photon); stroke-width: 1; opacity: 0.45; }
 .mover { fill: var(--photon); }
 .source { fill: var(--heat); stroke: var(--lead); stroke-width: 1.5; }
@@ -577,7 +596,6 @@ details.try[open] summary::after { content: " −"; }
 .rc-wave { fill: none; stroke: var(--dg-accent); stroke-width: 3; stroke-linejoin: round; }
 .rc-part { fill: none; stroke: var(--muted); stroke-width: 1; opacity: 0.5; }
 .rc-bracket { fill: none; stroke: var(--ink); stroke-width: 1.5; }
-.legend i.part-key { border-top: 1px solid var(--muted); opacity: 0.6; }
 @media (prefers-reduced-motion: reduce) { .flux { animation: none; } }
 
 /* ---------- Diagrams: detectors ---------- */

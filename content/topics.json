@@ -103,10 +103,10 @@
     "diagrams": [
       {
         "id": "pe-compton",
-        "title": "Photoelectric effect and Compton scatter",
-        "blurb": "Side-by-side animations of the two main interactions.",
+        "title": "Interactions and attenuation",
+        "blurb": "The photoelectric effect beside Compton or coherent scatter, and an attenuation graph with the K-edges of iodine and lead.",
         "ready": true,
-        "approved": true
+        "approved": false
       }
     ]
   },

@@ -41,10 +41,10 @@ const DIAGRAMS = [
     "Heat, Bremsstrahlung and characteristic narration, and the share figures (about 99% heat).",
     "Bremsstrahlung photon energies are illustrative fractions of the kV (8%, 22%, 45%, 75%, 100% for a direct hit). The trend is right; the exact fractions are not physical constants.",
     "Below 69.5 kV: no K-characteristic line, with a note that L lines (8–12 keV) are filtered out." ] },
-  { id: "pe-compton", title: "Photoelectric effect and Compton scatter", status: "Signed off", checks: [
-    "Compton energies use the full Compton formula; the recoil electron's direction is calculated too.",
-    "Below a material's K-shell binding energy (iodine under 33.2 keV, lead under 88 keV) the photoelectric panel switches to the L shell.",
-    "\"Which is more likely?\" is illustrative, from Z³/E³, with soft tissue crossing over at about 25 keV and bone at about 47 keV. Are you happy with those figures, or would you rather show the trend without percentages?" ] },
+  { id: "pe-compton", title: "Interactions and attenuation", status: "Awaiting sign-off", checks: [
+    "Coherent scatter in the right-hand panel: same energy out, small angle, no electron freed. Is the wording right for first years?",
+    "\"Which is more likely?\" now uses NIST XCOM data with three shares. Soft tissue crosses over at about 27 keV and bone at about 55 keV (previously about 25 and 47 from Z³/E³).",
+    "Attenuation view: per gram (cm²/g) on log scales, with the iodine (33.2 keV) and lead (88.0 keV) K-edges. Are per-gram comparisons and log scales right for this group, or would you prefer per centimetre?" ] },
   { id: "isl", title: "The inverse square law", status: "Signed off", checks: [
     "Area, intensity and the mAs–distance rule (mAs₂ = mAs₁ × (d₂ ÷ d₁)²) against the reference distance.",
     "The front view has 144 photons on a grid, so the fixed patch counts exactly 144, 64, 36 and 16 at 100, 150, 200 and 300 cm.",
