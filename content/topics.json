@@ -165,6 +165,7 @@
     "files": [
       "content/06-digital-image-formation.csv"
     ],
+    "lessons": "content/lessons/06-digital-image-formation.md",
     "diagrams": [
       {
         "id": "windowing",
@@ -190,6 +191,7 @@
     "files": [
       "content/07-exposure-image-quality.csv"
     ],
+    "lessons": "content/lessons/07-exposure-image-quality.md",
     "diagrams": [
       {
         "id": "console",
