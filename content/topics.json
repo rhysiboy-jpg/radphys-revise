@@ -262,6 +262,13 @@
         "blurb": "Change the focal spot, ORD and FRD and watch the penumbra and magnification of the shadow.",
         "ready": true,
         "approved": false
+      },
+      {
+        "id": "aec",
+        "title": "Automatic exposure control",
+        "blurb": "Choose the chambers, the patient's build and what lies over the centre chamber, then expose and see how the AEC ends the exposure.",
+        "ready": true,
+        "approved": false
       }
     ]
   },

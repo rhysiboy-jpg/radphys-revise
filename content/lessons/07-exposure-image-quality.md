@@ -113,6 +113,7 @@ So a grid is used where it helps: on **thicker parts** such as the pelvis, abdom
 id: aec
 summary: How the AEC ends the exposure, and what the radiographer must get right.
 areas: Automatic exposure control
+diagram: aec
 status: draft
 sources: Exposure s22–24
 
@@ -124,6 +125,11 @@ There are usually **three chambers**. The radiographer must:
 - **centre** the patient accurately over them.
 
 If the chambers sit under the wrong tissue, the exposure will be wrong. **Metal prostheses** and some pathologies can make the AEC end the exposure too early or too late, so the result still needs checking.
+
+## Try this
+- Expose a **PA chest** with the two outer chambers, then with the centre chamber only: the spine makes the AEC run too long.
+- Change the **patient build**: the mAs changes, but the exposure to the anatomy stays the same.
+- Put a **metal implant** over the centre chamber for a lumbar spine, then **lead**: the guard timer has to end the exposure.
 
 ## Key points
 - AEC chambers measure the radiation reaching the detector and end the exposure at a set amount.

@@ -30,6 +30,7 @@ const DIAGRAMS = {
   detectors: () => import("./diagrams/detectors.js"),
   geometry: () => import("./diagrams/geometry.js"),
   "qa-check": () => import("./diagrams/qa.js"),
+  aec: () => import("./diagrams/aec.js"),
   "noise-dqe": () => import("./diagrams/noise.js"),
   processing: () => import("./diagrams/processing.js"),
   digitisation: () => import("./diagrams/digitise.js"),

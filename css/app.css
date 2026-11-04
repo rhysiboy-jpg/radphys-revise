@@ -870,3 +870,15 @@ details.try[open] summary::after { content: " −"; }
 .dg-digital { fill: none; stroke: var(--dg-accent); stroke-width: 2.2; }
 .legend i.dg-key-a { border-top: 2px solid var(--muted); }
 .legend i.dg-key-d { border-top: 3px solid var(--dg-accent); }
+
+/* Automatic exposure control */
+.aec-det { fill: var(--vacuum); stroke: var(--line); stroke-width: 1.5; }
+.aec-skin { fill: color-mix(in srgb, var(--heat) 14%, var(--surface)); stroke: var(--heat); stroke-width: 1.2; }
+.aec-lung { fill: color-mix(in srgb, var(--dg-accent) 16%, var(--surface)); stroke: var(--dg-accent); stroke-width: 1; }
+.aec-bone { fill: var(--oil); stroke: var(--metal); stroke-width: 1.2; }
+.aec-metal { fill: var(--metal); }
+.aec-lead { fill: var(--lead); opacity: 0.85; }
+.aec-ch rect:first-child { fill: none; stroke: var(--ink); stroke-width: 1.6; stroke-dasharray: 5 3; }
+.aec-ch.on rect:first-child { stroke: var(--dg-accent); stroke-width: 3; stroke-dasharray: none; fill: color-mix(in srgb, var(--dg-accent) 12%, transparent); }
+.aec-bar { fill: var(--dg-accent); }
+.aec-ch-t { font: 600 12px var(--font-body); fill: var(--ink); text-anchor: middle; --fs: 12px; }
