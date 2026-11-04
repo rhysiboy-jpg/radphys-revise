@@ -136,13 +136,15 @@ export function mount(root) {
 
   function showBeam() {
     const r = REGIONS[region], s = sumW(r.organs), knee = sumW(REGIONS.limb.organs);
-    highlight(r.organs.filter(id => id !== "skin" && id !== "bone"));   // skin and bone are in every field: outlining them would light up the whole body
+    // Skin and bone are in every field: outlining them would light up the whole body. The cartoon draws marrow only in the
+    // pelvis; for the chest and abdomen it is in the ribs and spine, so it isn't outlined there.
+    highlight(r.organs.filter(id => id !== "skin" && id !== "bone" && (id !== "marrow" || region === "pelvis")));
     root.querySelectorAll("[data-region]").forEach(b => b.setAttribute("aria-pressed", b.dataset.region === region));
     $("band").innerHTML = "";
     el("rect", { class: "tw-band", x: 4, y: r.y0, width: 292, height: r.y1 - r.y0, rx: 8 }, $("band"));
     $("r-sum").textContent = s.toFixed(2);
     $("r-vs").textContent = region === "limb" ? "—" : `× ${Math.round(s / knee)}`;
-    const list = r.organs.filter(id => id !== "skin" && id !== "bone").map(id => `${BY_ID[id].name.split(" (")[0].toLowerCase()} (${BY_ID[id].w.toFixed(2)})`);
+    const list = r.organs.filter(id => id !== "skin" && id !== "bone").map(id => `${BY_ID[id].name.split(" (")[0].toLowerCase()}${id === "marrow" && region !== "pelvis" ? " in the ribs and spine" : ""} (${BY_ID[id].w.toFixed(2)})`);
     $("beam-sum").innerHTML = region === "limb"
       ? `A knee has only skin and bone surface in the beam: weighting ${s.toFixed(2)}. That is why limb examinations have the lowest effective doses on the dose ladder.`
       : `In the beam: ${list.join(", ")}, plus skin and bone surface. Together they carry <b>${Math.round(s * 100)}%</b> of the whole body's weighting, so the same dose here counts about <b>${Math.round(s / knee)} times</b> as much towards effective dose as it would for a knee. Organs partly in the beam are counted in full here; real calculations allow for the part irradiated.`;
