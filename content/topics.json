@@ -85,6 +85,7 @@
     "files": [
       "content/04-effects-of-radiation.csv"
     ],
+    "lessons": "content/lessons/04-effects-of-radiation.md",
     "diagrams": [
       {
         "id": "sorter",
@@ -145,6 +146,7 @@
     "files": [
       "content/05-interactions-with-matter.csv"
     ],
+    "lessons": "content/lessons/05-interactions-with-matter.md",
     "diagrams": [
       {
         "id": "pe-compton",
