@@ -17,6 +17,7 @@ const DIAGRAMS = {
   windowing: () => import("./diagrams/windowing.js"),
   "dose-ladder": () => import("./diagrams/dose.js"),
   sorter: () => import("./diagrams/sorter.js"),
+  "cell-damage": () => import("./diagrams/cell.js"),
   halflife: () => import("./diagrams/halflife.js"),
   decay: () => import("./diagrams/decay.js"),
   transformer: () => import("./diagrams/transformer.js"),

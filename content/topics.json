@@ -89,6 +89,13 @@
         "blurb": "Sort effects and properties into stochastic and deterministic, with an explanation for each.",
         "ready": true,
         "approved": false
+      },
+      {
+        "id": "cell-damage",
+        "title": "Inside the cell",
+        "blurb": "Follow one X-ray photon from ionisation to free radicals and DNA damage, then fire a thousand and see how chance decides the outcome.",
+        "ready": true,
+        "approved": false
       }
     ]
   },

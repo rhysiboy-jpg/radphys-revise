@@ -676,3 +676,18 @@ details.try[open] summary::after { content: " −"; }
 .qa-tick { stroke: var(--muted); }
 .qa-marker { fill: none; stroke: var(--ink); stroke-width: 3; }
 .qa-pointer { fill: var(--ink); }
+
+/* ---------- Diagrams: inside the cell ---------- */
+.cell { fill: color-mix(in srgb, var(--glass) 14%, var(--surface)); stroke: var(--glass); stroke-width: 3; }
+.cell.dying { stroke-dasharray: 8 6; }
+.cell-nucleus { fill: color-mix(in srgb, var(--copper) 10%, var(--surface)); stroke: var(--copper); stroke-width: 2; }
+.dna { fill: none; stroke: var(--electron); stroke-width: 4; stroke-linecap: round; }
+.dna.dna-b { stroke: var(--dg-accent); }
+.dna-rung { stroke: var(--muted); stroke-width: 2; opacity: 0.6; }
+.dna-break { fill: none; stroke: var(--heat); stroke-width: 2.5; stroke-linejoin: round; }
+.dna-mut { fill: none; stroke: var(--sun); stroke-width: 6; stroke-linecap: round; }
+.h2o-o { fill: var(--muted); }
+.h2o-h { fill: var(--surface); stroke: var(--muted); stroke-width: 1.5; }
+.h2o-o.ion { fill: var(--photon); }
+.radical { fill: var(--sun); stroke: var(--lead); stroke-width: 1.5; }
+.stage svg tspan.sub { font-size: 0.75em; }

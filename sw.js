@@ -1,11 +1,11 @@
 // Offline support: saves a copy of every file, and serves the saved copies when there's no connection.
 // Change VERSION to force every device to drop its old copies.
-const VERSION = "radphys-revise-v30";
+const VERSION = "radphys-revise-v31";
 const CORE = [
   "./", "index.html", "css/app.css", "manifest.webmanifest", "icons/icon.svg",
   "js/app.js", "js/config.js", "js/content.js", "js/csv.js", "js/quiz.js", "js/store.js",
   "js/diagrams/util.js", "js/diagrams/atom.js", "js/diagrams/tube.js", "js/diagrams/spectrum.js",
-  "js/diagrams/bohr.js", "js/diagrams/target.js", "js/diagrams/pecompton.js", "js/diagrams/xcom.js", "js/figures.js", "js/critique.js", "js/diagrams/isl.js", "js/diagrams/limb.js", "js/diagrams/console.js", "js/diagrams/windowing.js", "js/diagrams/dose.js", "js/diagrams/sorter.js", "js/diagrams/halflife.js", "js/diagrams/decay.js", "js/diagrams/transformer.js", "js/diagrams/rectification.js", "js/diagrams/detectors.js", "js/diagrams/geometry.js", "js/diagrams/qa.js",
+  "js/diagrams/bohr.js", "js/diagrams/target.js", "js/diagrams/pecompton.js", "js/diagrams/xcom.js", "js/figures.js", "js/critique.js", "js/diagrams/isl.js", "js/diagrams/limb.js", "js/diagrams/console.js", "js/diagrams/windowing.js", "js/diagrams/dose.js", "js/diagrams/sorter.js", "js/diagrams/cell.js", "js/diagrams/halflife.js", "js/diagrams/decay.js", "js/diagrams/transformer.js", "js/diagrams/rectification.js", "js/diagrams/detectors.js", "js/diagrams/geometry.js", "js/diagrams/qa.js",
   "content/topics.json", "content/calculations.js", "content/01-atomic-structure.csv", "content/02-electricity-circuits.csv", "content/03-x-ray-production.csv", "content/04-effects-of-radiation.csv", "content/05-interactions-with-matter.csv", "content/06-digital-image-formation.csv", "content/07-exposure-image-quality.csv", "content/08-dosimetry-dose-control.csv", "content/09-radiation-protection-legislation.csv", "content/10-radioactivity.csv", "content/11-qa-qc.csv",
 ];
 
