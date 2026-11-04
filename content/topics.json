@@ -215,6 +215,27 @@
         "blurb": "Follow an X-ray photon to a pixel value in CR, indirect DR and direct DR, and see how far the signal spreads.",
         "ready": true,
         "approved": false
+      },
+      {
+        "id": "digitisation",
+        "title": "Sampling and quantisation",
+        "blurb": "Shrink the matrix and the bit depth and watch detail, grey steps and aliasing appear, with the signal along one row.",
+        "ready": true,
+        "approved": false
+      },
+      {
+        "id": "processing",
+        "title": "Histogram analysis and the LUT",
+        "blurb": "Change the exposure, the body part selected and the collimation, and see how histogram analysis and the look-up table respond.",
+        "ready": true,
+        "approved": false
+      },
+      {
+        "id": "noise-dqe",
+        "title": "Quantum noise and DQE",
+        "blurb": "Lower the dose and watch quantum mottle appear, then compare detectors with higher and lower DQE.",
+        "ready": true,
+        "approved": false
       }
     ]
   },

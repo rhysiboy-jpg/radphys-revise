@@ -864,3 +864,9 @@ details.try[open] summary::after { content: " −"; }
 .xc-part .badge circle { fill: var(--ink); }
 .xc-part.on .badge circle { fill: var(--dg-accent); }
 .xc-part.on .badge text { fill: var(--dg-accent-ink); }
+
+/* Digitisation */
+.dg-analogue { fill: none; stroke: var(--muted); stroke-width: 1.4; }
+.dg-digital { fill: none; stroke: var(--dg-accent); stroke-width: 2.2; }
+.legend i.dg-key-a { border-top: 2px solid var(--muted); }
+.legend i.dg-key-d { border-top: 3px solid var(--dg-accent); }

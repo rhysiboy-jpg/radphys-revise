@@ -52,6 +52,7 @@ A **DR** detector reads itself, so there is no cassette to carry to a reader and
 id: digitisation
 summary: Sampling, quantisation, the matrix and bit depth.
 areas: Digitisation
+diagram: digitisation
 status: draft
 sources: 11-1 s20, s41–43; 10-4 s6
 
@@ -63,6 +64,11 @@ The signal from a detector has to be turned into numbers, in two steps.
 
 If the sampling frequency is **too low**, fine detail can't be reproduced faithfully. This is **aliasing**: detail is lost, and false patterns can appear.
 
+## Try this
+- Reduce the **pixels across**: edges step and fine detail disappears.
+- Reduce the **bit depth** to 2 bits: smooth changes become bands of grey.
+- Choose the **bar pattern** and sample coarsely: the finest stripes turn into false, wider stripes. This is aliasing.
+
 ## Key points
 - Sampling sets the pixels (the matrix); quantisation gives each a grey value.
 - A larger matrix for the same field of view means smaller pixels and finer detail.
@@ -73,6 +79,7 @@ If the sampling frequency is **too low**, fine detail can't be reproduced faithf
 id: processing
 summary: How histogram analysis and look-up tables give a consistent image.
 areas: Image processing
+diagram: processing
 status: draft
 sources: 11-1 s29–36
 
@@ -83,6 +90,11 @@ First, **histogram analysis**. The software builds a histogram of the image's pi
 Then a **look-up table** (LUT) maps each pixel value to a displayed **grey level**, giving the contrast expected for that body part. Adjusting brightness or contrast on screen temporarily changes this mapping.
 
 That is why selecting the **correct body part and projection** matters: it chooses the histogram model and the LUT. A wrong selection, or poor **collimation** that lets unexpected values into the histogram, can process the image wrongly, giving poor contrast or a misleading appearance.
+
+## Try this
+- Look at the **raw data** at half and double exposure, then switch to **Processed**: the brightness is corrected.
+- Select **Chest PA** for this limb: the wrong histogram model gives poor contrast.
+- Choose an **open field**: the extra unattenuated beam misleads the histogram analysis.
 
 ## Key points
 - Histogram analysis compares the image's pixel values with an expected histogram, then rescales them.
@@ -117,6 +129,7 @@ The **window width** is the range of pixel values spread between black and white
 id: image-quality
 summary: Why too few photons make a grainy image, and what DQE tells you.
 areas: Image quality
+diagram: noise-dqe
 status: draft
 sources: 11-1 s52–53; Modifying Exposure s4
 
@@ -125,6 +138,11 @@ Every image contains **noise**: random variation that isn't part of the anatomy.
 If the **mAs is too low**, too few photons reach the detector: a low SNR and a **grainy** image. Processing can fix the brightness, but it **can't create information** that never reached the detector, so fine detail is lost.
 
 **Detective quantum efficiency** (DQE) measures how efficiently a detector turns the incoming X-rays into useful signal. A **higher DQE** means the same image quality with **less dose**.
+
+## Try this
+- Lower the dose: the brightness stays the same, but the image becomes grainy.
+- Switch to the **lower DQE** detector at the same dose: fewer photons are used, so there is more noise.
+- Press **Same image, other detector**: the higher-DQE detector needs half the dose.
 
 ## Key points
 - Quantum noise falls as more photons reach the detector: a higher SNR.
