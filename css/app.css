@@ -928,3 +928,26 @@ details.try[open] summary::after { content: " −"; }
 .ar-t { font: 500 12px var(--font-body); fill: var(--ink); text-anchor: middle; --fs: 12px; pointer-events: none; }
 .ar-light { fill: var(--surface); stroke: var(--ink); stroke-width: 1.5; }
 .ar-light.on { fill: var(--brand); stroke: var(--brand); }
+
+/* Chart of nuclides */
+.nu-nz { stroke: var(--muted); stroke-width: 1; stroke-dasharray: 4 4; }
+.nu-band { fill: none; stroke: var(--dg-accent); stroke-width: 7; stroke-linecap: round; opacity: 0.35; }
+.legend i.nu-key { border-top: 7px solid color-mix(in srgb, var(--dg-accent) 35%, transparent); }
+.nu-dot { fill: var(--ink); }
+.nu-dot.on { fill: var(--brand); r: 6.5; }
+.nu-cell { fill: var(--surface); stroke: var(--line); }
+.nu-me { fill: var(--copper); }
+.nu-daughter { fill: color-mix(in srgb, var(--dg-accent) 40%, var(--surface)); stroke: var(--dg-accent); stroke-width: 2; }
+.nu-arrow { stroke: var(--ink); stroke-width: 2.4; marker-end: none; }
+
+/* Equipment life cycle */
+.lc-rem { fill: var(--sun); opacity: 0.16; }
+.lc-sus { fill: var(--brand); opacity: 0.12; }
+.lc-base { stroke: var(--good); stroke-width: 1.5; stroke-dasharray: 6 4; }
+.lc-line { fill: none; stroke: var(--ink); stroke-width: 1.6; }
+.lc-pt { fill: var(--surface); stroke: var(--ink); stroke-width: 2; }
+.lc-pt.base, .lc-pt.acc { stroke: var(--good); }
+.lc-pt.rem { fill: var(--sun); }
+.lc-pt.sus { fill: var(--brand); stroke: var(--brand); }
+.lc-pt.now { stroke-width: 3; }
+.lc-fix { font: 600 12px var(--font-body); fill: var(--ink); text-anchor: middle; --fs: 12px; }

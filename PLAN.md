@@ -135,7 +135,20 @@ Confirmed with Rhys Morris, 29 October 2026.
   - Slide 2 says about 11% of the UK population's dose is medical; UKHSA's RIFE summaries (2023, 2024) give 16%. Not used in the app, noted for the slides.
 - Lesson pages, piloted on topic 3 (4 November 2026, at Rhys's request: clearer separation within topics, more explanation than the diagrams alone). A topic with lessons opens on a contents page (lessons in order, ticked once visited on the device, "Start the lessons" / "Continue"); each lesson page has the explanation, the interactive with "Try this", key points, "Check yourself" links to practise its question areas, and Previous / Next. Question feedback links to the lesson for its area. Lessons live in one editable text file per topic (`content/lessons/03-x-ray-production.md`, format in README.md), drafts in review mode only. Topic 3's six drafts, written from the approved topic 3 bank and its slide references: the X-ray tube; thermionic emission; what happens in the anode; Bremsstrahlung and characteristic radiation; the X-ray spectrum; filtration.
 - Lessons rolled out to all eleven topics (4 November 2026, at Rhys's request after the topic 3 pilot): 63 draft lessons in `content/lessons/`, one file per topic, written from each topic's question bank and its slide references, covering every question area. Topic 1: 6 lessons; 2: 5; 3: 6; 4: 7 (one per interactive); 5: 5; 6: 6; 7: 6; 8: 6; 9: 6; 10: 5; 11: 5. Interactives from other topics are reused where they teach the point (topic 8 uses the tissue map and dose choices; topic 9 uses Justify it?). Slide differences already recorded for the banks are stated in the lessons where they matter (annihilation and electron capture in topic 10; personal monitoring classification in topic 8; patient contact shielding in topic 9; AEC testing in topic 11).
-- Next: Rhys reviews the 63 draft lessons (they show in review mode only; approve by setting `status: approved`). Still waiting: review of the 249 draft questions, and sign-off of the interactives and diagram upgrades.
+- Interactives for every text-only lesson (4 November 2026, at Rhys's request): 19 new diagrams, all `approved: false`, so every lesson now has one.
+  - Topic 1: the electronvolt (with unit prefixes); the EM spectrum.
+  - Topic 2: charges, conductors and insulators; an Ohm's law circuit; the X-ray circuit as a block diagram.
+  - Topic 6: sampling and quantisation (with aliasing); histogram analysis and the LUT; quantum noise and DQE.
+  - Topic 7: an AEC simulator (chambers, patient build, metal, guard timer).
+  - Topic 8: ESD and DAP; gas-filled detector regions; film badge and TLD.
+  - Topic 9: which law (sorter); the duty holders journey; the X-ray room under IRR17; consent scenarios.
+  - Topic 10: a chart of nuclides with decay prediction.
+  - Topic 11: QA or QC (sorter); the equipment life cycle.
+  - The sorters share `js/diagrams/sortkit.js`.
+  - Illustrative, not reference data (labelled as such on screen): DQE 0.6 and 0.3; AEC transmissions and guard-timer limit; the DAP reference level (1.5 Gy cm², not a national DRL); film badge darkening; the TLD glow curve; the processing model's percentiles.
+  - Reference values used: 1 eV = 1.6 × 10⁻¹⁹ J; ionisation from about 10 eV; filament about 12 V, 5 A (as in the tube diagram); IRR17 limits of 20 mSv and 1 mSv, classification above 6 mSv, fetus 1 mSv after written notification; IPEM 91 output consistency levels of ±20% and ±50% (as in the QA checker); Z, N and decay mode for each nuclide.
+  - Need clinical or legal sign-off: the consent scenarios; the duty holders journey (it counts clinical evaluation as an operator task); the IRR17 room (designation is the employer's decision, with RPA advice; carers and comforters come under IR(ME)R).
+- Next: Rhys reviews the 63 draft lessons and the 19 new interactives (review mode only). Still waiting: review of the 249 draft questions, and sign-off of the earlier interactives and diagram upgrades.
 - Untested: offline mode. Check it once hosted on GitHub Pages, which needs the repo made public (only with Rhys's go-ahead).
 - Commit identity: Rhys Morris, using the GitHub no-reply email.
 - Rhys is a lecturer, not a developer: explain steps plainly.

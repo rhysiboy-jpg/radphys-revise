@@ -6,6 +6,7 @@ Lessons for topic 10, Radioactivity. The README explains the format.
 id: nucleus
 summary: Atomic and mass numbers, isotopes, and why some nuclei are unstable.
 areas: Nucleus and isotopes; Nuclear stability
+diagram: nuclides
 status: draft
 sources: 12-1 s2–17
 
@@ -16,6 +17,11 @@ The nucleus holds **protons** and **neutrons**. The **atomic number**, **Z**, co
 Inside the nucleus, two forces compete. The positive protons **repel** each other. The short-range **nuclear force** between nucleons **binds** them together. Neutrons add binding without adding repulsion. Light stable nuclei have roughly equal numbers of protons and neutrons; heavier ones need **proportionally more neutrons** to hold together.
 
 When the disrupting forces win, the nucleus is **unstable**. It becomes more stable by emitting radiation: an alpha or beta particle, a gamma ray, or energy passed to an orbital electron. This spontaneous emission is **radioactivity**.
+
+## Try this
+- Compare **carbon-12** and **carbon-14**: same element, but one sits off the band.
+- Predict **iodine-131** and **iodine-123**: why do two isotopes of one element decay differently?
+- Choose **radium-226**: what happens beyond lead?
 
 ## Key points
 - Z = protons (decides the element); A = protons + neutrons.

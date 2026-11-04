@@ -27,7 +27,7 @@ const PARTS = [
 const CIRCUITS = {
   p: { name: "Primary circuit", note: "low voltage", x: 10, y: 34, w: 450, h: 102 },
   s: { name: "Secondary circuit", note: "high voltage", x: 472, y: 34, w: 128, h: 300 },
-  f: { name: "Filament circuit", note: "low voltage, high current", x: 222, y: 234, w: 248, h: 100 },
+  f: { name: "Filament circuit", note: "low voltage, high current", x: 212, y: 234, w: 258, h: 100 },
 };
 const WIRES = [["mains", "switch"], ["switch", "auto"], ["auto", "timer"], ["timer", "stepup"], ["stepup", "rect"], ["rect", "tube"], ["auto", "ma"], ["ma", "stepdown"], ["stepdown", "tube"]];
 const SETTINGS = {
@@ -77,7 +77,9 @@ export function mount(root) {
     el("rect", { class: `xc-region xc-${id}`, x: c.x, y: c.y, width: c.w, height: c.h, rx: 10 }, $("regions"));
     const t = el("text", { class: "xc-region-t", x: c.x + 10, y: c.y + 18 }, $("regions"));
     t.textContent = c.name.split(" ")[0];
-    el("tspan", { class: "wide-only" }, t).textContent = ` circuit: ${c.note}`;
+    // The secondary region is narrow: its note goes on a line of its own, below the parts.
+    el("tspan", { class: "wide-only" }, t).textContent = id === "s" ? " circuit" : ` circuit: ${c.note}`;
+    if (id === "s") el("text", { class: "xc-region-t wide-only", x: c.x + 10, y: c.y + c.h - 8 }, $("regions")).textContent = c.note;
   });
   const wires = WIRES.map(([a, b]) => {
     const [ax, ay] = mid(byId[a]), [bx, by] = mid(byId[b]);

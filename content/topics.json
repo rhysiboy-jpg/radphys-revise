@@ -382,6 +382,13 @@
         "blurb": "Work out the daughter nucleus for alpha, beta-minus, beta-plus, electron capture and gamma decay.",
         "ready": true,
         "approved": false
+      },
+      {
+        "id": "nuclides",
+        "title": "The chart of nuclides",
+        "blurb": "Find nuclides against the band of stability, predict how each decays, and see the decay drawn on a close-up of the chart.",
+        "ready": true,
+        "approved": false
       }
     ]
   },
@@ -399,6 +406,20 @@
         "id": "qa-check",
         "title": "QA checker",
         "blurb": "Set a test result and see whether it is within tolerance, at the remedial level or at the suspension level; then test yourself.",
+        "ready": true,
+        "approved": false
+      },
+      {
+        "id": "qa-sort",
+        "title": "QA programme or QC test?",
+        "blurb": "Sort eleven activities into the wider QA programme or the QC tests within it.",
+        "ready": true,
+        "approved": false
+      },
+      {
+        "id": "qa-lifecycle",
+        "title": "The life of an X-ray system",
+        "blurb": "Follow a room's tube output from acceptance and commissioning through routine tests, a drift or a sudden fault, repair and retest.",
         "ready": true,
         "approved": false
       }

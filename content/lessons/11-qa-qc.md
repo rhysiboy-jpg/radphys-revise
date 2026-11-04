@@ -6,6 +6,7 @@ Lessons for topic 11, QA & QC. The README explains the format.
 id: qa-qc
 summary: The difference between QA and QC, and why a QA programme is required.
 areas: QA and QC
+diagram: qa-sort
 status: draft
 sources: 11-5 s2; 24-1 s2–4, s34
 
@@ -14,6 +15,9 @@ sources: 11-5 s2; 24-1 s2–4, s34
 **Quality control** (QC) is the **testing** part of QA: the actual measuring and monitoring of equipment performance, such as checking the tube output or the light beam alignment.
 
 A QA programme is a **legal requirement**. **IRR17** requires the employer to provide a suitable QA programme, so equipment keeps restricting exposure as far as reasonably practicable, and **IR(ME)R 2017** requires it too. It is also part of the HCPC standards of proficiency. In practice it means patients get diagnostic images without unnecessary dose, and faults are found before they affect them.
+
+## Try this
+- Sort each activity: is it part of the **programme**, or a **test** of the equipment?
 
 ## Key points
 - QA: the whole programme (responsibilities, standards, records, training).
@@ -25,6 +29,7 @@ A QA programme is a **legal requirement**. **IRR17** requires the employer to pr
 id: life-cycle
 summary: Acceptance, commissioning and routine testing.
 areas: Equipment life cycle
+diagram: qa-lifecycle
 status: draft
 sources: 24-1 s5, s8–12
 
@@ -35,6 +40,10 @@ QA follows an X-ray system through its whole life.
 **Commissioning** then measures how the equipment performs when it is working well, recording **baseline values**.
 
 **Routine performance testing** compares later results with those baselines. Equipment drifts over time, so this detects **gradual deterioration** before it affects patients. After a repair, a further test confirms that the fault has been put right.
+
+## Try this
+- Step through the **gradual drift**: when does routine testing catch it, and what happens next?
+- Now the **sudden fault**: why is this one handled differently?
 
 ## Key points
 - Acceptance: does new equipment meet its specification, and is it safe?
