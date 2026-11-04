@@ -731,3 +731,19 @@ details.try[open] summary::after { content: " −"; }
 .tw-tube.sel { fill: none; }
 .tw-tube.sel, .tw-tube.sel.shaded { stroke: var(--dg-accent); }
 .tw-band { pointer-events: none; }
+
+/* ---------- Activities: justify it? ---------- */
+.just-stage { align-content: start; gap: 12px; padding: 16px; }
+.request { background: var(--raised); border: 1px solid var(--edge); border-left: 6px solid var(--dg-accent); border-radius: var(--r-row); padding: 16px 18px; display: grid; gap: 10px; }
+.request-head { font: 650 1rem var(--font-display); letter-spacing: 0.02em; text-transform: uppercase; color: var(--muted); }
+.request dl { margin: 0; display: grid; gap: 10px; }
+.request dt { font-size: 0.8rem; color: var(--muted); }
+.request dd { margin: 0; font-size: 1.05rem; font-weight: 500; }
+.just-choices { display: grid; gap: 8px; }
+.just-opt { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 12px; text-align: left; min-height: 48px; padding: 10px 14px; font-weight: 500; }
+.just-opt:disabled { opacity: 1; cursor: default; }
+.just-opt .tagline { font-size: 0.82rem; font-weight: 600; }
+.just-opt.is-correct { border-color: var(--good); background: var(--good-tint); color: var(--ink); }
+.just-opt.is-correct .tagline { color: var(--good); }
+.just-opt.is-wrong { border-color: var(--bad); background: var(--bad-tint); color: var(--ink); }
+.just-opt.is-wrong .tagline { color: var(--bad); }

@@ -117,6 +117,13 @@
         "blurb": "Explore tissue weighting factors on a cartoon body, put an area in the beam, and rank the organs.",
         "ready": true,
         "approved": false
+      },
+      {
+        "id": "justify",
+        "title": "Justify it?",
+        "blurb": "Eight imaging requests: go ahead, suggest another test, no imaging, or get more information first?",
+        "ready": true,
+        "approved": false
       }
     ]
   },
