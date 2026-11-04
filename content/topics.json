@@ -103,6 +103,13 @@
         "blurb": "Predict, then see, how the chance and severity of stochastic and deterministic effects change with dose.",
         "ready": true,
         "approved": false
+      },
+      {
+        "id": "population-risk",
+        "title": "One in a million",
+        "blurb": "Give a population the same dose and see how many radiation-induced cancers to expect, and why nobody can say who.",
+        "ready": true,
+        "approved": false
       }
     ]
   },

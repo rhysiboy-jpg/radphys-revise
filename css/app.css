@@ -703,3 +703,11 @@ details.try[open] summary::after { content: " −"; }
 .dr-dot { fill: var(--ink); stroke: var(--surface); stroke-width: 1.5; }
 .predict .match-row label { flex-basis: 10em; }
 .predict .match-row .select { width: 100%; }   /* long options would otherwise widen the panel on a phone */
+
+/* ---------- Diagrams: population grid ---------- */
+.pop-canvas { width: 100%; height: auto; display: block; border-radius: 8px; outline: 1px solid var(--line); }
+.legend i.pop-key { width: 10px; height: 10px; border: 0; border-radius: 50%; background: var(--muted); }
+.legend i.pop-key.case { width: 14px; height: 14px; background: var(--photon); }
+.legend i.pop-key.bg { background: var(--line); }
+.check-row { display: flex; gap: 10px; align-items: center; font-size: 0.95rem; cursor: pointer; }
+.check-row input { width: 20px; height: 20px; accent-color: var(--ink); }
