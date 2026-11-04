@@ -148,6 +148,14 @@ Confirmed with Rhys Morris, 29 October 2026.
   - Illustrative, not reference data (labelled as such on screen): DQE 0.6 and 0.3; AEC transmissions and guard-timer limit; the DAP reference level (1.5 Gy cm², not a national DRL); film badge darkening; the TLD glow curve; the processing model's percentiles.
   - Reference values used: 1 eV = 1.6 × 10⁻¹⁹ J; ionisation from about 10 eV; filament about 12 V, 5 A (as in the tube diagram); IRR17 limits of 20 mSv and 1 mSv, classification above 6 mSv, fetus 1 mSv after written notification; IPEM 91 output consistency levels of ±20% and ±50% (as in the QA checker); Z, N and decay mode for each nuclide.
   - Need clinical or legal sign-off: the consent scenarios; the duty holders journey (it counts clinical evaluation as an operator task); the IRR17 room (designation is the employer's decision, with RPA advice; carers and comforters come under IR(ME)R).
+- Six improvements from an outside review (4 November 2026, at Rhys's request). Three other suggestions from that review were already built: the expandable results review, the theme switch, and retrying missed questions.
+  - **Content checker:** `node tools/validate.mjs` checks the content, the diagram registry and the offline file list. It found `sortkit.js` missing from the offline list on its first run.
+  - **Phone menu:** closes on any link (including one to the current page) and on Escape.
+  - **Keyboard in practice:** number keys pick an option by its position (not A–D, because options are shuffled), Enter checks, and Enter on the feedback moves on. A hint shows only on devices with a mouse.
+  - **Progress backup:** a file saved and loaded from Home, merged so newer work on the device is kept. Nothing goes to a server.
+  - **Offline copy:** spreadsheets and lessons are cached from `topics.json`, and a "new version is ready" notice offers a refresh rather than reloading by itself.
+  - **Number entry:** accepts scientific notation (3e8, 1.5 × 10^-2), fractions, thousands commas and a unit typed after the number. An answer turned upside down (1/4 for 4) gets its own hint.
+  - **Deferred:** exam practice mode (planned for April–May; its question mix should follow the real exam format, which Rhys will confirm); Welsh, until Canolfan Bedwyr replies; slider − / + buttons, perhaps on the kV and distance sliders only.
 - Next: Rhys reviews the 63 draft lessons and the 19 new interactives (review mode only). Still waiting: review of the 249 draft questions, and sign-off of the earlier interactives and diagram upgrades.
 - Untested: offline mode. Check it once hosted on GitHub Pages, which needs the repo made public (only with Rhys's go-ahead).
 - Commit identity: Rhys Morris, using the GitHub no-reply email.
