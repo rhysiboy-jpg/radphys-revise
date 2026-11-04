@@ -46,7 +46,7 @@ RadPhys Revise is a revision app for first-year diagnostic radiography physics (
 1. Write `js/diagrams/<name>.js`, following an existing module of the same kind.
 2. Register it in `DIAGRAMS` in `js/app.js`.
 3. Add it to the topic's `diagrams` in `content/topics.json` with `"ready": true, "approved": false`.
-4. Add the file to `CORE` in `sw.js`.
+4. Add the file to `CORE` in `sw.js`. Every script needs listing there; spreadsheets and lessons are cached from `topics.json` automatically.
 5. Bump `VERSION` in `sw.js`.
 6. Attach it to a lesson with a `diagram:` line, and add a `## Try this` list.
 
@@ -60,6 +60,8 @@ RadPhys Revise is a revision app for first-year diagnostic radiography physics (
 - **Code comments:** say why, not what. Each diagram module opens with a comment describing what it shows and what is simplified.
 
 ## Checking your work
+
+- **Run the checker first:** `node tools/validate.mjs`. It checks every content file, the diagram registry and the offline file list, and exits with 1 if there are problems. Fix all problems before committing.
 
 - **Preview:** run `powershell -ExecutionPolicy Bypass -File tools\serve.ps1`, then open http://localhost:8080. Opening `index.html` directly doesn't work.
 - **Test widths:** check at phone width (375px) and desktop width. Look for clipped or overlapping labels, sideways scrolling and console errors, and try every control.

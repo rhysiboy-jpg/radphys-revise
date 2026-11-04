@@ -6,7 +6,7 @@ import CALCULATIONS from "../content/calculations.js";
 
 const LETTERS = ["a", "b", "c", "d", "e"];
 
-function fromRow(row, topicId) {
+export function fromRow(row, topicId) {
   const type = (row.type || "mcq").toLowerCase();
   const base = {
     id: row.id,
@@ -46,7 +46,7 @@ function fromRow(row, topicId) {
   return { ...base, kind: "mcq", options, answer: (row.answer || "").toUpperCase(), ...critique };
 }
 
-function isValid(q) {
+export function isValid(q) {
   if (!q.id || !q.question) return false;
   if (q.kind === "mcq") return q.options.length >= 2 && q.options.some(o => o.key === q.answer);
   if (q.kind === "written") return q.points.length > 0;

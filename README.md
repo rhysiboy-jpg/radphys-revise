@@ -98,7 +98,17 @@ In `js/config.js`:
 
 The app is a plain static website with no build step. It's published to GitHub Pages: upload the whole folder (except `prototypes/`) to a GitHub repository, then turn on Pages. Claude will walk you through this before the pilot.
 
-After changing files, bump `VERSION` in `sw.js` so phones pick up the changes promptly. They update in the background otherwise.
+Before publishing, check the content. In PowerShell, from the project folder, run:
+
+```
+node tools/validate.mjs
+```
+
+It reads every spreadsheet, lesson and calculation the way the app does, and lists anything wrong in plain English. It changes nothing.
+- **Problems** stop a question from working: a duplicate id, a wrong answer letter, missing marking points, or a link to a diagram that doesn't exist.
+- **Warnings** are worth a look, but the app copes with them.
+
+After changing files, bump `VERSION` in `sw.js`. Anyone with the app open then sees "A new version is ready", with a Refresh button. New spreadsheets and lesson files listed in `content/topics.json` are saved for offline use automatically.
 
 ## Previewing on your computer
 
