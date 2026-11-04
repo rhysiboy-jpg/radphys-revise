@@ -3,6 +3,8 @@ import { CONFIG } from "./config.js";
 import { loadContent } from "./content.js";
 import { getProgress, record, resetProgress, lastResult, MAX_BOX } from "./store.js";
 import { buildSet, shuffle, parseNumber, isNumericCorrect } from "./quiz.js";
+import { FIGURES, drawFigure } from "./figures.js";
+import { drawCritique } from "./critique.js";
 
 const DIAGRAMS = {
   tube: () => import("./diagrams/tube.js"),
@@ -45,6 +47,11 @@ const MARKS = {
   right: '<svg class="mark" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3.2 3.2L13 4.8" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
   wrong: '<svg class="mark" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>',
 };
+const ordinal = n => `${n}${n === 1 ? "st" : n === 2 ? "nd" : n === 3 ? "rd" : "th"}`;
+// The verdict for a question marked in parts (order, match, label): "All 5 matched", "3 of 5 matched".
+const verdict = (got, n, what) => got === n
+  ? `<p class="verdict good">${MARKS.right}All ${n} ${what}</p>`
+  : `<p class="verdict ${got / n >= 0.4 ? "self" : "bad"}">${got / n >= 0.4 ? "" : MARKS.wrong}${got} of ${n} ${what}</p>`;
 
 // current: the active link is this page (aria-current). Otherwise it is only highlighted, e.g. a topic while practising it.
 function nav(active, current = true) {
@@ -339,6 +346,7 @@ function practise(scope, area = null, retry = null) {
       let cls = "wait", label = "–";
       if (r) {
         if (r.kind === "self") { cls = "self"; label = `${r.ticked} of ${r.q.points.length} points`; }
+        else if (r.of) { cls = r.score >= 0.7 ? "good" : r.score >= 0.4 ? "self" : "bad"; label = `${r.score === 1 ? MARKS.right : ""}${r.got} of ${r.of}`; }
         else if (r.score) { cls = "good"; label = `${MARKS.right}Right`; }
         else { cls = "bad"; label = `${MARKS.wrong}Not quite`; }
       } else if (k === i && q) { cls = "now"; label = "Now"; }
@@ -374,16 +382,51 @@ function practise(scope, area = null, retry = null) {
     const stem = inst ? esc(inst.question) : text(q.question);
 
     let body = "";
+    // Order, match and label: the student's arrangement, kept for marking.
+    let order = null, choices = null;
+    const fig = q.kind === "label" ? FIGURES[q.figure] : null;
+    const figLabels = fig ? (q.labels.length ? q.labels : fig.labels) : null;
+    const pickRows = (rows, answers) => {
+      const opts = shuffle([...new Set(answers)]);
+      return `<div class="match-list" data-role="rows">${rows.map((r, k) => `<div class="match-row" data-k="${r.k}">
+          <label for="pick-${k}">${r.label}</label>
+          <select id="pick-${k}" class="select"><option value="">Choose…</option>${opts.map(o => `<option>${esc(o)}</option>`).join("")}</select>
+          <span class="tagline"></span></div>`).join("")}</div>`;
+    };
+    if (q.kind === "order") {
+      // Shuffled, but never already in the right order.
+      do order = shuffle(q.items.map((_, k) => k)); while (order.every((v, k) => v === k));
+      body = `<p class="muted q-hint">Move each step into place with its arrows, first at the top.</p>
+        <ol class="order-list" data-role="order">${order.map(k => `<li class="order-item" data-item="${k}">
+          <span class="order-t">${text(q.items[k])}</span>
+          <span class="order-btns"><button type="button" data-move="-1" aria-label="Move up: ${esc(q.items[k])}">↑</button><button type="button" data-move="1" aria-label="Move down: ${esc(q.items[k])}">↓</button></span>
+          <span class="tagline"></span></li>`).join("")}</ol>
+        <p class="sr" aria-live="polite" data-role="moved"></p>
+        <div class="controls"><button type="button" class="primary" data-role="check">Check order</button></div>`;
+    } else if (q.kind === "match") {
+      choices = shuffle(q.pairs.map((p, k) => ({ k, label: text(p.left) })));
+      body = `${pickRows(choices, [...q.pairs.map(p => p.right), ...q.spares])}
+        <div class="controls"><button type="button" class="primary" data-role="check" disabled>Check answers</button></div>`;
+    } else if (q.kind === "label") {
+      choices = figLabels.map((_, k) => ({ k, label: `Label ${k + 1}` }));
+      body = `<figure class="stage q-fig"><svg role="img" aria-labelledby="qf-t"><title id="qf-t">${esc(fig.title)}, with ${figLabels.length} numbered labels</title></svg>
+          <figcaption class="scale-note">${esc(fig.note)}</figcaption></figure>
+        ${pickRows(choices, [...figLabels, ...q.spares])}
+        <div class="controls"><button type="button" class="primary" data-role="check" disabled>Check labels</button></div>`;
+    }
+    if (q.critique) {
+      body = `<figure class="q-fig crit"><canvas class="xray" role="img"></canvas><figcaption class="crit-cap" data-role="crit-cap"></figcaption></figure>`;
+    }
     if (q.kind === "mcq") {
       const opts = shuffle(q.options);
-      body = `<fieldset data-role="opts"><legend class="sr">Choose one answer</legend>${opts.map(o =>
+      body += `<fieldset data-role="opts"><legend class="sr">Choose one answer</legend>${opts.map(o =>
         `<label class="opt" data-key="${o.key}"><input type="radio" name="opt" value="${o.key}"><span>${text(o.text)}</span><span class="tagline"></span></label>`).join("")}</fieldset>
         <div class="controls"><button type="button" class="primary" data-role="check" disabled>Check answer</button></div>`;
     } else if (q.kind === "numeric") {
       body = `<div class="field"><label for="num">Your answer</label>
         <div class="num-row"><input type="text" id="num" inputmode="decimal" autocomplete="off"><span class="unit">${esc(inst.unit)}</span></div></div>
         <div class="controls"><button type="button" class="primary" data-role="check" disabled>Check answer</button></div>`;
-    } else {
+    } else if (q.kind === "written") {
       body = `<div class="field"><label for="written">Your answer</label><p class="muted" style="font-size:.9rem">Write it as you would in the exam. Only you will see it. Then compare it with the model answer and mark yourself.</p>
         <textarea id="written"></textarea></div>
         <div class="controls"><button type="button" class="primary" data-role="check">Compare with model answer</button></div>`;
@@ -454,7 +497,7 @@ function practise(scope, area = null, retry = null) {
       };
       check.addEventListener("click", submit);
       input.addEventListener("keydown", e => { if (e.key === "Enter") submit(); });
-    } else {
+    } else if (q.kind === "written") {
       check.addEventListener("click", () => {
         card.querySelector("#written").readOnly = true;
         check.parentElement.remove();
@@ -477,6 +520,78 @@ function practise(scope, area = null, retry = null) {
           finish();
         });
       });
+    } else if (q.kind === "order") {
+      const list = card.querySelector('[data-role="order"]'), said = card.querySelector('[data-role="moved"]');
+      const items = () => [...list.children];
+      const refresh = () => items().forEach((li, k, all) => {
+        li.querySelector('[data-move="-1"]').disabled = k === 0;
+        li.querySelector('[data-move="1"]').disabled = k === all.length - 1;
+      });
+      list.addEventListener("click", e => {
+        const btn = e.target.closest("[data-move]");
+        if (!btn || btn.disabled) return;
+        const li = btn.closest("li"), up = btn.dataset.move === "-1";
+        if (up) list.insertBefore(li, li.previousElementSibling); else list.insertBefore(li.nextElementSibling, li);
+        refresh();
+        const pos = items().indexOf(li) + 1;
+        said.textContent = `${q.items[li.dataset.item]}: now ${pos} of ${q.items.length}`;
+        (btn.disabled ? li.querySelector(`[data-move="${up ? 1 : -1}"]`) : btn).focus();   // keep the focus on the step that moved
+      });
+      refresh();
+      check.addEventListener("click", () => {
+        const given = items().map(li => +li.dataset.item);
+        const got = given.filter((v, k) => v === k).length, n = given.length, score = got / n;
+        record(q.id, score);
+        items().forEach((li, k) => {
+          const ok = +li.dataset.item === k;
+          li.classList.add(ok ? "is-correct" : "is-wrong");
+          li.querySelector(".order-btns").remove();
+          li.querySelector(".tagline").innerHTML = ok ? `${MARKS.right}Right place` : `${MARKS.wrong}Belongs ${ordinal(+li.dataset.item + 1)}`;
+        });
+        list.classList.add("locked");
+        check.parentElement.remove();
+        const right = `<ol class="working">${q.items.map(s => `<li>${text(s)}</li>`).join("")}</ol>`;
+        const review = `<p><b>Your order:</b></p><ol class="working">${given.map((v, k) => `<li>${v === k ? MARKS.right : MARKS.wrong} ${text(q.items[v])}</li>`).join("")}</ol>
+          ${score < 1 ? `<p><b>Right order:</b></p>${right}` : ""}`;
+        results.push({ q, score, kind: "auto", got, of: n, review });
+        fb.innerHTML = `${verdict(got, n, "in the right place")}${score < 1 ? `<p><b>The right order:</b></p>${right}` : ""}
+          ${q.explanation ? `<p>${text(q.explanation)}</p>` : ""}${diagramLink}${nextBtn}`;
+        finish();
+      });
+    } else if (q.kind === "match" || q.kind === "label") {
+      const rows = [...card.querySelectorAll(".match-row")];
+      const want = k => q.kind === "match" ? q.pairs[k].right : figLabels[k];
+      const name = k => q.kind === "match" ? q.pairs[k].left : `Label ${k + 1}`;
+      card.querySelector('[data-role="rows"]').addEventListener("change", () => {
+        check.disabled = rows.some(r => !r.querySelector("select").value);
+      });
+      if (q.kind === "label") {
+        drawFigure(card.querySelector(".q-fig svg"), q.figure);
+        cleanups.push(trackScale(card));
+      }
+      check.addEventListener("click", () => {
+        const marks = rows.map(r => {
+          const k = +r.dataset.k, sel = r.querySelector("select"), ok = sel.value === want(k);
+          sel.disabled = true;
+          r.classList.add(ok ? "is-correct" : "is-wrong");
+          r.querySelector(".tagline").innerHTML = ok ? `${MARKS.right}Right` : `${MARKS.wrong}Answer: ${esc(want(k))}`;
+          return { k, ok, given: sel.value };
+        }).sort((a, b) => a.k - b.k);
+        const got = marks.filter(m => m.ok).length, n = marks.length, score = got / n;
+        record(q.id, score);
+        check.parentElement.remove();
+        const review = `<ul class="working plain">${marks.map(m => `<li>${m.ok ? MARKS.right : MARKS.wrong} <b>${esc(name(m.k))}:</b> ${esc(m.given)}${m.ok ? "" : ` · <b>answer:</b> ${esc(want(m.k))}`}</li>`).join("")}</ul>`;
+        results.push({ q, score, kind: "auto", got, of: n, review });
+        fb.innerHTML = `${verdict(got, n, q.kind === "label" ? "labels right" : "matched")}
+          ${q.explanation ? `<p>${text(q.explanation)}</p>` : ""}${diagramLink}${nextBtn}`;
+        finish();
+      });
+    }
+    if (q.critique) {
+      const canvas = card.querySelector(".q-fig canvas"), shot = drawCritique(canvas, q.critique);
+      canvas.setAttribute("aria-label", shot.alt);
+      card.querySelector('[data-role="crit-cap"]').innerHTML = `${esc(shot.settings)}${shot.ei ? `<br><b>${esc(shot.ei)}</b>` : ""}`;
+      if (!shot.ei) card.querySelector('[data-role="crit-cap"]').textContent = "Judge the image itself: no settings shown.";
     }
   }
 
@@ -493,6 +608,8 @@ function practise(scope, area = null, retry = null) {
         if (opt(r.chosen)?.feedback) parts.push(`<p class="why"><span><b>Why not:</b> ${text(opt(r.chosen).feedback)}</span></p>`);
       }
       parts.push(`<p><b>Correct answer:</b> ${text(opt(q.answer)?.text)}</p>`);
+    } else if (r.review) {
+      parts.push(r.review);
     } else if (r.inst) {
       parts.push(`<p><b>Your answer:</b> ${esc(r.given)} ${esc(r.inst.unit)} · <b>Answer:</b> ${r.answerText} ${esc(r.inst.unit)}</p>`,
         `<ol class="working">${r.inst.working.map(w => `<li>${esc(w)}</li>`).join("")}</ol>`);
@@ -513,8 +630,10 @@ function practise(scope, area = null, retry = null) {
 
     const rows = results.map(r => {
       const good = r.score >= 0.7;
-      const cls = r.kind === "self" ? "self" : good ? "good" : "bad";
-      const label = r.kind === "self" ? `${r.ticked} of ${r.q.points.length} points` : good ? `${MARKS.right}Right` : `${MARKS.wrong}Not quite`;
+      const cls = r.kind === "self" ? "self" : good ? "good" : r.of && r.score >= 0.4 ? "self" : "bad";
+      const label = r.kind === "self" ? `${r.ticked} of ${r.q.points.length} points`
+        : r.of ? `${r.score === 1 ? MARKS.right : ""}${r.got} of ${r.of} right`
+        : good ? `${MARKS.right}Right` : `${MARKS.wrong}Not quite`;
       const stem = r.stem || r.q.question;
       return `<li><details><summary><span class="res ${cls}">${label}</span><span class="stem">${esc(stem.length > 140 ? stem.slice(0, 137) + "…" : stem)}</span></summary>
         <div class="detail">${detail(r)}</div></details></li>`;

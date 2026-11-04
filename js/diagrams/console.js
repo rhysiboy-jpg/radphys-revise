@@ -9,17 +9,17 @@
 import { W, H, limb, grain as noiseField, blur } from "./limb.js";
 
 const MAS = [0.5, 0.63, 0.8, 1, 1.25, 1.6, 2, 2.5, 3.2, 4, 5, 6.3, 8, 10, 12.5, 16, 20, 25, 32, 40, 50, 63, 80, 100, 125, 160];
-const EI_TARGET = 300, EI_LOW = 240, EI_HIGH = 380;     // an illustrative departmental range (deviation index ±1)
+export const EI_TARGET = 300, EI_LOW = 240, EI_HIGH = 380;     // an illustrative departmental range (deviation index ±1)
 const MA = { fine: 250, broad: 500 };                    // illustrative tube current limits for each focal spot
 const SPOT = { fine: 0.6, broad: 1.2 };                  // focal spot sizes in mm, as in the lecture
 
 // Suggested settings for each body part. t: thickness (cm), ord: object–receptor distance (cm).
-const PARTS = {
+export const PARTS = {
   hand: { name: "Hand, PA", t: 3, kv: 55, mas: 2.5, grid: false, spot: "fine", ord: 1 },
   knee: { name: "Knee, AP", t: 11, kv: 65, mas: 8, grid: false, spot: "fine", ord: 4 },
   pelvis: { name: "Pelvis, AP", t: 20, kv: 75, mas: 32, grid: true, spot: "broad", ord: 8 },
 };
-const FRD0 = 100;
+export const FRD0 = 100;
 
 // "What do I do?" (lecture: Exposure, slides 29–34). Factors are multipliers on the body part's suggested setting.
 const CASES = [

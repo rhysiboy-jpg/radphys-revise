@@ -1,5 +1,6 @@
 // Loads the topic list, the question spreadsheets and the calculation templates.
 import { parseCSV } from "./csv.js";
+import { FIGURES } from "./figures.js";
 import CALCULATIONS from "../content/calculations.js";
 
 const LETTERS = ["a", "b", "c", "d", "e"];
@@ -16,6 +17,21 @@ function fromRow(row, topicId) {
     explanation: row.explanation || "",
     diagram: row.diagram || "",
   };
+  const list = v => (v || "").split("|").map(x => x.trim()).filter(Boolean);
+  // Put in order: items are written in the right order and shown shuffled.
+  if (type === "order") return { ...base, kind: "order", items: list(row.items) };
+  // Match: each item is "left = right"; spares are extra right-hand answers that match nothing.
+  if (type === "match") {
+    const pairs = list(row.items).map(it => {
+      const k = it.indexOf("=");
+      return k < 0 ? null : { left: it.slice(0, k).trim(), right: it.slice(k + 1).trim() };
+    }).filter(Boolean);
+    return { ...base, kind: "match", pairs, spares: list(row.spares) };
+  }
+  // Label the diagram: a figure from js/figures.js; items (optional) replace its own labels, in marker order.
+  if (type === "label") return { ...base, kind: "label", figure: (row.figure || "").trim(), labels: list(row.items), spares: list(row.spares) };
+  // Image critique: a single-best-answer question with a simulated image drawn from the settings in "figure".
+  const critique = type === "critique" ? { critique: (row.figure || "").trim() } : {};
   if (type === "written") {
     return {
       ...base, kind: "written",
@@ -26,13 +42,17 @@ function fromRow(row, topicId) {
   const options = LETTERS
     .map(l => ({ key: l.toUpperCase(), text: row["option_" + l] || "", feedback: row["feedback_" + l] || "" }))
     .filter(o => o.text);
-  return { ...base, kind: "mcq", options, answer: (row.answer || "").toUpperCase() };
+  return { ...base, kind: "mcq", options, answer: (row.answer || "").toUpperCase(), ...critique };
 }
 
 function isValid(q) {
   if (!q.id || !q.question) return false;
   if (q.kind === "mcq") return q.options.length >= 2 && q.options.some(o => o.key === q.answer);
   if (q.kind === "written") return q.points.length > 0;
+  if (q.kind === "order") return q.items.length >= 3;
+  if (q.kind === "match") return q.pairs.length >= 3;
+  // A label question needs a known figure, and any labels it gives must match the figure's number of markers.
+  if (q.kind === "label") return !!FIGURES[q.figure] && (!q.labels.length || q.labels.length === FIGURES[q.figure].labels.length);
   return true;
 }
 

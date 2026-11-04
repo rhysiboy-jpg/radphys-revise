@@ -243,6 +243,35 @@ fieldset { border: 0; margin: 0; padding: 0; display: grid; gap: 8px; min-width:
 .opt.is-correct .tagline { color: var(--good); }
 .opt.is-wrong { border-color: var(--bad); background: var(--bad-tint); }
 .opt.is-wrong .tagline { color: var(--bad); }
+/* Put in order, match and label: rows like the answer options, marked the same way (mark and words, never colour alone). */
+.q-hint { font-size: 0.9rem; margin: -8px 0 0; }
+.order-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; counter-reset: step; }
+.order-item, .match-row { display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; padding: 10px 12px 10px 16px; border: 1px solid var(--edge); border-radius: var(--r-row); background: var(--raised); }
+.order-item { counter-increment: step; }
+.order-item::before { content: counter(step); font: 650 0.95rem var(--font-display); color: var(--muted); min-width: 1.2em; }
+.order-t { flex: 1 1 0; min-width: 0; }
+.order-btns { display: inline-flex; gap: 6px; margin-left: auto; }
+.order-btns button { min-width: 44px; min-height: 44px; padding: 0; font-size: 1.1rem; }
+.order-btns button:disabled { opacity: 0.35; }
+.match-list { display: grid; gap: 8px; }
+.match-row label { flex: 1 1 14em; min-width: 0; font-weight: 500; }
+.match-row .select { flex: 1 1 14em; width: auto; min-width: 0; }
+.match-row .select:disabled { opacity: 1; color: var(--ink); }
+.order-item .tagline, .match-row .tagline { flex-basis: 100%; font-size: 0.85rem; font-weight: 600; display: inline-flex; gap: 6px; align-items: center; }
+.order-item .tagline:empty, .match-row .tagline:empty { display: none; }
+.order-item.is-correct, .match-row.is-correct { border-color: var(--good); background: var(--good-tint); }
+.order-item.is-correct .tagline, .match-row.is-correct .tagline { color: var(--good); }
+.order-item.is-wrong, .match-row.is-wrong { border-color: var(--bad); background: var(--bad-tint); }
+.order-item.is-wrong .tagline, .match-row.is-wrong .tagline { color: var(--bad); }
+.working.plain { list-style: none; padding-left: 0; }
+.working .mark { vertical-align: -2px; }
+.q-fig { margin: 0; display: grid; gap: 8px; }
+.fig-pd { fill: var(--dg-accent); fill-opacity: 0.35; stroke: var(--dg-accent); stroke-width: 1; }
+.fig-tft { fill: var(--lead); }
+.fig-flux { fill: none; stroke: var(--dg-accent); stroke-width: 2.5; stroke-dasharray: 7 5; }
+.q-fig.crit { max-width: 520px; }
+.crit-cap { font-size: 0.9rem; color: var(--muted); }
+.crit-cap b { color: var(--ink); font-weight: 600; }
 .locked .opt { cursor: default; }
 .locked .opt:hover { border-color: var(--edge); }
 .locked .opt.is-correct:hover { border-color: var(--good); }
