@@ -30,6 +30,9 @@ const DIAGRAMS = {
   detectors: () => import("./diagrams/detectors.js"),
   geometry: () => import("./diagrams/geometry.js"),
   "qa-check": () => import("./diagrams/qa.js"),
+  "xray-circuit": () => import("./diagrams/xcircuit.js"),
+  "ohms-law": () => import("./diagrams/ohm.js"),
+  conductors: () => import("./diagrams/conductors.js"),
   "em-spectrum": () => import("./diagrams/emspectrum.js"),
   "electron-energy": () => import("./diagrams/energy.js"),
 };

@@ -6,6 +6,7 @@ Lessons for topic 2, Electricity & X-ray Circuits. The README explains the forma
 id: charge
 summary: Positive and negative charge, how objects become charged, and why metals conduct.
 areas: Charge; Conductors and insulators
+diagram: conductors
 status: draft
 sources: 5-1 s5–7
 
@@ -19,6 +20,11 @@ An object becomes charged by gaining or losing electrons, in three ways:
 
 In a **conductor**, such as a metal, the outermost electrons are loosely bound and free to move through the material, so charge can flow. In an **insulator** the electrons are held tightly (a higher binding energy), so charge can't flow freely. The oil and glass of an X-ray tube are insulators; the copper wiring is a conductor.
 
+## Try this
+- Make both charges negative, then make one positive: like charges repel, unlike charges attract.
+- Turn the voltage on across **copper**: the free electrons drift towards the positive end.
+- Switch to **glass** or **oil**: the electrons stay with their atoms, so no current flows.
+
 ## Key points
 - Like charges repel; unlike charges attract.
 - Objects are charged by friction, conduction or induction.
@@ -28,6 +34,7 @@ In a **conductor**, such as a metal, the outermost electrons are loosely bound a
 id: circuits
 summary: Volts, amps and ohms, and Ohm's law.
 areas: Potential difference and current; Resistance
+diagram: ohms-law
 status: draft
 sources: 5-1 s8–11
 
@@ -38,6 +45,11 @@ sources: 5-1 s8–11
 **Resistance** is the opposition to current, measured in **ohms**. It increases with the length of a wire and decreases with its thickness, so a long, thin wire has the highest resistance. Pushing current through a resistance turns energy into **heat**: a loss in most of the circuit, but exactly what heats the X-ray tube filament.
 
 **Ohm's law**: for a conductor at constant temperature, the current is **directly proportional** to the potential difference. Double the voltage and the current doubles; the ratio between them is the resistance.
+
+## Try this
+- Double the voltage: the current doubles, and the point moves along a straight line through the origin.
+- Make the wire **longer**, then **thicker**: watch the resistance rise, then fall.
+- Push a large current through a thin wire and see how much energy becomes heat.
 
 ## Key points
 - Potential difference: energy per unit charge, in volts (J/C).
@@ -102,6 +114,7 @@ The dip between peaks is called **ripple**. While the voltage is well below the 
 id: x-ray-circuit
 summary: The primary, secondary and filament circuits, and what sits in each.
 areas: The X-ray circuit
+diagram: xray-circuit
 status: draft
 sources: 5-3 s16–19
 
@@ -114,6 +127,11 @@ The **secondary circuit** is the high-voltage side. The **step-up transformer** 
 The **filament circuit** has a **step-down transformer**, giving a low voltage and a high current to heat the filament for **thermionic emission**. Its setting controls the filament temperature, and so the **mA**.
 
 Putting it together: the **kVp** is selected in the primary circuit and produced in the secondary circuit, while the **mA** is set through the filament circuit.
+
+## Try this
+- Choose **Select the kVp**: it is chosen in the primary circuit and produced in the secondary.
+- Choose **Select the mA**: it is set through the filament circuit.
+- Tap each part to read what it does and which circuit it belongs to.
 
 ## Key points
 - Primary (low voltage): main switch, exposure switch, timer, autotransformer, kVp and mA selectors.

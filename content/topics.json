@@ -55,6 +55,27 @@
         "blurb": "Turn AC into the one-way voltage the tube needs, from half-wave to high-frequency, and compare the ripple.",
         "ready": true,
         "approved": false
+      },
+      {
+        "id": "conductors",
+        "title": "Charges, conductors and insulators",
+        "blurb": "Make two charges attract or repel, then put a voltage across copper, tungsten, glass, oil or rubber and see whether the electrons flow.",
+        "ready": true,
+        "approved": false
+      },
+      {
+        "id": "ohms-law",
+        "title": "Volts, amps and ohms",
+        "blurb": "Set the voltage and the length and thickness of a wire, and watch the current and heat follow Ohm's law.",
+        "ready": true,
+        "approved": false
+      },
+      {
+        "id": "xray-circuit",
+        "title": "The X-ray circuit",
+        "blurb": "A block diagram of the primary, secondary and filament circuits: tap each part, or follow how kVp, mA and time are set.",
+        "ready": true,
+        "approved": false
       }
     ]
   },

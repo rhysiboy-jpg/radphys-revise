@@ -829,3 +829,38 @@ details.try[open] summary::after { content: " −"; }
 .em-ion { fill: var(--heat); opacity: 0.55; }
 .em-dx { stroke: var(--photon); stroke-width: 4; stroke-linecap: round; }
 .em-mark { stroke: var(--ink); stroke-width: 1.6; stroke-dasharray: 4 3; }
+
+/* Charge, conductors and insulators */
+.cd-strip { fill: var(--vacuum); stroke: var(--line); stroke-width: 1.5; }
+.cd-atom { fill: var(--metal); opacity: 0.55; }
+.cd-pos { fill: var(--copper); }
+.cd-sign { font: 700 18px var(--font-body); fill: var(--on-electron); text-anchor: middle; dominant-baseline: central; --fs: 18px; --min-fs: 0px; }
+.cd-force { fill: none; stroke: var(--ink); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+
+/* Ohm's law */
+.oh-loop { fill: none; stroke: var(--copper); stroke-width: 3; }
+.oh-wire { fill: var(--tungsten); }
+.oh-heat { fill: var(--heat); transition: opacity 0.2s; }
+.oh-batt-gap { fill: var(--surface); }
+.oh-cell { stroke: var(--ink); stroke-width: 3; }
+.oh-cell.short { stroke-width: 6; }
+.oh-meter { fill: var(--surface); stroke: var(--ink); stroke-width: 2; }
+.oh-a { fill: var(--ink); }
+.oh-line { stroke: var(--dg-accent); stroke-width: 2.4; }
+.oh-pt { fill: var(--dg-accent); }
+
+/* The X-ray circuit */
+.xc-region { fill: none; stroke-width: 1.5; stroke-dasharray: 6 4; }
+.xc-p { stroke: var(--electron); }
+.xc-s { stroke: var(--photon); }
+.xc-f { stroke: var(--heat); }
+.xc-region-t { font: 600 12px var(--font-body); fill: var(--muted); --fs: 12px; }
+.xc-wire { fill: none; stroke: var(--line); stroke-width: 3; }
+.xc-wire.on { stroke: var(--dg-accent); }
+.xc-part { cursor: pointer; }
+.xc-part rect { fill: var(--surface); stroke: var(--ink); stroke-width: 1.4; }
+.xc-part.on rect { stroke: var(--dg-accent); stroke-width: 3; fill: color-mix(in srgb, var(--dg-accent) 10%, var(--surface)); }
+.xc-t { font: 600 12px var(--font-body); fill: var(--ink); text-anchor: middle; --fs: 12px; }
+.xc-part .badge circle { fill: var(--ink); }
+.xc-part.on .badge circle { fill: var(--dg-accent); }
+.xc-part.on .badge text { fill: var(--dg-accent-ink); }
