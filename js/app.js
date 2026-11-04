@@ -18,6 +18,7 @@ const DIAGRAMS = {
   "dose-ladder": () => import("./diagrams/dose.js"),
   sorter: () => import("./diagrams/sorter.js"),
   "cell-damage": () => import("./diagrams/cell.js"),
+  "dose-response": () => import("./diagrams/doseresponse.js"),
   halflife: () => import("./diagrams/halflife.js"),
   decay: () => import("./diagrams/decay.js"),
   transformer: () => import("./diagrams/transformer.js"),

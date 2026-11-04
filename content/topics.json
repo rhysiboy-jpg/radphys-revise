@@ -96,6 +96,13 @@
         "blurb": "Follow one X-ray photon from ionisation to free radicals and DNA damage, then fire a thousand and see how chance decides the outcome.",
         "ready": true,
         "approved": false
+      },
+      {
+        "id": "dose-response",
+        "title": "May or will? Dose and response",
+        "blurb": "Predict, then see, how the chance and severity of stochastic and deterministic effects change with dose.",
+        "ready": true,
+        "approved": false
       }
     ]
   },
