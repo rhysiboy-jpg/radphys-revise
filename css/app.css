@@ -799,3 +799,33 @@ details.try[open] summary::after { content: " −"; }
 .lesson-nav .btn { display: grid; gap: 2px; text-align: left; padding: 12px 18px; flex: 1 1 15rem; max-width: 24rem; }
 .lesson-nav .btn.primary { text-align: right; margin-left: auto; }
 .lesson-nav .dir { font-size: 0.8rem; font-weight: 600; opacity: 0.8; }
+
+/* ---------- Diagrams added for the text-only lessons (4 November 2026) ---------- */
+/* Shared sorter */
+.sort-intro { color: var(--muted); max-width: 70ch; }
+.sort-list.is-ordered { counter-reset: step; }
+.sort-list.is-ordered .sort-text::before { counter-increment: step; content: counter(step) ". "; color: var(--muted); }
+.sort-card .controls { flex-wrap: wrap; }
+
+/* The electronvolt */
+.ev-gap { fill: var(--vacuum); stroke: var(--line); }
+.ev-cathode { fill: var(--tungsten); }
+.ev-anode { fill: var(--copper); }
+.ev-sign { font: 700 20px var(--font-body); fill: var(--ink); text-anchor: middle; --fs: 20px; }
+.ev-track { fill: color-mix(in srgb, var(--ink) 8%, transparent); }
+.ev-fill { fill: var(--electron); }
+.ev-heat { fill: var(--heat); opacity: 0.35; }
+.prefix-box { display: grid; gap: 10px; margin-top: 16px; }
+.prefix-box .muted { font-weight: 400; }
+
+/* The EM spectrum */
+.em-wave { fill: none; stroke: var(--photon); stroke-width: 2.2; }
+.em-band { stroke: var(--surface); stroke-width: 1; }
+.em-b0 { fill: color-mix(in srgb, var(--dg-accent) 22%, var(--surface)); }
+.em-b1 { fill: color-mix(in srgb, var(--dg-accent) 12%, var(--surface)); }
+.em-x { fill: color-mix(in srgb, var(--photon) 30%, var(--surface)); }
+.em-g { fill: color-mix(in srgb, var(--photon) 50%, var(--surface)); }
+.em-t { font: 600 12px var(--font-body); fill: var(--ink); --fs: 12px; }
+.em-ion { fill: var(--heat); opacity: 0.55; }
+.em-dx { stroke: var(--photon); stroke-width: 4; stroke-linecap: round; }
+.em-mark { stroke: var(--ink); stroke-width: 1.6; stroke-dasharray: 4 3; }

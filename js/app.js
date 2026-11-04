@@ -30,6 +30,8 @@ const DIAGRAMS = {
   detectors: () => import("./diagrams/detectors.js"),
   geometry: () => import("./diagrams/geometry.js"),
   "qa-check": () => import("./diagrams/qa.js"),
+  "em-spectrum": () => import("./diagrams/emspectrum.js"),
+  "electron-energy": () => import("./diagrams/energy.js"),
 };
 
 // Mastery (how secure the tried questions are) shows once this many questions have been tried.

@@ -15,6 +15,20 @@
         "blurb": "Shells, binding energy, and tap-to-trigger excitation and ionisation.",
         "ready": true,
         "approved": true
+      },
+      {
+        "id": "electron-energy",
+        "title": "The electronvolt",
+        "blurb": "Accelerate an electron across the tube and see the energy it gains in keV, eV and joules, then explore the unit prefixes.",
+        "ready": true,
+        "approved": false
+      },
+      {
+        "id": "em-spectrum",
+        "title": "The electromagnetic spectrum",
+        "blurb": "Slide from radio waves to gamma rays and watch wavelength, frequency and photon energy change together.",
+        "ready": true,
+        "approved": false
       }
     ]
   },

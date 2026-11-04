@@ -6,6 +6,7 @@ Lessons for topic 1, Atomic Structure & EM Radiation. The README explains the fo
 id: units
 summary: SI units, the electronvolt, and how energy changes form.
 areas: Units; Energy
+diagram: electron-energy
 status: draft
 sources: 3-1 s6–7; 3-2 s3, s15
 
@@ -16,6 +17,11 @@ Energy is measured in **joules** (J), but a joule is far too large for a single 
 This gives a neat link to the X-ray tube. An electron accelerated through **80 kV** arrives at the target with **80 keV** of energy, and that is the highest energy any X-ray photon from the tube can have.
 
 Energy is never lost; it changes form. In the X-ray tube, electrical energy becomes the electrons' kinetic energy, and in the target about **99%** of that becomes **heat** and only about **1%** becomes X-rays.
+
+## Try this
+- Set **80 kV**: the electron arrives with 80 keV, the highest photon energy the tube can make.
+- Halve the voltage: the energy halves too.
+- Choose each **prefix** to see how µ, m, k and M relate units you'll meet in radiography.
 
 ## Key points
 - Seven SI base units (metre, second, kilogram, ampere, kelvin, candela, mole); all others are derived from them.
@@ -123,6 +129,7 @@ This radiation is called **characteristic** because the energies belong to the e
 id: em-spectrum
 summary: Where X-rays sit among other electromagnetic radiation, and what makes them different.
 areas: EM spectrum
+diagram: em-spectrum
 status: draft
 sources: 3-2 s27–32
 
@@ -133,6 +140,11 @@ All EM radiation travels at the **speed of light** in a vacuum, about 3 × 10⁸
 X-rays and gamma rays overlap in energy. They differ in **where they come from**: X-rays from electrons outside the nucleus, gamma rays from the nucleus during radioactive decay.
 
 Only high-energy photons (X-rays, gamma rays and the highest-energy ultraviolet) can ionise. X-rays also travel in straight lines, carry no charge (so they can't be focused or deflected), are invisible, penetrate matter by different amounts depending on the tissue, and make some materials fluoresce.
+
+## Try this
+- Slide from left to right: the wavelength shortens as the frequency and energy rise.
+- Find where radiation becomes **ionising**: in the far ultraviolet, at about 10 eV.
+- Compare a **60 keV X-ray** with the **Tc-99m gamma ray**: both sit where X-rays and gamma rays overlap.
 
 ## Key points
 - In order of energy: radio, microwave, infrared, visible, ultraviolet, X-rays and gamma rays.
