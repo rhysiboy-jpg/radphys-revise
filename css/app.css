@@ -951,3 +951,22 @@ details.try[open] summary::after { content: " −"; }
 .lc-pt.sus { fill: var(--brand); stroke: var(--brand); }
 .lc-pt.now { stroke-width: 3; }
 .lc-fix { font: 600 12px var(--font-body); fill: var(--ink); text-anchor: middle; --fs: 12px; }
+
+/* Keyboard hint: only where there is a keyboard and a mouse, not on phones. */
+.kbd-hint { display: none; font-size: 0.82rem; color: var(--muted); }
+@media (hover: hover) and (pointer: fine) { .kbd-hint { display: block; } }
+
+/* Progress backup */
+.backup-row { flex-wrap: wrap; }
+.backup-row button, .backup-row .btn { min-height: 40px; padding: 9px 14px; }
+.file-btn { cursor: pointer; }
+.file-btn:focus-within { outline: 2px solid var(--ink); outline-offset: 2px; }
+.backup-msg { font-size: 0.9rem; }
+.backup-msg:empty { display: none; }
+
+/* New version notice */
+.update-bar { position: fixed; left: 50%; bottom: 16px; transform: translateX(-50%); z-index: 20; width: min(560px, calc(100% - 32px));
+  display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; padding: 12px 16px; border-radius: var(--r-panel);
+  background: var(--raised); color: var(--ink); border: 1px solid var(--control); box-shadow: 0 6px 24px rgb(0 0 0 / 0.18); }
+.update-bar span { flex: 1 1 14rem; font-size: 0.95rem; }
+.update-bar button.primary { min-height: 40px; padding: 8px 16px; }

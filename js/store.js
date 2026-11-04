@@ -51,3 +51,31 @@ export function markVisited(key) {
   seen.add(key);
   try { localStorage.setItem(LESSONS, JSON.stringify([...seen])); } catch { /* storage blocked: ticks last for this visit only */ }
 }
+
+// Backup and transfer: everything this device knows, as a small file the student keeps. Nothing goes to a server.
+const BACKUP = "radphys-revise-progress";
+export function exportProgress() {
+  return { app: BACKUP, version: 1, saved: new Date().toISOString(), progress: getProgress(), lessons: [...visitedLessons()] };
+}
+
+// Loads a backup by merging it with what's here: for each question the more recent record wins, so loading an older
+// backup never throws away newer work. Returns how many questions it changed, or throws a plain-English error.
+export function importProgress(data) {
+  if (!data || data.app !== BACKUP || typeof data.progress !== "object" || data.progress === null) throw new Error("That file isn't a RadPhys Revise backup.");
+  const p = getProgress();
+  let changed = 0;
+  for (const [id, r] of Object.entries(data.progress)) {
+    if (!r || typeof r !== "object" || !Number.isFinite(r.box) || !Number.isFinite(r.last)) continue;
+    if (!p[id] || r.last > (p[id].last || 0)) {
+      p[id] = { box: Math.max(0, Math.min(MAX_BOX, r.box)), seen: +r.seen || 0, right: +r.right || 0, last: r.last, lastWrong: +r.lastWrong || 0, ...(Number.isFinite(r.lastScore) ? { lastScore: r.lastScore } : {}) };
+      changed++;
+    }
+  }
+  save();
+  if (Array.isArray(data.lessons)) {
+    const seen = visitedLessons();
+    data.lessons.forEach(k => typeof k === "string" && seen.add(k));
+    try { localStorage.setItem(LESSONS, JSON.stringify([...seen])); } catch { /* storage blocked */ }
+  }
+  return changed;
+}

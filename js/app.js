@@ -1,8 +1,8 @@
 // RadPhys Revise: routes between the home, explore and practise views.
 import { CONFIG } from "./config.js";
 import { loadContent } from "./content.js";
-import { getProgress, record, resetProgress, lastResult, MAX_BOX, visitedLessons, markVisited } from "./store.js";
-import { buildSet, shuffle, parseNumber, isNumericCorrect } from "./quiz.js";
+import { getProgress, record, resetProgress, lastResult, MAX_BOX, visitedLessons, markVisited, exportProgress, importProgress } from "./store.js";
+import { buildSet, shuffle, parseNumber, isNumericCorrect, isUpsideDown } from "./quiz.js";
 import { FIGURES, drawFigure } from "./figures.js";
 import { drawCritique } from "./critique.js";
 
@@ -109,13 +109,21 @@ function nav(active, current = true) {
     setTheme(b.dataset.themeChoice);
     side.querySelectorAll("[data-theme-choice]").forEach(x => x.setAttribute("aria-pressed", x === b));
   }));
-  const btn = side.querySelector(".menu-btn");
-  btn.addEventListener("click", () => {
-    const open = side.classList.toggle("open");
-    btn.setAttribute("aria-expanded", open);
-    btn.textContent = open ? "Close" : "Menu";
-  });
+  side.querySelector(".menu-btn").addEventListener("click", () => setMenu(!side.classList.contains("open")));
+  // Any link closes the phone menu, including one to the page already showing (which doesn't change the address).
+  side.querySelectorAll(".nav a, .brand").forEach(a => a.addEventListener("click", () => setMenu(false)));
 }
+
+// The phone menu covers the whole screen, so it closes from its own button, a link, or Escape.
+function setMenu(open) {
+  const btn = side.querySelector(".menu-btn");
+  if (!btn || side.classList.contains("open") === open) return;
+  side.classList.toggle("open", open);
+  btn.setAttribute("aria-expanded", open);
+  btn.textContent = open ? "Close" : "Menu";
+  if (!open) btn.focus({ preventScroll: true });
+}
+document.addEventListener("keydown", e => { if (e.key === "Escape" && side.classList.contains("open")) setMenu(false); });
 
 // Theme: Auto follows the device; Light and Dark override it. The choice is kept on this device only.
 const THEMES = [["auto", "Auto"], ["light", "Light"], ["dark", "Dark"]];
@@ -251,11 +259,40 @@ function home() {
         <section class="box" aria-labelledby="dev-h">
           <h2 id="dev-h">On This Device</h2>
           <p class="muted">Your progress stays in this browser, on this device. Nothing is sent anywhere, and there's nothing to sign in to.</p>
+          <p class="muted">To move it to another device, or keep it safe, save a backup file. Then load it on the other device.</p>
+          <div class="controls backup-row">
+            <button type="button" data-role="backup">Save a backup</button>
+            <label class="btn file-btn">Load a backup<input type="file" accept=".json,application/json" data-role="restore" class="sr"></label>
+          </div>
+          <p class="backup-msg" data-role="backup-msg" aria-live="polite"></p>
           <div class="reset-row" data-role="reset-row"><button type="button" class="link" data-role="reset">Reset my progress</button></div>
         </section>
       </div>
     </div>
     ${footer()}`, "home", { title: "Home" });
+
+  const msg = app.querySelector('[data-role="backup-msg"]');
+  app.querySelector('[data-role="backup"]').addEventListener("click", () => {
+    const blob = new Blob([JSON.stringify(exportProgress())], { type: "application/json" });
+    const a = Object.assign(document.createElement("a"), { href: URL.createObjectURL(blob), download: `radphys-progress-${new Date().toISOString().slice(0, 10)}.json` });
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+    msg.textContent = "Backup saved to your downloads. Load it on another device to carry on there.";
+  });
+  app.querySelector('[data-role="restore"]').addEventListener("change", async e => {
+    const file = e.target.files[0];
+    if (!file) return;
+    try {
+      const n = importProgress(JSON.parse(await file.text()));
+      home();
+      app.querySelector('[data-role="backup-msg"]').textContent = n
+        ? `Backup loaded: ${n} question${n === 1 ? "" : "s"} updated. Anything newer on this device was kept.`
+        : "Backup loaded. This device already had everything in it.";
+    } catch (err) {
+      msg.textContent = err instanceof SyntaxError ? "That file couldn't be read. Choose a RadPhys Revise backup (.json)." : err.message;
+    }
+    e.target.value = "";
+  });
 
   const row = app.querySelector('[data-role="reset-row"]');
   row.addEventListener("click", e => {
@@ -540,7 +577,8 @@ function practise(scope, area = null, retry = null) {
       const opts = shuffle(q.options);
       body += `<fieldset data-role="opts"><legend class="sr">Choose one answer</legend>${opts.map(o =>
         `<label class="opt" data-key="${o.key}"><input type="radio" name="opt" value="${o.key}"><span>${text(o.text)}</span><span class="tagline"></span></label>`).join("")}</fieldset>
-        <div class="controls"><button type="button" class="primary" data-role="check" disabled>Check answer</button></div>`;
+        <div class="controls"><button type="button" class="primary" data-role="check" disabled>Check answer</button></div>
+        <p class="kbd-hint" aria-hidden="true">Keyboard: press 1–${opts.length} to choose, Enter to check, then Enter again for the next question.</p>`;
     } else if (q.kind === "numeric") {
       body = `<div class="field"><label for="num">Your answer</label>
         <div class="num-row"><input type="text" id="num" inputmode="decimal" autocomplete="off"><span class="unit">${esc(inst.unit)}</span></div></div>
@@ -576,10 +614,28 @@ function practise(scope, area = null, retry = null) {
       fb.hidden = false;
       fb.focus();
       fb.querySelector('[data-role="next"]').addEventListener("click", next);
+      // Enter on the feedback (where the focus lands) moves on, so a keyboard user can keep going without hunting for the button.
+      fb.addEventListener("keydown", e => { if (e.key === "Enter" && e.target === fb) { e.preventDefault(); next(); } });
     };
 
     if (q.kind === "mcq") {
-      card.querySelector('[data-role="opts"]').addEventListener("change", () => { check.disabled = false; });
+      const opts = card.querySelector('[data-role="opts"]');
+      opts.addEventListener("change", () => { check.disabled = false; });
+      // Keyboard: 1–5 picks an option by its position on screen (the options are shuffled, so letters wouldn't match), Enter checks.
+      card.addEventListener("keydown", e => {
+        if (opts.disabled || e.ctrlKey || e.metaKey || e.altKey) return;
+        const radios = [...opts.querySelectorAll('input[type="radio"]')];
+        const k = /^[1-9]$/.test(e.key) ? +e.key - 1 : -1;
+        if (k >= 0 && k < radios.length) {
+          e.preventDefault();
+          radios[k].checked = true;
+          radios[k].focus();
+          opts.dispatchEvent(new Event("change", { bubbles: true }));
+        } else if (e.key === "Enter" && opts.contains(e.target) && !check.disabled) {
+          e.preventDefault();
+          check.click();
+        }
+      });
       check.addEventListener("click", () => {
         const chosen = card.querySelector('input[name="opt"]:checked')?.value;
         if (!chosen) return;
@@ -612,7 +668,9 @@ function practise(scope, area = null, retry = null) {
         results.push({ q, score: right ? 1 : 0, kind: "auto", stem: inst.question, inst, given: input.value.trim(), answerText });
         input.readOnly = true;
         check.parentElement.remove();
+        const flipped = !right && isUpsideDown(value, inst.answer, inst.tolerance);
         fb.innerHTML = `<p class="verdict ${right ? "good" : "bad"}">${right ? `${MARKS.right}Correct` : value === null ? `${MARKS.wrong}That isn't a number` : `${MARKS.wrong}Not quite`}</p>
+          ${value === null ? `<p class="why"><span>Type a number, such as 0.25, 1/4, 3e8 or 1.5 × 10^-2.</span></p>` : flipped ? `<p class="why"><span>Your answer is the right one turned upside down: ${esc(input.value.trim())} instead of ${+inst.answer.toFixed(2)}. Check which way round the question asks for it.</span></p>` : ""}
           <p><b>Answer:</b> ${answerText} ${esc(inst.unit)}</p>
           <ol class="working">${inst.working.map(w => `<li>${esc(w)}</li>`).join("")}</ol>
           ${inst.explanation ? `<p>${esc(inst.explanation)}</p>` : ""}${diagramLink}${nextBtn}`;
@@ -831,7 +889,25 @@ start();
 
 // Offline support. Fails quietly where service workers aren't allowed (e.g. the preview page).
 if ("serviceWorker" in navigator) {
+  // When a new version is published, a page that was already open is still running the old one (questions and lessons are
+  // loaded when it starts). Offer a refresh rather than reloading by itself, so no one loses a question part-way through.
+  const hadController = !!navigator.serviceWorker.controller;
+  navigator.serviceWorker.addEventListener("controllerchange", () => { if (hadController) offerRefresh(); });
   window.addEventListener("load", () => {
-    navigator.serviceWorker.register("sw.js").catch(() => {});
+    navigator.serviceWorker.register("sw.js").then(reg => {
+      // Look for a new version whenever the app comes back to the screen, not just when it's first opened.
+      document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") reg.update().catch(() => {}); });
+    }).catch(() => {});
   });
+}
+
+function offerRefresh() {
+  if (document.querySelector(".update-bar")) return;
+  const bar = document.createElement("div");
+  bar.className = "update-bar";
+  bar.setAttribute("role", "status");
+  bar.innerHTML = `<span>A new version of RadPhys Revise is ready.</span><button type="button" class="primary">Refresh</button><button type="button" class="link">Later</button>`;
+  bar.querySelector(".primary").addEventListener("click", () => location.reload());
+  bar.querySelector(".link").addEventListener("click", () => bar.remove());
+  document.body.appendChild(bar);
 }
