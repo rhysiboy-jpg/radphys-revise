@@ -61,9 +61,9 @@
       {
         "id": "spectrum",
         "title": "The X-ray spectrum",
-        "blurb": "Change kVp, mA and filtration and watch the spectrum respond.",
+        "blurb": "Change target, generator, kVp, mA and filtration and watch the spectrum, its quantity and its quality respond.",
         "ready": true,
-        "approved": true
+        "approved": false
       },
       {
         "id": "target",
