@@ -217,6 +217,7 @@
     "files": [
       "content/08-dosimetry-dose-control.csv"
     ],
+    "lessons": "content/lessons/08-dosimetry-dose-control.md",
     "diagrams": [
       {
         "id": "dose-ladder",
@@ -235,6 +236,7 @@
     "files": [
       "content/09-radiation-protection-legislation.csv"
     ],
+    "lessons": "content/lessons/09-radiation-protection-legislation.md",
     "diagrams": [
       {
         "id": "isl",
