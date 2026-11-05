@@ -166,6 +166,9 @@ Confirmed with Rhys Morris, 29 October 2026.
   - **No approved diagram is hidden.** A topic's page now lists any approved diagram that no visible lesson shows, under "More to explore". Each such diagram has its own page (`#diagram-<topic>/<id>`). Without this, an approved diagram inside a draft lesson could never reach students.
   - **Question feedback links** now open the diagram's own page, not the topic page.
   - **Checked** with review mode off, one lesson approved and one diagram approved; all three test changes were then reverted.
+- Fonts stored in the app (5 November 2026, at Rhys's request, from the code review). Figtree and Noto Sans were loaded from Google, which sent each student's IP address to Google (against "no data collection") and didn't work offline on a first visit.
+  - **Now:** they're in `fonts/` with `css/fonts.css`, in Latin, extended Latin (ready for Welsh ŵ ŷ) and Greek, about 250 KB in all, under the SIL Open Font License (licence files included). They're part of the offline copy, and the look is unchanged.
+  - **Guard:** the content checker now fails if `index.html` or any stylesheet loads anything from another site.
 - Next: Rhys reviews the 63 draft lessons and the 19 new interactives (review mode only). Still waiting: review of the 249 draft questions, and sign-off of the earlier interactives and diagram upgrades.
 - Untested: offline mode. Check it once hosted on GitHub Pages, which needs the repo made public (only with Rhys's go-ahead).
 - Commit identity: Rhys Morris, using the GitHub no-reply email.

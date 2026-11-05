@@ -38,6 +38,7 @@ RadPhys Revise is a revision app for first-year diagnostic radiography physics (
 | `js/content.js`, `js/lessons.js`, `js/csv.js` | Loading and parsing content. |
 | `js/store.js` | Student progress in localStorage. |
 | `css/app.css` | All styles. Diagram colours use the `--dg-*`, `--photon` and `--electron` tokens. Never hard-code colours, and check dark mode. |
+| `fonts/`, `css/fonts.css` | Figtree and Noto Sans, stored in the app (SIL Open Font License, licences alongside). Never load fonts or scripts from another site: the checker fails it. |
 | `sw.js` | Offline cache. List every new file in `CORE`. |
 | `prototypes/` | Old experiments. Not published. |
 

@@ -161,8 +161,13 @@ const sw = read("sw.js");
 const core = new Set([...(sw.match(/const CORE = \[([\s\S]*?)\];/)?.[1] || "").matchAll(/"([^"]+)"/g)].map(m => m[1]));
 const walk = dir => fs.readdirSync(path.join(ROOT, dir), { withFileTypes: true })
   .flatMap(d => d.isDirectory() ? walk(`${dir}/${d.name}`) : [`${dir}/${d.name}`]);
-for (const f of [...walk("js"), ...walk("css"), ...walk("icons"), "content/topics.json", "content/calculations.js", "index.html", "manifest.webmanifest"])
-  if (!core.has(f) && /\.(js|css|svg|png|json|html|webmanifest)$/.test(f)) problem("sw.js", `${f} isn't in the CORE list, so it won't work offline`);
+for (const f of [...walk("js"), ...walk("css"), ...walk("icons"), ...walk("fonts"), "content/topics.json", "content/calculations.js", "index.html", "manifest.webmanifest"])
+  if (!core.has(f) && /\.(js|css|svg|png|json|html|webmanifest|woff2)$/.test(f)) problem("sw.js", `${f} isn't in the CORE list, so it won't work offline`);
+// Fonts and scripts come from the app itself: nothing a page loads may come from another site (privacy, and offline use).
+for (const f of ["index.html", ...walk("css")]) {
+  const ext = read(f).match(/(?:href|src)=["']https?:\/\/[^"']+|url\(["']?https?:\/\/[^)"']+/g);
+  if (ext) problem(f, `loads from another site: ${ext.join(", ")}`);
+}
 for (const f of core) if (f !== "./" && !exists(f)) problem("sw.js", `CORE lists ${f}, which doesn't exist (the offline copy would fail to install)`);
 
 // Report, in plain English.
