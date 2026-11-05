@@ -188,6 +188,25 @@ Confirmed with Rhys Morris, 29 October 2026.
   - **Sorter:** the stochastic/deterministic sorter now uses the shared sorting component (84 lines down to 34).
   - **Accessibility statement:** keyboard use checked. Every tappable part of a drawing has a matching button, except reading one pixel in the windowing diagram, which the statement now says.
   - **Left as they are:** `js/app.js` is large but working (splitting it wasn't asked for); 17 diagrams share a small repeated pattern; `.s6` is an unused grid class.
+- Policy pages (5 November 2026, at Rhys's request, after a UK compliance check). This was not legal advice: the university should confirm the points below.
+  - **Privacy** (`#privacy`):
+    - it says what's stored on the device (progress, lesson ticks, theme), why, and how to clear it;
+    - it says nothing is sent anywhere, and that GitHub Pages logs IP addresses;
+    - feedback and error emails are handled under Bangor's privacy notice (`privacyNoticeUrl` in config, still to add);
+    - the ICO is named as where to complain.
+    - **Why no cookie banner:** the storage falls under the ICO's "strictly necessary" and "appearance" exceptions, which still require clear information and an easy way to object.
+  - **About and terms of use** (`#about`): a revision aid, not clinical guidance; reference data and error reporting; free for own study, don't republish without permission (pending the IP check); font and data credits.
+    - **Why it's optional:** not legally required, because the Consumer Rights Act's digital content rules only apply to content supplied for a price.
+  - **Accessibility statement:** restructured to the GOV.UK model.
+    - It now declares partial compliance with WCAG 2.2 AA, naming two failures: 2.1.1 (pixel reading in windowing) and 2.2.2 (animations without a pause control).
+    - It also notes that screen-reader testing hasn't been done, and gives the test date of 5 November 2026.
+  - **Clearing data:** "Reset my progress" is now "Clear everything this app has stored", and also clears the theme.
+  - **For Rhys to check with the university:**
+    - who the data controller is, and the privacy notice link;
+    - whether the 2018 accessibility regulations cover the app;
+    - the IP question;
+    - a privacy line at the top of the feedback Form.
+  - **Children's code:** judged unlikely to apply (adult students, no data collected).
 - Next: Rhys reviews the 63 draft lessons and the 19 new interactives (review mode only). Still waiting: review of the 249 draft questions, and sign-off of the earlier interactives and diagram upgrades.
 - Untested: offline mode. Check it once hosted on GitHub Pages, which needs the repo made public (only with Rhys's go-ahead).
 - Commit identity: Rhys Morris, using the GitHub no-reply email.

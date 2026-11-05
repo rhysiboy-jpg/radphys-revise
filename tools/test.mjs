@@ -92,6 +92,14 @@ test("progress: right answers move a question up, wrong ones back to the start",
   equal(store.lastResult(store.getProgress().Q1), "partly", "a half-marked written answer:");
 });
 
+test("clearing: progress and lesson ticks are both removed", () => {
+  store.record("Q9", true);
+  store.markVisited("atomic/units");
+  store.resetProgress();
+  equal(Object.keys(store.getProgress()).length, 0, "progress left:");
+  equal(store.visitedLessons().size, 0, "lesson ticks left:");
+});
+
 // ---------- Backup and transfer ----------
 test("backup: loading merges, and newer work on the device is kept", () => {
   store.resetProgress();

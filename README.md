@@ -96,7 +96,12 @@ In `js/config.js`:
 - put an email address in `contactEmail` if error reports should come to you by email (otherwise "Report an error" opens the feedback Form)
 - update `lastUpdated` (shown in every page's footer) whenever you publish changes
 
-Also read the accessibility statement (the "Accessibility" link at the foot of any page). It's a draft, so check it against the university's accessibility guidance.
+- add the link to the university's privacy notice in `privacyNoticeUrl`
+
+Also read the three pages linked at the foot of every page. Each is a draft, and says what to check while review mode is on:
+- **Privacy:** confirm with the university's information governance team who the data controller is.
+- **About and terms:** settle the wording on using the content once the IP question is answered.
+- **Accessibility:** check it against the university's accessibility guidance.
 
 ## Publishing
 

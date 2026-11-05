@@ -151,7 +151,7 @@ function footer() {
   return `<footer class="bottom">
     <span>RadPhys Revise · Created by Rhys Morris for RDR-1173${CONFIG.lastUpdated ? ` · Last updated ${esc(CONFIG.lastUpdated)}` : ""}</span>
     <span>Physics and doses follow reference data: NIST XCOM, ICRP 103, UKHSA, IR(ME)R 2017, IRR17 and IPEM Report 91</span>
-    <span>Progress is saved on this device only${report ? ` · <a href="${esc(report)}"${CONFIG.contactEmail ? "" : ' target="_blank" rel="noopener"'}>Report an error</a>` : ""} · <a href="#accessibility">Accessibility</a></span>
+    <span>Progress is saved on this device only${report ? ` · <a href="${esc(report)}"${CONFIG.contactEmail ? "" : ' target="_blank" rel="noopener"'}>Report an error</a>` : ""} · <a href="#privacy">Privacy</a> · <a href="#about">About and terms</a> · <a href="#accessibility">Accessibility</a></span>
   </footer>`;
 }
 function show(html, active, { title = "", current = true } = {}) {
@@ -299,7 +299,7 @@ function home() {
             <label class="btn file-btn">Load a backup<input type="file" accept=".json,application/json" data-role="restore" class="sr"></label>
           </div>
           <p class="backup-msg" data-role="backup-msg" aria-live="polite"></p>
-          <div class="reset-row" data-role="reset-row"><button type="button" class="link" data-role="reset">Reset my progress</button></div>
+          <div class="reset-row" data-role="reset-row"><button type="button" class="link" data-role="reset">Clear everything this app has stored</button></div>
         </section>
       </div>
     </div>
@@ -332,10 +332,10 @@ function home() {
   row.addEventListener("click", e => {
     const role = e.target.dataset.role;
     if (role === "reset") {
-      row.innerHTML = '<span>Delete all your progress on this device?</span><button type="button" class="danger" data-role="confirm">Yes, reset</button><button type="button" data-role="cancel">Cancel</button>';
+      row.innerHTML = '<span>Delete your progress, lesson ticks and theme choice on this device? Save a backup first if you want to keep them.</span><button type="button" class="danger" data-role="confirm">Yes, clear it</button><button type="button" data-role="cancel">Cancel</button>';
       row.querySelector('[data-role="cancel"]').focus();
-    } else if (role === "confirm") { resetProgress(); home(); }
-    else if (role === "cancel") { row.innerHTML = '<button type="button" class="link" data-role="reset">Reset my progress</button>'; }
+    } else if (role === "confirm") { resetProgress(); setTheme("auto"); home(); }   // everything the app stores, theme included
+    else if (role === "cancel") { row.innerHTML = '<button type="button" class="link" data-role="reset">Clear everything this app has stored</button>'; }
   });
 }
 
@@ -478,34 +478,98 @@ function practiseRevisit() {
   practise("mixed", null, list, "Questions to revisit");
 }
 
-// The accessibility statement, linked from every footer. A draft for Rhys to check against the university's guidance.
-function accessibility() {
+// The policy pages linked from every footer: accessibility, privacy, and about and terms of use. They are drafts until Rhys
+// (and the university, where noted) has checked them; in review mode each says what to check.
+function policyPage(key, title, check, body) {
   show(`
     <article class="lesson">
-      <h1 tabindex="-1">Accessibility</h1>
-      ${CONFIG.reviewMode ? '<p class="lesson-src"><span class="status review">Draft</span> Check this against the university\'s accessibility guidance before students see it.</p>' : ""}
-      <div class="lesson-body">
-        <p>RadPhys Revise is a revision app for the RDR-1173 physics and radiation protection module. It should be usable by as many students as possible. You should be able to:</p>
-        <ul>
-          <li>zoom the page up to 200% and still read everything, with no sideways scrolling;</li>
-          <li>use it on a phone, a tablet or a computer;</li>
-          <li>use the questions and the diagrams' controls with a keyboard alone (in practice sets, press 1 to 4 to choose an answer and Enter to check it). Parts of a drawing that respond to a tap also have a matching button. The one exception is reading a single pixel's value in the windowing diagram, which needs a mouse or touch; the readouts beside it give the same information;</li>
-          <li>choose a light or dark theme, or follow your device's setting;</li>
-          <li>turn off animation through your device's "reduce motion" setting;</li>
-          <li>read text descriptions of the simulated X-ray images and of what each diagram shows;</li>
-          <li>tell right from wrong answers without relying on colour: each is marked with a tick or a cross and words.</li>
-        </ul>
-        <h3>How accessible it is</h3>
-        <p>The aim is to meet the Web Content Accessibility Guidelines (WCAG) 2.2 at level AA. The app has been checked for colour contrast in both themes, keyboard use and phone layout, with automated tools and by hand. It has not yet had a full audit or been tested with the full range of assistive technology, so it does not yet claim to meet the standard in full.</p>
-        <p>Known limitations: the interactive diagrams are visual, and although each has labelled controls and a written summary of what it shows, some (the moving electrons and photons, and the simulated images) will be harder to follow with a screen reader. The lessons and questions explain the same physics in words.</p>
-        <h3>Reporting a problem</h3>
-        <p>If you find something you can't use, or need the content in another format, use the "Report an error" link at the foot of any page${CONFIG.contactEmail || CONFIG.feedbackUrl ? "" : " (it appears once a contact has been set up)"}, or tell your module lecturer. Say which page and what happened.</p>
-        <h3>Enforcement</h3>
-        <p>For websites published by public sector bodies, including universities, the Equality and Human Rights Commission enforces the Public Sector Bodies (Websites and Mobile Applications) (No. 2) Accessibility Regulations 2018. If you're not happy with how a complaint is handled, you can contact the Equality Advisory and Support Service (EASS).</p>
-        <p class="muted">This statement was prepared in ${esc(CONFIG.lastUpdated || "November 2026")} and will be reviewed before the app is given to students.</p>
-      </div>
+      <h1 tabindex="-1">${title}</h1>
+      ${CONFIG.reviewMode ? `<p class="lesson-src"><span class="status review">Draft</span> ${check}</p>` : ""}
+      <div class="lesson-body">${body}</div>
     </article>
-    ${footer()}`, "accessibility", { title: "Accessibility" });
+    ${footer()}`, key, { title });
+}
+const reportRoute = () => CONFIG.contactEmail || CONFIG.feedbackUrl
+  ? `use the "Report an error" link at the foot of any page, or tell your module lecturer`
+  : "tell your module lecturer";
+
+// Accessibility statement, in the shape of the GOV.UK model statement. Tested on 5 November 2026; update the dates when
+// the app is tested again.
+function accessibility() {
+  policyPage("accessibility", "Accessibility statement", "Check it against the university's accessibility guidance, including whether the 2018 regulations cover this app.", `
+    <p>This statement applies to RadPhys Revise, a revision app for the RDR-1173 physics and radiation protection module. It is run by Rhys Morris. It should be usable by as many people as possible. For example, you should be able to:</p>
+    <ul>
+      <li>zoom the page up to 200% and still read everything, with no sideways scrolling;</li>
+      <li>use it on a phone, a tablet or a computer;</li>
+      <li>answer the questions and use the diagrams' controls with a keyboard alone (in practice sets, press 1 to 4 to choose an answer and Enter to check it);</li>
+      <li>choose a light or dark theme, or follow your device's setting;</li>
+      <li>stop animation through your device's "reduce motion" setting;</li>
+      <li>read text descriptions of the simulated X-ray images and of what each diagram shows;</li>
+      <li>tell right from wrong answers without relying on colour: each is marked with a tick or a cross and words.</li>
+    </ul>
+    <h3>How accessible this app is</h3>
+    <p>Some parts are not fully accessible:</p>
+    <ul>
+      <li>reading a single pixel's value in the windowing diagram needs a mouse or touch, although the readouts beside it give the same information;</li>
+      <li>in a few diagrams the moving electrons and photons can't be paused on the page; your device's "reduce motion" setting stops them;</li>
+      <li>the interactive diagrams are visual and have not yet been tested with a screen reader, so some may be hard to follow that way. The lessons and questions explain the same physics in words.</li>
+    </ul>
+    <h3>Feedback and contact information</h3>
+    <p>If you find something you can't use, or need the content in another format, ${reportRoute()}. Say which page and what happened.</p>
+    <h3>Enforcement procedure</h3>
+    <p>The Equality and Human Rights Commission is responsible for enforcing the Public Sector Bodies (Websites and Mobile Applications) (No. 2) Accessibility Regulations 2018. If you're not happy with how your complaint is handled, you can contact the Equality Advisory and Support Service (EASS).</p>
+    <h3>Technical information about this app's accessibility</h3>
+    <p>The aim is to meet the Web Content Accessibility Guidelines (WCAG) version 2.2, level AA, in line with the 2018 regulations.</p>
+    <p><b>Compliance status:</b> this app is partially compliant with WCAG 2.2 AA, because of the non-compliances listed below.</p>
+    <h3>Non-accessible content</h3>
+    <ul>
+      <li>Reading a pixel's value in the windowing diagram can't be done with a keyboard. This fails WCAG 2.2 success criterion 2.1.1 (Keyboard).</li>
+      <li>Animations in some diagrams start by themselves and have no pause control on the page. This fails success criterion 2.2.2 (Pause, Stop, Hide).</li>
+      <li>The diagrams have not been tested with screen readers, so there may be further problems we don't yet know about.</li>
+    </ul>
+    <p>No disproportionate burden is claimed, and no content is outside the scope of the regulations. These issues are being worked on before the app is given to students.</p>
+    <h3>Preparation of this accessibility statement</h3>
+    <p>This statement was prepared on 5 November 2026. The app was last tested on 5 November 2026 by its developer, using automated checks and manual testing at phone and computer widths, in light and dark themes, and with a keyboard. It has not had an independent audit.</p>`);
+}
+
+// Privacy: what the app keeps on the device and why (the storage law's "clear information" requirement), that nothing is
+// sent anywhere, and where feedback and error reports go. The university is likely the controller for those.
+function privacy() {
+  const notice = CONFIG.privacyNoticeUrl
+    ? `<a href="${esc(CONFIG.privacyNoticeUrl)}" target="_blank" rel="noopener">Bangor University's privacy notice</a>`
+    : "Bangor University's privacy notice";
+  policyPage("privacy", "Privacy and your data", "Check with the university's information governance team who the data controller is, and add the link to its privacy notice (<code>privacyNoticeUrl</code> in <code>js/config.js</code>).", `
+    <p><b>In short:</b> this app doesn't collect your personal data. Your progress stays on your device, and nothing is sent to anyone.</p>
+    <h3>What the app keeps on your device</h3>
+    <ul>
+      <li><b>Your practice progress:</b> for each question you've tried, how you did, when, and how often it should come back.</li>
+      <li><b>The lessons you've opened</b>, for the ticks on each topic page.</li>
+      <li><b>Your Light or Dark choice</b>, if you pick one. Auto stores nothing.</li>
+    </ul>
+    <p>These are kept in your browser's storage on this device, not in cookies. They are used only to run features you use: saving your progress and remembering how you like the app to look. There is no tracking, no analytics and no advertising.</p>
+    <h3>Clearing it</h3>
+    <p>Use <b>Clear everything this app has stored</b> on the home page, or clear this site's data in your browser's settings. A backup file is only made when you save one, and it stays wherever you put it.</p>
+    <h3>Hosting</h3>
+    <p>The app is hosted on GitHub Pages. Like most web hosts, GitHub records visitors' IP addresses for security, under <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement" target="_blank" rel="noopener">GitHub's privacy statement</a>.</p>
+    <h3>Feedback and error reports</h3>
+    <p>If you fill in the feedback form or email an error report, what you send is handled by Bangor University under ${notice}. Please don't include personal details you don't need to share.</p>
+    <h3>Your rights</h3>
+    <p>You can ask the university how it uses your data. If you're unhappy with the answer, you can complain to the <a href="https://ico.org.uk/make-a-complaint/" target="_blank" rel="noopener">Information Commissioner's Office</a>.</p>`);
+}
+
+// About and terms of use: what the app is for (education, not clinical guidance), how accurate it aims to be, how it may be
+// used, and credits.
+function about() {
+  policyPage("about", "About and terms of use", "Check the wording on using the content once the IP question with your line manager is settled.", `
+    <p>RadPhys Revise is a free revision app for the RDR-1173 physics and radiation protection module: short lessons, interactive diagrams and practice questions for every topic. It was made by Rhys Morris.</p>
+    <h3>What it's for</h3>
+    <p>Revision and learning only. It is not clinical guidance: in practice, follow your training, your department's protocols and the regulations. Diagrams are schematic and not to scale, and values marked "illustrative" are not reference data.</p>
+    <h3>Accuracy</h3>
+    <p>Physics and doses follow reference data: NIST XCOM, ICRP 103, UKHSA, IR(ME)R 2017, IRR17 and IPEM Report 91. Where a lecture slide differs, the app says so. Mistakes can still happen, so if you spot one, ${reportRoute()}. If the app and your lectures disagree on something you'll be assessed on, check with your lecturer.</p>
+    <h3>Using the app</h3>
+    <p>It's free to use for your own study, with no account. Please don't republish or sell the lessons, questions or diagrams without permission. The date at the foot of each page shows when the app was last updated.</p>
+    <h3>Credits</h3>
+    <p>Fonts: Figtree (The Figtree Project Authors) and Noto Sans (The Noto Project Authors), both under the SIL Open Font License 1.1. Attenuation data: NIST XCOM photon cross sections database (Berger and colleagues).</p>`);
 }
 
 // One diagram on a page of its own: for diagrams outside any visible lesson, and for links from question feedback.
@@ -988,6 +1052,8 @@ function route() {
   else if ((m = h.match(/^diagram-([\w-]+)\/([\w-]+)$/))) diagramPage(m[1], m[2]);
   else if (h === "revisit") practiseRevisit();
   else if (h === "accessibility") accessibility();
+  else if (h === "privacy") privacy();
+  else if (h === "about") about();
   else if ((m = h.match(/^practise-([\w-]+)(?:\/(.+))?$/))) practise(m[1], m[2] ? decodeURIComponent(m[2]) : null);
   else home();
 }
