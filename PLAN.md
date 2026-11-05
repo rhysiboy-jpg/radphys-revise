@@ -174,6 +174,14 @@ Confirmed with Rhys Morris, 29 October 2026.
   - **Gallery:** `prototypes/diagrams.html` (open it at http://localhost:8080/prototypes/diagrams.html) now shows all 42 diagrams by topic. It's built from `topics.json` and the app's diagram list, so new diagrams appear without editing it.
   - **Each diagram's entry shows:** its sign-off status, the lessons that use it, what to check (the illustrative values and the items needing clinical or legal sign-off), and a filter for "Awaiting sign-off".
   - **Loading:** diagrams load as you scroll, and the fonts come from the app.
+- Home page changes from the research report (5 November 2026, at Rhys's request; evidence in `reports/Educational home page design.md`):
+  - **Practising what's due:** when questions are to revisit, the main button is "Practise the N to revisit". It opens a set of just those questions, most recently missed first, at `#revisit`. The next lesson sits beside it.
+  - **A first visit** gets one line saying what the app is and that no login is needed.
+  - **Two prompts after that:** a growth-mindset line and a reminder to space practice ("Come back in a few days to review").
+  - **Progress:** the four summary boxes are replaced by one line of figures, shown only once something has been tried.
+  - **Footer:** now carries the module, `lastUpdated` from `js/config.js`, the reference data, "Report an error" (to `contactEmail` or the feedback Form) and an Accessibility link.
+  - **Accessibility statement:** a new page at `#accessibility`. **It's a draft for Rhys to check against the university's guidance.**
+  - **Sizes:** buttons on topic rows and in "On This Device" are now 44px; topic descriptions are 16px; lesson text is 18px.
 - Next: Rhys reviews the 63 draft lessons and the 19 new interactives (review mode only). Still waiting: review of the 249 draft questions, and sign-off of the earlier interactives and diagram upgrades.
 - Untested: offline mode. Check it once hosted on GitHub Pages, which needs the repo made public (only with Rhys's go-ahead).
 - Commit identity: Rhys Morris, using the GitHub no-reply email.

@@ -93,6 +93,10 @@ Another paragraph. Lines starting "- " become bullet points.
 In `js/config.js`:
 - set `reviewMode` to `false` (hides drafts)
 - paste the Microsoft Form link into `feedbackUrl`
+- put an email address in `contactEmail` if error reports should come to you by email (otherwise "Report an error" opens the feedback Form)
+- update `lastUpdated` (shown in every page's footer) whenever you publish changes
+
+Also read the accessibility statement (the "Accessibility" link at the foot of any page). It's a draft, so check it against the university's accessibility guidance.
 
 ## Publishing
 

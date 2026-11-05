@@ -142,8 +142,17 @@ function setTheme(t) {
   });
 }
 
+// Every page closes with who made it, how current it is, what it rests on and how to report a problem: the trust signals
+// the credibility research asks for, grouped in one quiet place.
 function footer() {
-  return `<footer class="bottom"><span>RadPhys Revise · Created by Rhys Morris</span><span>Progress is saved on this device only</span></footer>`;
+  const report = CONFIG.contactEmail
+    ? `mailto:${CONFIG.contactEmail}?subject=${encodeURIComponent("RadPhys Revise: error report")}&body=${encodeURIComponent(`Page: ${location.hash || "#home"}\n\nWhat's wrong:\n`)}`
+    : CONFIG.feedbackUrl;
+  return `<footer class="bottom">
+    <span>RadPhys Revise · Created by Rhys Morris for RDR-1173${CONFIG.lastUpdated ? ` · Last updated ${esc(CONFIG.lastUpdated)}` : ""}</span>
+    <span>Physics and doses follow reference data: NIST XCOM, ICRP 103, UKHSA, IR(ME)R 2017, IRR17 and IPEM Report 91</span>
+    <span>Progress is saved on this device only${report ? ` · <a href="${esc(report)}"${CONFIG.contactEmail ? "" : ' target="_blank" rel="noopener"'}>Report an error</a>` : ""} · <a href="#accessibility">Accessibility</a></span>
+  </footer>`;
 }
 function show(html, active, { title = "", current = true } = {}) {
   nav(active, current);
@@ -193,38 +202,45 @@ function home() {
   const revisit = all.filter(q => p[q.id] && lastResult(p[q.id]) === "revisit");
   const withQs = content.topics.filter(t => questionsFor(t.id).length);
 
-  // The screen's one finding, and where the main button goes. Before any questions are tried, that is the next lesson:
-  // the lessons teach, and the questions then check.
-  let next = withQs[0], finding, mainBtn = null;
-  if (!s?.tried) {
-    const lt = content.topics.map(t => ({ t, L: lessonState(t) })).find(x => x.L.total && x.L.done < x.L.total);
-    if (lt) {
-      const started = content.topics.some(t => lessonState(t).done);
-      finding = started
-        ? `You're part-way through the lessons. Next: ${esc(lt.t.title)}, lesson ${lt.t.lessonList.indexOf(lt.L.next) + 1} of ${lt.L.total}.`
-        : `Nothing tried yet. Start with ${esc(lt.t.title)}: ${plural(lt.L.total, "lesson")}, then ${plural(questionsFor(lt.t.id).length, "question")} to practise.`;
-      mainBtn = `<a class="btn primary" href="#learn-${lt.t.id}/${lt.L.next.id}">${started ? "Continue" : "Start"}: ${esc(lt.L.next.title)}</a>`;
-    } else {
-      finding = next ? `Nothing tried yet. ${esc(next.title)} has ${plural(questionsFor(next.id).length, "question")} ready.` : "Questions are on their way.";
-    }
-  } else if (revisit.length) {
+  // The screen's one finding and its next steps. The research behind this page (reports/Educational home page design.md):
+  // one recommended step with the full topic list below it, practice of what's due made a single tap because students
+  // reach for rereading, and progress shown as an action rather than as a row of numbers.
+  const lt = content.topics.map(t => ({ t, L: lessonState(t) })).find(x => x.L.total && x.L.done < x.L.total);
+  const lessonsStarted = content.topics.some(t => lessonState(t).done);
+  const lessonBtn = cls => lt ? `<a class="btn${cls}" href="#learn-${lt.t.id}/${lt.L.next.id}">${lessonsStarted ? "Continue" : "Start"}: ${esc(lt.L.next.title)}</a>` : "";
+  const firstVisit = !s?.tried && !lessonsStarted;
+  let next = withQs[0], finding, actions;
+  if (revisit.length) {
+    // Questions answered wrongly come first: practising them is the step with the strongest evidence behind it.
     const byTopic = withQs.map(t => ({ t, n: revisit.filter(q => q.topic === t.id).length })).sort((a, b) => b.n - a.n);
-    next = byTopic[0].t;
-    finding = `${s.right ? `${s.right} right so far. ` : ""}${plural(revisit.length, "question")} to revisit, most in ${esc(next.title)}; they come back sooner in your sets.`;
+    finding = `${plural(revisit.length, "question")} to revisit, most in ${esc(byTopic[0].t.title)}. Practising them now is the quickest way to make them stick.`;
+    actions = `<a class="btn primary" href="#revisit">Practise the ${revisit.length === 1 ? "one" : revisit.length} to revisit</a>${lessonBtn("")}`;
+  } else if (!s?.tried) {
+    // Before any questions: the lessons teach, and the questions then check.
+    if (lt) {
+      finding = lessonsStarted
+        ? `You're part-way through the lessons. Next: ${esc(lt.t.title)}, lesson ${lt.t.lessonList.indexOf(lt.L.next) + 1} of ${lt.L.total}.`
+        : `Start with ${esc(lt.t.title)}: ${plural(lt.L.total, "lesson")}, then ${plural(questionsFor(lt.t.id).length, "question")} to practise.`;
+      actions = lessonBtn(" primary");
+    } else {
+      finding = next ? `${esc(next.title)} has ${plural(questionsFor(next.id).length, "question")} ready.` : "Questions are on their way.";
+      actions = next ? `<a class="btn primary" href="#practise-${next.id}">Start: ${esc(next.title)}</a>` : "";
+    }
   } else {
-    // Nothing to revisit: point at the topic with the most still to try.
+    // Nothing to revisit: the topic with the most still to try, with the next lesson beside it.
     next = withQs.map(t => ({ t, s: standing(t.id) })).sort((a, b) => a.s.tried / a.s.total - b.s.tried / b.s.total)[0].t;
-    finding = `${s.right} right and nothing to revisit. ${esc(next.title)} has the most questions still to try.`;
+    finding = `Nothing to revisit. ${esc(next.title)} has the most questions still to try.`;
+    actions = `<a class="btn primary" href="#practise-${next.id}">Practise: ${esc(next.title)}</a>${lessonBtn("")}`;
   }
-
-  const tiles = [
-    ["Tried", `${s?.tried ?? 0} <small>of ${all.length}</small>`, CONFIG.reviewMode ? "Draft questions included" : "Questions across every topic"],
-    ["Right last time", `${s?.right ?? 0}`, s?.partly ? `Plus ${s.partly} partly right` : "Your latest try at each question"],
-    ["To revisit", `${revisit.length}`, "These come back sooner in your sets"],
-    ["Mastery", s?.mastery != null ? `${s.mastery}<small>%</small>` : "<small>Not yet</small>",
-      s?.mastery != null ? "Grows each time you get a question right again" : `Shows once you've tried ${MASTERY_AFTER} questions`],
-  ].map(([label, value, cap]) =>
-    `<div class="tile s3"><span class="label">${label}</span><span class="value">${value}</span><span class="cap">${cap}</span></div>`).join("");
+  // One line on a first visit saying what the app is; after that, a reminder to space practice and a growth-mindset line.
+  const second = firstVisit
+    ? `Short lessons, interactive diagrams and practice questions for all ${content.topics.length} topics. No login: your progress stays on this device.`
+    : "The more you practise, the more you learn. Come back in a few days to review: questions stick better with a gap.";
+  // Progress as one line, measured by questions answered (not pages read). Nothing to show until something is tried.
+  const progressLine = s?.tried ? `<p class="progress-line" aria-label="Your progress">
+      <span><b>${s.tried}</b> of ${all.length} tried${CONFIG.reviewMode ? " (drafts included)" : ""}</span>
+      <span><b>${s.right}</b> right last time${s.partly ? `, ${s.partly} partly right` : ""}</span>
+      <span>${s.mastery != null ? `Mastery <b>${s.mastery}%</b>` : `Mastery shows once you've tried ${MASTERY_AFTER} questions`}</span></p>` : "";
 
   const rows = content.topics.map(t => {
     const n = questionsFor(t.id).length, L = lessonState(t);
@@ -258,10 +274,11 @@ function home() {
       <div>
         <h1 tabindex="-1">RDR-1173 Physics Revision</h1>
         <p class="sub">${finding}</p>
+        <p class="sub-2">${second}</p>
       </div>
-      ${mainBtn || (next ? `<a class="btn primary" href="#practise-${next.id}">${s?.tried ? "Continue" : "Start"}: ${esc(next.title)}</a>` : "")}
+      ${actions ? `<div class="controls hero-actions">${actions}</div>` : ""}
     </section>
-    <section class="grid12 tiles" aria-label="Your progress">${tiles}</section>
+    ${progressLine}
     <div class="grid12">
       <section class="box s9" aria-labelledby="topics-h">
         <div class="box-head"><h2 id="topics-h">Topics</h2><span class="count">${content.topics.length}</span></div>
@@ -452,6 +469,45 @@ function looseDiagrams(t) {
   return t.diagrams.filter(d => shown(d) && !inLessons.has(d.id));
 }
 
+// A set of just the questions to revisit (last answered wrongly), most recently missed first, from the home page's button.
+function practiseRevisit() {
+  const p = getProgress();
+  const list = content.questions.filter(q => p[q.id] && lastResult(p[q.id]) === "revisit")
+    .sort((a, b) => (p[b.id].lastWrong || 0) - (p[a.id].lastWrong || 0)).slice(0, CONFIG.setSize);
+  if (!list.length) return home();
+  practise("mixed", null, list, "Questions to revisit");
+}
+
+// The accessibility statement, linked from every footer. A draft for Rhys to check against the university's guidance.
+function accessibility() {
+  show(`
+    <article class="lesson">
+      <h1 tabindex="-1">Accessibility</h1>
+      ${CONFIG.reviewMode ? '<p class="lesson-src"><span class="status review">Draft</span> Check this against the university\'s accessibility guidance before students see it.</p>' : ""}
+      <div class="lesson-body">
+        <p>RadPhys Revise is a revision app for the RDR-1173 physics and radiation protection module. It should be usable by as many students as possible. You should be able to:</p>
+        <ul>
+          <li>zoom the page up to 200% and still read everything, with no sideways scrolling;</li>
+          <li>use it on a phone, a tablet or a computer;</li>
+          <li>use the questions and the diagrams' controls with a keyboard alone (in practice sets, press 1 to 4 to choose an answer and Enter to check it);</li>
+          <li>choose a light or dark theme, or follow your device's setting;</li>
+          <li>turn off animation through your device's "reduce motion" setting;</li>
+          <li>read text descriptions of the simulated X-ray images and of what each diagram shows;</li>
+          <li>tell right from wrong answers without relying on colour: each is marked with a tick or a cross and words.</li>
+        </ul>
+        <h3>How accessible it is</h3>
+        <p>The aim is to meet the Web Content Accessibility Guidelines (WCAG) 2.2 at level AA. The app has been checked for colour contrast in both themes, keyboard use and phone layout, with automated tools and by hand. It has not yet had a full audit or been tested with the full range of assistive technology, so it does not yet claim to meet the standard in full.</p>
+        <p>Known limitations: the interactive diagrams are visual, and although each has labelled controls and a written summary of what it shows, some (the moving electrons and photons, and the simulated images) will be harder to follow with a screen reader. The lessons and questions explain the same physics in words.</p>
+        <h3>Reporting a problem</h3>
+        <p>If you find something you can't use, or need the content in another format, use the "Report an error" link at the foot of any page${CONFIG.contactEmail || CONFIG.feedbackUrl ? "" : " (it appears once a contact has been set up)"}, or tell your module lecturer. Say which page and what happened.</p>
+        <h3>Enforcement</h3>
+        <p>For websites published by public sector bodies, including universities, the Equality and Human Rights Commission enforces the Public Sector Bodies (Websites and Mobile Applications) (No. 2) Accessibility Regulations 2018. If you're not happy with how a complaint is handled, you can contact the Equality Advisory and Support Service (EASS).</p>
+        <p class="muted">This statement was prepared in ${esc(CONFIG.lastUpdated || "November 2026")} and will be reviewed before the app is given to students.</p>
+      </div>
+    </article>
+    ${footer()}`, "accessibility", { title: "Accessibility" });
+}
+
 // One diagram on a page of its own: for diagrams outside any visible lesson, and for links from question feedback.
 async function diagramPage(topicId, diagramId) {
   const t = topicById(topicId), d = t?.diagrams.find(x => x.id === diagramId && shown(x));
@@ -548,8 +604,8 @@ function trackScale(box) {
 /* ---------- Practise ---------- */
 // scope: a topic id or "mixed". area: one question area within the topic.
 // retry: a fixed list of questions (the ones missed in the last set) instead of a fresh set.
-function practise(scope, area = null, retry = null) {
-  const topic = scope === "mixed" ? { title: "Mixed Practice", number: "" } : topicById(scope);
+function practise(scope, area = null, retry = null, label = null) {
+  const topic = scope === "mixed" ? { title: label || "Mixed Practice", number: "" } : topicById(scope);
   if (!topic) return home();
   const t = { ...topic, title: area ? `${topic.title}: ${area}` : topic.title };
   const pool = questionsFor(scope).filter(q => !area || (q.subtopic || "General") === area);
@@ -915,7 +971,7 @@ function practise(scope, area = null, retry = null) {
         </aside>
       </div>${footer()}`, scope, { title: `Set complete · ${t.title}`, current: scope === "mixed" });
     app.querySelector('[data-role="again"]').addEventListener("click", () => practise(scope, area));
-    app.querySelector('[data-role="retry"]')?.addEventListener("click", () => practise(scope, area, missed));
+    app.querySelector('[data-role="retry"]')?.addEventListener("click", () => practise(scope, area, missed, label));
   }
 
   renderQuestion();
@@ -930,6 +986,8 @@ function route() {
   if ((m = h.match(/^explore-([\w-]+)$/))) explore(m[1]);
   else if ((m = h.match(/^learn-([\w-]+)\/([\w-]+)$/))) lesson(m[1], m[2]);
   else if ((m = h.match(/^diagram-([\w-]+)\/([\w-]+)$/))) diagramPage(m[1], m[2]);
+  else if (h === "revisit") practiseRevisit();
+  else if (h === "accessibility") accessibility();
   else if ((m = h.match(/^practise-([\w-]+)(?:\/(.+))?$/))) practise(m[1], m[2] ? decodeURIComponent(m[2]) : null);
   else home();
 }

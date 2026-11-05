@@ -7,6 +7,13 @@ export const CONFIG = {
   // Link to the Microsoft Form for student feedback. Leave empty to hide the link.
   feedbackUrl: "",
 
+  // Shown in the footer of every page. Change it whenever you publish new or corrected content.
+  lastUpdated: "November 2026",
+
+  // Where "Report an error" goes: an email address. Leave empty to use the feedback Form link instead;
+  // with both empty, the link is hidden.
+  contactEmail: "",
+
   // Questions per practice set, and the most self-marked written questions in one set.
   setSize: 10,
   maxWrittenPerSet: 2,
