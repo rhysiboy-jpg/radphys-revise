@@ -169,6 +169,11 @@ Confirmed with Rhys Morris, 29 October 2026.
 - Fonts stored in the app (5 November 2026, at Rhys's request, from the code review). Figtree and Noto Sans were loaded from Google, which sent each student's IP address to Google (against "no data collection") and didn't work offline on a first visit.
   - **Now:** they're in `fonts/` with `css/fonts.css`, in Latin, extended Latin (ready for Welsh ŵ ŷ) and Greek, about 250 KB in all, under the SIL Open Font License (licence files included). They're part of the offline copy, and the look is unchanged.
   - **Guard:** the content checker now fails if `index.html` or any stylesheet loads anything from another site.
+- Code tidy and the sign-off gallery (5 November 2026, at Rhys's request).
+  - **knip scan:** no unused files or packages. Four exports used only in their own file are no longer exported (`parseSettings`, `rng`, `SHELL_NAMES`, `XCOM`). `fromRow` and `isValid` stay, marked as used by the checker.
+  - **Gallery:** `prototypes/diagrams.html` (open it at http://localhost:8080/prototypes/diagrams.html) now shows all 42 diagrams by topic. It's built from `topics.json` and the app's diagram list, so new diagrams appear without editing it.
+  - **Each diagram's entry shows:** its sign-off status, the lessons that use it, what to check (the illustrative values and the items needing clinical or legal sign-off), and a filter for "Awaiting sign-off".
+  - **Loading:** diagrams load as you scroll, and the fonts come from the app.
 - Next: Rhys reviews the 63 draft lessons and the 19 new interactives (review mode only). Still waiting: review of the 249 draft questions, and sign-off of the earlier interactives and diagram upgrades.
 - Untested: offline mode. Check it once hosted on GitHub Pages, which needs the repo made public (only with Rhys's go-ahead).
 - Commit identity: Rhys Morris, using the GitHub no-reply email.

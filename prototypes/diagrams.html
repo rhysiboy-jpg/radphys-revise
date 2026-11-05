@@ -4,17 +4,20 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>RadPhys Diagram Sign-off</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@500..700&family=Noto+Sans:wght@400..600&display=swap">
+<link rel="stylesheet" href="../css/fonts.css">
 <link rel="stylesheet" href="../css/app.css">
 <style>
-  /* Sign-off page: the real diagram modules on one sheet, each with its own checklist. Not published to students. */
+  /* Sign-off page: every diagram in the app, built from its real module, with what to check. Not published to students.
+     The list comes from content/topics.json and the module files from the DIAGRAMS map in js/app.js, so a new diagram
+     appears here without editing this page. */
   .signoff { max-width: 1180px; margin: 0 auto; }
   .signoff .sheet { margin: 8px; }
   .check { background: var(--sun-tint); border-radius: var(--r-panel); padding: 16px 20px; display: grid; gap: 8px; }
   .check ul { margin: 0; padding-left: 1.2em; display: grid; gap: 4px; }
   .check h3 { color: var(--sun-ink); }
+  .used { font-size: 0.9rem; color: var(--muted); }
+  .topic-h { margin-top: 24px; }
+  .so-filter { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
 </style>
 </head>
 <body>
@@ -26,47 +29,137 @@
         <p class="sub">Every diagram as students will see it, built from the app's own code. To approve one, set <b>"approved": true</b> for it in <b>content/topics.json</b>, or tell Claude which ones are signed off.</p>
       </div>
     </section>
-    <div data-role="list" class="stack" style="gap:72px"></div>
+    <div class="so-filter">
+      <div class="modes" role="group" aria-label="Show">
+        <button type="button" data-show="waiting" aria-pressed="true">Awaiting sign-off</button>
+        <button type="button" data-show="all" aria-pressed="false">All diagrams</button>
+      </div>
+      <p class="muted" data-role="count" aria-live="polite"></p>
+    </div>
+    <div data-role="list" class="stack" style="gap:56px"></div>
     <footer class="bottom"><span>RadPhys Revise · Created by Rhys Morris</span><span>Sign-off page · not published</span></footer>
   </main>
 </div>
 <script type="module">
-// Each diagram with what Rhys should check before signing it off.
-const DIAGRAMS = [
-  { id: "bohr", title: "The Bohr atom", status: "Signed off", checks: [
+import { parseLessons } from "../js/lessons.js";
+
+// What to check for each diagram, beyond the general checks every diagram gets. Values marked illustrative are not
+// reference data; scenarios marked for clinical or legal sign-off need Rhys's judgement (see PLAN.md).
+const CHECKS = {
+  bohr: ["Changed after your first sign-off (30 October): labels in plain ink, dark-mode colours and shorter phone labels. Recheck those.",
     "Binding energies for carbon, calcium, iodine, tungsten and lead (K, and the L3 and M5 sub-shells for L and M).",
-    "Excitation vs ionisation narration, and the characteristic energy worked as K − L (tungsten ≈ 59.3 keV, to match the spectrum explorer).",
-    "Is five elements the right choice, and is the sub-shell simplification acceptable for first years?" ] },
-  { id: "target", title: "Electron–target interactions", status: "Signed off", checks: [
-    "Heat, Bremsstrahlung and characteristic narration, and the share figures (about 99% heat).",
-    "Bremsstrahlung photon energies are illustrative fractions of the kV (8%, 22%, 45%, 75%, 100% for a direct hit). The trend is right; the exact fractions are not physical constants.",
-    "Below 69.5 kV: no K-characteristic line, with a note that L lines (8–12 keV) are filtered out." ] },
-  { id: "pe-compton", title: "Interactions and attenuation", status: "Awaiting sign-off", checks: [
-    "Coherent scatter in the right-hand panel: same energy out, small angle, no electron freed. Is the wording right for first years?",
-    "\"Which is more likely?\" now uses NIST XCOM data with three shares. Soft tissue crosses over at about 27 keV and bone at about 55 keV (previously about 25 and 47 from Z³/E³).",
-    "Attenuation view: per gram (cm²/g) on log scales, with the iodine (33.2 keV) and lead (88.0 keV) K-edges. Are per-gram comparisons and log scales right for this group, or would you prefer per centimetre?" ] },
-  { id: "isl", title: "The inverse square law", status: "Signed off", checks: [
-    "Area, intensity and the mAs–distance rule (mAs₂ = mAs₁ × (d₂ ÷ d₁)²) against the reference distance.",
-    "The front view has 144 photons on a grid, so the fixed patch counts exactly 144, 64, 36 and 16 at 100, 150, 200 and 300 cm.",
-    "Is linking distance to staff dose (time, distance and shielding) in the right place here?" ] },
-  { id: "tube", title: "The rotating-anode tube", status: "Signed off", checks: ["Signed off 29 October 2026. Labels now use Noto Sans after the Bangor restyle (checked 30 October)."] },
-  { id: "spectrum", title: "The X-ray spectrum", status: "Signed off", checks: ["Signed off 29 October 2026. Labels now use Noto Sans after the Bangor restyle (checked 30 October)."] },
-];
+    "The characteristic energy worked as K − L (tungsten ≈ 59.3 keV, to match the spectrum)."],
+  tube: ["Changed after your first sign-off (30 October): the tube voltage now reads kVp, labels are plain ink, and dark-mode colours changed. Recheck those."],
+  isl: ["Changed after your first sign-off (30 October): labels and dark-mode colours. Recheck those.",
+    "The mAs–distance rule (mAs₂ = mAs₁ × (d₂ ÷ d₁)²) and the photon counts in the fixed patch (144, 64, 36, 16)."],
+  spectrum: ["Upgraded since first sign-off: the molybdenum filter and mammography preset are beyond the slides. Check they suit this group."],
+  target: ["New: after the Kα photon, an M electron fills the L gap with a weak L-line photon of about 8.4 keV.",
+    "Bremsstrahlung photon energies are illustrative fractions of the kV; the trend is right, the fractions are not constants."],
+  "pe-compton": ["Coherent scatter in the right-hand panel: same energy out, small angle, no electron freed.",
+    "Shares from NIST XCOM: soft tissue crosses over at about 27 keV and bone at about 55 keV.",
+    "Attenuation view per gram (cm²/g) on log scales, with the iodine (33.2 keV) and lead (88.0 keV) K-edges."],
+  "cell-damage": ["The 1,000-photon tally uses illustrative shares (98.8% / 1.1% / 0.1%)."],
+  "dose-response": ["Skin thresholds from ICRP 85 (2, 3, 6, 7, 10, 15 Gy); lens 0.5 Gy; whole body 1, 5, 10, 20 Gy.", "Stochastic risk shows \"Not estimated\" above 1 Sv."],
+  "population-risk": ["5% per Sv; the leukaemia preset (2 × 10⁻³ per Sv) is the lecture's slide 12 example and couldn't be verified.", "The 1 in 4 background is CRUK's figure for UK deaths from cancer."],
+  "tissue-weights": ["Tissue weighting factors from ICRP 103."],
+  justify: ["Needs clinical sign-off: the eight request scenarios and the expected answers."],
+  "dose-choices": ["Starts from UKHSA's 0.7 mSv for a pelvis; the multipliers are illustrative but right in direction."],
+  "electron-energy": ["1 eV = 1.6 × 10⁻¹⁹ J; the 99% heat / 1% X-rays split, as in the tube diagram."],
+  "em-spectrum": ["Band edges are approximate; ionising from about 10 eV; diagnostic X-rays shown as 20–150 keV."],
+  conductors: ["Where each material appears in the tube and circuit (copper, tungsten, glass, oil, rubber)."],
+  "ohms-law": ["Illustrative resistances (6 Ω per metre of the thinnest wire)."],
+  "xray-circuit": ["Simplified: one rectifier block, no meters. Filament about 12 V and 5 A, as in the tube diagram."],
+  digitisation: ["Point sampling, to make aliasing easy to see; real detectors average over each pixel."],
+  processing: ["A simplified histogram model (the anatomy as a range of percentiles). Does the wrong-body-part example (Chest PA for a limb) work for teaching?"],
+  "noise-dqe": ["Illustrative DQE values (0.6 and 0.3) and photon numbers."],
+  aec: ["Illustrative transmissions, mAs and the guard-timer limit (5 × the usual mAs)."],
+  dap: ["Illustrative doses and reference level (1.5 Gy cm², not a national DRL); backscatter factor 1.35."],
+  "gas-detector": ["The curve is schematic; the regions and what each is used for."],
+  dosimeters: ["Illustrative film darkening and TLD glow curve (main peak near 200 °C, as for lithium fluoride)."],
+  regulations: ["Needs legal sign-off: which law covers each of the twelve situations."],
+  "duty-holders": ["Needs legal sign-off: the journey counts writing the report as an operator task."],
+  "designated-areas": ["Needs legal sign-off: the room treated as a controlled area (the employer's decision, with RPA advice); carers and comforters under IR(ME)R."],
+  consent: ["Needs clinical sign-off: the eight scenarios, including the Mental Capacity Act reference."],
+  nuclides: ["Z, N and decay mode for each of the eleven nuclides; the band of stability is a smooth fit, so approximate."],
+  "qa-check": ["Remedial and suspension levels as given in the QA lecture (IPEM Report 91)."],
+  "qa-sort": ["Which activities count as the QA programme and which as QC tests."],
+  "qa-lifecycle": ["Output consistency levels ±20% and ±50% (IPEM Report 91); the results themselves are illustrative."],
+};
+const GENERAL = "The physics and wording, and how it looks and works on a phone.";
+
+const [topics, appJs] = await Promise.all([
+  fetch("../content/topics.json").then(r => r.json()),
+  fetch("../js/app.js").then(r => r.text()),
+]);
+const files = Object.fromEntries([...appJs.matchAll(/^\s+"?([\w-]+)"?: \(\) => import\("\.\/diagrams\/([\w.-]+)"\)/gm)].map(m => [m[1], m[2]]));
+// Which lesson shows each diagram, so the context is a click away.
+const usedIn = {};
+for (const t of topics) {
+  if (!t.lessons) continue;
+  for (const l of parseLessons(await (await fetch("../" + t.lessons)).text()))
+    if (l.diagram) (usedIn[l.diagram] ??= []).push({ topic: t, html: `<a href="../#learn-${t.id}/${l.id}">${l.title}</a>` });
+}
+
 const list = document.querySelector('[data-role="list"]');
-for (const d of DIAGRAMS) {
-  const s = document.createElement("section");
-  s.className = "module";
-  s.setAttribute("aria-labelledby", `h-${d.id}`);
-  s.innerHTML = `<div class="module-head"><h2 id="h-${d.id}">${d.title} <span class="status ${d.status === "Signed off" ? "ready" : "review"}">${d.status}</span></h2></div>
-    <div class="check"><h3>What to check</h3><ul>${d.checks.map(c => `<li>${c}</li>`).join("")}</ul></div>
-    <div data-diagram="${d.id}"></div>`;
-  list.appendChild(s);
+const sections = [];
+for (const t of topics) {
+  if (!t.diagrams.length) continue;
+  const h = document.createElement("h2");
+  h.className = "topic-h";
+  h.textContent = `${t.number} ${t.title}`;
+  list.appendChild(h);
+  for (const d of t.diagrams) {
+    const s = document.createElement("section");
+    s.className = "module";
+    s.dataset.approved = d.approved;
+    s.setAttribute("aria-labelledby", `h-${d.id}`);
+    s.innerHTML = `<div class="module-head"><h3 id="h-${d.id}">${d.title} <span class="status ${d.approved ? "ready" : "review"}">${d.approved ? "Signed off" : "Awaiting sign-off"}</span></h3>
+        <p>${d.blurb}</p>${usedIn[d.id] ? `<p class="used">Used in: ${usedIn[d.id].map(u => u.topic === t ? u.html : `${u.html} (${u.topic.title})`).join("; ")}</p>` : `<p class="used">Not used in any lesson yet.</p>`}</div>
+      <div class="check"><h4>What to check</h4><ul>${[...(CHECKS[d.id] || []), GENERAL].map(c => `<li>${c}</li>`).join("")}</ul></div>
+      <div data-diagram="${d.id}"><p class="muted">Loads when you scroll to it.</p></div>`;
+    list.appendChild(s);
+    sections.push([s, h]);
+  }
 }
-const files = { bohr: "bohr", target: "target", "pe-compton": "pecompton", isl: "isl", tube: "tube", spectrum: "spectrum" };
-for (const box of document.querySelectorAll("[data-diagram]")) {
-  const mod = await import(`../js/diagrams/${files[box.dataset.diagram]}.js`);
-  mod.mount(box);
+
+// Mount each diagram as it comes into view: some run simulations, and 40 at once would be slow.
+const mounted = new WeakSet();
+const io = new IntersectionObserver(entries => entries.forEach(async e => {
+  const box = e.target;
+  if (!e.isIntersecting || mounted.has(box)) return;
+  mounted.add(box);
+  try {
+    const mod = await import(`../js/diagrams/${files[box.dataset.diagram]}`);
+    box.innerHTML = "";
+    mod.mount(box);
+    // Phone text sizes, as the app does: drawing units per screen pixel.
+    const ro = new ResizeObserver(es => es.forEach(({ target }) => {
+      const w = target.getBoundingClientRect().width, vb = target.viewBox?.baseVal;
+      if (w && vb?.width) target.style.setProperty("--u", (vb.width / w).toFixed(3));
+    }));
+    box.querySelectorAll("svg").forEach(svg => ro.observe(svg));
+  } catch (err) {
+    box.innerHTML = `<p class="muted">Couldn't load this diagram: ${err.message}</p>`;
+  }
+}), { rootMargin: "400px" });
+document.querySelectorAll("[data-diagram]").forEach(b => io.observe(b));
+
+function show(which) {
+  document.querySelectorAll("[data-show]").forEach(b => b.setAttribute("aria-pressed", b.dataset.show === which));
+  let n = 0;
+  for (const [s] of sections) { const hide = which === "waiting" && s.dataset.approved === "true"; s.hidden = hide; if (!hide) n++; }
+  // A topic heading shows only when one of its diagrams does.
+  for (const h of list.querySelectorAll(".topic-h")) {
+    let el = h.nextElementSibling, any = false;
+    while (el && !el.classList.contains("topic-h")) { if (!el.hidden) any = true; el = el.nextElementSibling; }
+    h.hidden = !any;
+  }
+  const total = sections.length, waiting = sections.filter(([s]) => s.dataset.approved !== "true").length;
+  document.querySelector('[data-role="count"]').textContent = which === "waiting"
+    ? `${waiting} of ${total} diagrams awaiting sign-off.` : `All ${total} diagrams; ${total - waiting} signed off.`;
 }
+document.querySelectorAll("[data-show]").forEach(b => b.addEventListener("click", () => show(b.dataset.show)));
+show("waiting");
 </script>
 </body>
 </html>
