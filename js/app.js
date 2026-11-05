@@ -193,10 +193,20 @@ function home() {
   const revisit = all.filter(q => p[q.id] && lastResult(p[q.id]) === "revisit");
   const withQs = content.topics.filter(t => questionsFor(t.id).length);
 
-  // The screen's one finding, and the topic the main button opens.
-  let next = withQs[0], finding;
+  // The screen's one finding, and where the main button goes. Before any questions are tried, that is the next lesson:
+  // the lessons teach, and the questions then check.
+  let next = withQs[0], finding, mainBtn = null;
   if (!s?.tried) {
-    finding = next ? `Nothing tried yet. ${esc(next.title)} has ${plural(questionsFor(next.id).length, "question")} ready.` : "Questions are on their way.";
+    const lt = content.topics.map(t => ({ t, L: lessonState(t) })).find(x => x.L.total && x.L.done < x.L.total);
+    if (lt) {
+      const started = content.topics.some(t => lessonState(t).done);
+      finding = started
+        ? `You're part-way through the lessons. Next: ${esc(lt.t.title)}, lesson ${lt.t.lessonList.indexOf(lt.L.next) + 1} of ${lt.L.total}.`
+        : `Nothing tried yet. Start with ${esc(lt.t.title)}: ${plural(lt.L.total, "lesson")}, then ${plural(questionsFor(lt.t.id).length, "question")} to practise.`;
+      mainBtn = `<a class="btn primary" href="#learn-${lt.t.id}/${lt.L.next.id}">${started ? "Continue" : "Start"}: ${esc(lt.L.next.title)}</a>`;
+    } else {
+      finding = next ? `Nothing tried yet. ${esc(next.title)} has ${plural(questionsFor(next.id).length, "question")} ready.` : "Questions are on their way.";
+    }
   } else if (revisit.length) {
     const byTopic = withQs.map(t => ({ t, n: revisit.filter(q => q.topic === t.id).length })).sort((a, b) => b.n - a.n);
     next = byTopic[0].t;
@@ -217,20 +227,27 @@ function home() {
     `<div class="tile s3"><span class="label">${label}</span><span class="value">${value}</span><span class="cap">${cap}</span></div>`).join("");
 
   const rows = content.topics.map(t => {
-    const n = questionsFor(t.id).length;
+    const n = questionsFor(t.id).length, L = lessonState(t);
     const diagrams = t.diagrams.filter(shown).length;
+    // Lessons come first: they teach, the questions then check. A topic without lessons keeps its diagrams.
+    const counts = L.total ? [plural(L.total, "lesson"), plural(n, "question")]
+      : [plural(n, "question"), ...(diagrams ? [`${plural(diagrams, "diagram")} to explore`] : [])];
+    const lessonBtn = !L.total ? "" : L.done === L.total
+      ? `<a class="btn" href="#explore-${t.id}" aria-label="Lessons for ${esc(t.title)}">Lessons</a>`
+      : `<a class="btn" href="#learn-${t.id}/${L.next.id}" aria-label="${L.done ? "Continue" : "Start"} the lessons for ${esc(t.title)}">${L.done ? "Continue lessons" : "Lessons"}</a>`;
     return `<article class="topic">
       <span class="n">${t.number}</span>
       <div class="topic-main">
         <h3><a href="#explore-${t.id}">${esc(t.title)}</a></h3>
         <p>${esc(t.blurb)}</p>
-        <p class="counts">${plural(n, "question")}${diagrams ? ` · ${plural(diagrams, "diagram")} to explore` : ""}</p>
+        <p class="counts">${counts.join(" · ")}${L.total && L.done ? ` · ${L.done} of ${L.total} lessons visited` : ""}</p>
       </div>
       <div class="topic-side">
         ${n ? progressBar(standing(t.id), t.title) : '<span class="soon">Questions coming soon</span>'}
         <div class="controls">
+          ${lessonBtn}
           ${n ? `<a class="btn" href="#practise-${t.id}" aria-label="Practise ${esc(t.title)}">Practise</a>`
-            : diagrams ? `<a class="btn" href="#explore-${t.id}" aria-label="Explore ${esc(t.title)}">Explore</a>` : ""}
+            : !L.total && diagrams ? `<a class="btn" href="#explore-${t.id}" aria-label="Explore ${esc(t.title)}">Explore</a>` : ""}
         </div>
       </div>
     </article>`;
@@ -242,7 +259,7 @@ function home() {
         <h1 tabindex="-1">RDR-1173 Physics Revision</h1>
         <p class="sub">${finding}</p>
       </div>
-      ${next ? `<a class="btn primary" href="#practise-${next.id}">${s?.tried ? "Continue" : "Start"}: ${esc(next.title)}</a>` : ""}
+      ${mainBtn || (next ? `<a class="btn primary" href="#practise-${next.id}">${s?.tried ? "Continue" : "Start"}: ${esc(next.title)}</a>` : "")}
     </section>
     <section class="grid12 tiles" aria-label="Your progress">${tiles}</section>
     <div class="grid12">
@@ -389,11 +406,17 @@ function practiseBox(t) {
 }
 const lessonChip = l => CONFIG.reviewMode && l.status !== "approved" ? ' <span class="status review">Draft</span>' : "";
 
-// A topic's contents: its lessons in order, ticked once visited, then practice by area.
+// A topic's lessons on this device: how many, how many visited, and the next one to read (the first not yet visited).
+function lessonState(t) {
+  const seen = visitedLessons(), list = t.lessonList || [];
+  const done = list.filter(l => seen.has(`${t.id}/${l.id}`)).length;
+  return { total: list.length, done, next: list.find(l => !seen.has(`${t.id}/${l.id}`)) || list[0] };
+}
+
+// A topic's contents: its lessons in order, ticked once visited, with practice by area beside them.
 function contents(t) {
   const seen = visitedLessons(), list = t.lessonList;
-  const done = list.filter(l => seen.has(`${t.id}/${l.id}`)).length;
-  const nextUp = list.find(l => !seen.has(`${t.id}/${l.id}`)) || list[0];
+  const { done, next: nextUp } = lessonState(t);
   const qs = questionsFor(t.id);
   show(`
     <section class="title-row">
@@ -403,17 +426,19 @@ function contents(t) {
       </div>
       <a class="btn primary" href="#learn-${t.id}/${nextUp.id}">${done ? (done === list.length ? "Start again" : "Continue") : "Start the lessons"}</a>
     </section>
-    <section class="lesson-contents" aria-labelledby="lc-h">
-      <div class="box-head"><h2 id="lc-h">Lessons</h2><p class="muted">${done} of ${list.length} visited</p></div>
-      <ol class="lesson-list">${list.map((l, i) => {
-        const v = seen.has(`${t.id}/${l.id}`);
-        return `<li><a href="#learn-${t.id}/${l.id}" class="lesson-link${v ? " visited" : ""}">
-          <span class="ln">${v ? MARKS.right : i + 1}</span>
-          <span class="lt"><b>${esc(l.title)}</b>${lessonChip(l)}<span>${esc(l.summary)}</span></span>
-          <span class="lv">${v ? "Visited" : ""}</span></a></li>`;
-      }).join("")}</ol>
-    </section>
-    ${qs.length ? practiseBox(t) : ""}
+    <div class="grid12">
+      <section class="lesson-contents ${qs.length ? "s8" : "s12"}" aria-labelledby="lc-h">
+        <div class="box-head"><h2 id="lc-h">Lessons</h2><p class="muted">${done} of ${list.length} visited</p></div>
+        <ol class="lesson-list">${list.map((l, i) => {
+          const v = seen.has(`${t.id}/${l.id}`);
+          return `<li><a href="#learn-${t.id}/${l.id}" class="lesson-link${v ? " visited" : ""}">
+            <span class="ln">${v ? MARKS.right : i + 1}</span>
+            <span class="lt"><b>${esc(l.title)}${lessonChip(l)}</b><span>${esc(l.summary)}</span></span>
+            <span class="lv">${v ? "Visited" : ""}</span></a></li>`;
+        }).join("")}</ol>
+      </section>
+      ${qs.length ? `<div class="s4 contents-side">${practiseBox(t)}</div>` : ""}
+    </div>
     ${footer()}`, t.id, { title: t.title });
 }
 
@@ -429,11 +454,21 @@ async function lesson(topicId, lessonId) {
   const areaLinks = l.areas.map(a => [a, qs.filter(q => q.subtopic === a).length]).filter(([, n]) => n);
   show(`
     <nav class="crumbs" aria-label="Breadcrumb"><a href="#explore-${t.id}">${esc(t.title)}</a><span aria-hidden="true">›</span><span>Lesson ${i + 1} of ${list.length}</span></nav>
-    <article class="lesson">
-      <h1 tabindex="-1">${esc(l.title)}${lessonChip(l)}</h1>
-      ${CONFIG.reviewMode && l.sources ? `<p class="lesson-src">Lecture: ${esc(l.sources)}</p>` : ""}
-      <div class="lesson-body">${l.body}</div>
-    </article>
+    <div class="lesson-top">
+      <article class="lesson">
+        <h1 tabindex="-1">${esc(l.title)}</h1>
+        ${CONFIG.reviewMode && (l.sources || lessonChip(l)) ? `<p class="lesson-src">${lessonChip(l)}${l.sources ? ` Lecture: ${esc(l.sources)}` : ""}</p>` : ""}
+        <div class="lesson-body">${l.body}</div>
+      </article>
+      <aside class="lesson-aside" aria-labelledby="la-h">
+        <h2 id="la-h">In this topic</h2>
+        <ol class="lesson-mini">${list.map((x, k) => {
+          const v = visitedLessons().has(`${t.id}/${x.id}`), here = x === l;
+          return `<li><a href="#learn-${t.id}/${x.id}"${here ? ' aria-current="page"' : ""} class="${v && !here ? "visited" : ""}"><span class="ln">${v && !here ? MARKS.right : k + 1}</span><span>${esc(x.title)}</span></a></li>`;
+        }).join("")}</ol>
+        ${qs.length ? `<a class="btn" href="#practise-${t.id}" aria-label="Practise ${esc(t.title)}">Practise this topic</a>` : ""}
+      </aside>
+    </div>
     ${d ? `<section class="module lesson-diagram" aria-labelledby="ld-h">
         <div class="module-head"><h2 id="ld-h">Explore: ${esc(d.title)}</h2>${l.tryThis ? `<div class="lesson-try"><b>Try this</b>${l.tryThis}</div>` : ""}</div>
         <div data-diagram="${d.id}"><p class="muted">Loading diagram…</p></div>

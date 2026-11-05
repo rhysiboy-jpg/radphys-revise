@@ -156,6 +156,11 @@ Confirmed with Rhys Morris, 29 October 2026.
   - **Offline copy:** spreadsheets and lessons are cached from `topics.json`, and a "new version is ready" notice offers a refresh rather than reloading by itself.
   - **Number entry:** accepts scientific notation (3e8, 1.5 × 10^-2), fractions, thousands commas and a unit typed after the number. An answer turned upside down (1/4 for 4) gets its own hint.
   - **Deferred:** exam practice mode (planned for April–May; its question mix should follow the real exam format, which Rhys will confirm); Welsh, until Canolfan Bedwyr replies; slider − / + buttons, perhaps on the kV and distance sliders only.
+- Design review and three layout changes (5 November 2026, at Rhys's request, using the design-taste-frontend skill). The skill's checks found nothing failing; the changes come from looking at the screens.
+  - **Home:** each topic row reads "6 lessons · 34 questions" and has a Lessons (or Continue lessons) button before Practise. Before any questions are tried, the main button opens the next lesson instead of a practice set.
+  - **Lesson pages:** on wide screens an "In this topic" list sits beside the text (ticks for visited lessons, the current one marked, and a practice button), filling the empty right half. Below 1100px it is left out. The Draft tag moved out of the title onto the lecture line.
+  - **Topic contents:** the lessons and "Practise by area" sit side by side on desktop, so both are on the first screen.
+  - **Left as they are:** duplicated progress on the practice screen; empty progress bars on the phone home screen.
 - Next: Rhys reviews the 63 draft lessons and the 19 new interactives (review mode only). Still waiting: review of the 249 draft questions, and sign-off of the earlier interactives and diagram upgrades.
 - Untested: offline mode. Check it once hosted on GitHub Pages, which needs the repo made public (only with Rhys's go-ahead).
 - Commit identity: Rhys Morris, using the GitHub no-reply email.
