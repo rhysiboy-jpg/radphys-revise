@@ -62,9 +62,9 @@ RadPhys Revise is a revision app for first-year diagnostic radiography physics (
 
 ## Checking your work
 
-- **Run the checker first:** `node tools/validate.mjs`. It checks every content file, the diagram registry and the offline file list, and exits with 1 if there are problems. Fix all problems before committing.
+- **Run both checks first:** `node tools/validate.mjs` checks every content file, the diagram registry and the offline file list; `node tools/test.mjs` tests the app's logic (answer reading, marking, practice sets, progress and backups, the file readers). Each exits with 1 on a problem. Fix every problem before committing, and add a test when you change that logic.
 
-- **Preview:** run `powershell -ExecutionPolicy Bypass -File tools\serve.ps1`, then open http://localhost:8080. Opening `index.html` directly doesn't work.
+- **Preview:** run `node tools/serve.mjs`, then open http://localhost:8080. Opening `index.html` directly doesn't work.
 - **Test widths:** check at phone width (375px) and desktop width. Look for clipped or overlapping labels, sideways scrolling and console errors, and try every control.
 - **Old copies:** the service worker can serve outdated files. Unregister it and clear its caches while testing.
 - **Line endings:** some files use CRLF. Prefer exact-match edits to scripted find-and-replace, and confirm each edit applied.

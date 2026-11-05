@@ -1,5 +1,6 @@
 // Sorter: stochastic or deterministic? Each card is an effect or a property; the student files it, and each answer explains itself.
-// Content follows the Cellular Effects of Radiation and Dose Measurement lectures.
+// Content follows the Cellular Effects of Radiation and Dose Measurement lectures. Uses the shared sorting activity.
+import { mountSort } from "./sortkit.js";
 
 const CARDS = [
   ["Radiation-induced cancer", "s", "Cancer induction is the main stochastic effect: the chance rises with dose, with no threshold."],
@@ -16,69 +17,18 @@ const CARDS = [
   ["Severity increases with dose", "d", "For deterministic effects the dose sets how severe the effect is."],
   ["More likely in radiotherapy or long interventional procedures", "d", "Only large doses pass the thresholds, so deterministic effects are mainly seen in radiotherapy and long fluoroscopy-guided procedures."],
 ];
-const NAME = { s: "Stochastic", d: "Deterministic" };
-
-const MARKUP = `
-<div class="grid">
-  <div class="stage sort-stage">
-    <p class="sort-progress" data-role="progress" aria-live="polite"></p>
-    <ol class="sort-list" data-role="list"></ol>
-    <div class="controls"><button type="button" data-role="again">Shuffle and start again</button></div>
+const ASIDE = `
+  <div class="part-card">
+    <p class="eyebrow">Stochastic</p>
+    <h3>A matter of chance</h3>
+    <p>No threshold. The <b>probability</b> rises with dose; the severity does not. Every exposure carries some risk. Examples: cancer, heritable effects.</p>
   </div>
-  <div class="panel">
-    <div class="part-card">
-      <p class="eyebrow">Stochastic</p>
-      <h3>A matter of chance</h3>
-      <p>No threshold. The <b>probability</b> rises with dose; the severity does not. Every exposure carries some risk. Examples: cancer, heritable effects.</p>
-    </div>
-    <div class="part-card">
-      <p class="eyebrow">Deterministic (tissue reactions)</p>
-      <h3>Above a threshold</h3>
-      <p>Below the threshold dose the effect does not occur. Above it, the <b>severity</b> rises with dose. Examples: erythema, cataract, hair loss.</p>
-    </div>
-  </div>
-</div>`;
+  <div class="part-card">
+    <p class="eyebrow">Deterministic (tissue reactions)</p>
+    <h3>Above a threshold</h3>
+    <p>Below the threshold dose the effect does not occur. Above it, the <b>severity</b> rises with dose. Examples: erythema, cataract, hair loss.</p>
+  </div>`;
 
 export function mount(root) {
-  root.innerHTML = MARKUP;
-  const $ = r => root.querySelector(`[data-role="${r}"]`);
-  let order = [], done = 0, right = 0;
-
-  function progress() {
-    $("progress").textContent = done === CARDS.length
-      ? `All ${CARDS.length} sorted: ${right} right.${right === CARDS.length ? " Every one." : " Shuffle to try again."}`
-      : `Sorted ${done} of ${CARDS.length}${done ? `, ${right} right` : ""}. File each card as stochastic or deterministic.`;
-  }
-
-  function start() {
-    order = CARDS.map((c, i) => [Math.random(), i]).sort((a, b) => a[0] - b[0]).map(([, i]) => CARDS[i]);
-    done = 0; right = 0;
-    const list = $("list");
-    list.innerHTML = "";
-    order.forEach(([text, kind, why]) => {
-      const li = document.createElement("li");
-      li.className = "sort-card";
-      li.innerHTML = `<p class="sort-text">${text}</p>
-        <div class="controls" role="group" aria-label="${text}">
-          <button type="button" data-k="s">Stochastic</button>
-          <button type="button" data-k="d">Deterministic</button>
-        </div>
-        <p class="sort-why" hidden></p>`;
-      li.querySelectorAll("[data-k]").forEach(b => b.addEventListener("click", () => {
-        const ok = b.dataset.k === kind;
-        done++; if (ok) right++;
-        li.classList.add(ok ? "is-correct" : "is-wrong");
-        li.querySelectorAll("[data-k]").forEach(x => { x.disabled = true; x.setAttribute("aria-pressed", x === b); });
-        const why_ = li.querySelector(".sort-why");
-        why_.innerHTML = `<b>${ok ? "Right" : "Not quite"}: ${NAME[kind].toLowerCase()}.</b> ${why}`;
-        why_.hidden = false;
-        progress();
-      }));
-      list.appendChild(li);
-    });
-    progress();
-  }
-
-  $("again").addEventListener("click", start);
-  start();
+  mountSort(root, { cards: CARDS, bins: { s: "Stochastic", d: "Deterministic" }, aside: ASIDE, prompt: "File each card as stochastic or deterministic." });
 }

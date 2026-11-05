@@ -77,7 +77,7 @@ Confirmed with Rhys Morris, 29 October 2026.
 - Diagram sign-off: each diagram has `"approved"` in `content/topics.json`. Rhys reviews them on `prototypes/diagrams.html` (a checklist per diagram); only approved diagrams reach students.
 - Signed off by Rhys (30 October 2026): Bohr atom, electron–target interactions, photoelectric vs Compton, inverse square law. All six pilot diagrams are now approved.
 - Offline support is now network-first: online visitors always get the latest files; saved copies are used only offline.
-- Review notes: Rhys checks the app locally (`tools/serve.ps1`, http://localhost:8080) and logs notes as GitHub Issues using the "Review note" form (label `note`, plus `physics`, `wording`, `layout`, `bug` or `enhancement`). Claude works through open notes and closes each with a comment saying what changed.
+- Review notes: Rhys checks the app locally (`node tools/serve.mjs`, http://localhost:8080) and logs notes as GitHub Issues using the "Review note" form (label `note`, plus `physics`, `wording`, `layout`, `bug` or `enhancement`). Claude works through open notes and closes each with a comment saying what changed.
 - Phase 1 progress (30 October 2026):
   - Topics restructured to the eleven above, in teaching order; planned interactives show as "Coming soon".
   - Tube explorer aligned with the lectures (filament about 5 A at 12 V; 3,000 or 9,000 rpm; inherent filtration about 1 mm Al). Bohr atom notes the lecture-table L and M values.
@@ -182,6 +182,12 @@ Confirmed with Rhys Morris, 29 October 2026.
   - **Footer:** now carries the module, `lastUpdated` from `js/config.js`, the reference data, "Report an error" (to `contactEmail` or the feedback Form) and an Accessibility link.
   - **Accessibility statement:** a new page at `#accessibility`. **It's a draft for Rhys to check against the university's guidance.**
   - **Sizes:** buttons on topic rows and in "On This Device" are now 44px; topic descriptions are 16px; lesson text is 18px.
+- Project check against the Karpathy guidelines (5 November 2026, at Rhys's request):
+  - **Tests:** `node tools/test.mjs` (11 tests: number entry, marking, practice-set picking, progress, backup merge, the spreadsheet and lesson readers). Proven to fail when the written-question cap was deliberately broken.
+  - **Preview server:** `tools/serve.mjs` (Node) replaces `tools/serve.ps1`, which handled one request at a time and dropped files. It passed 120 requests at once with no failures.
+  - **Sorter:** the stochastic/deterministic sorter now uses the shared sorting component (84 lines down to 34).
+  - **Accessibility statement:** keyboard use checked. Every tappable part of a drawing has a matching button, except reading one pixel in the windowing diagram, which the statement now says.
+  - **Left as they are:** `js/app.js` is large but working (splitting it wasn't asked for); 17 diagrams share a small repeated pattern; `.s6` is an unused grid class.
 - Next: Rhys reviews the 63 draft lessons and the 19 new interactives (review mode only). Still waiting: review of the 249 draft questions, and sign-off of the earlier interactives and diagram upgrades.
 - Untested: offline mode. Check it once hosted on GitHub Pages, which needs the repo made public (only with Rhys's go-ahead).
 - Commit identity: Rhys Morris, using the GitHub no-reply email.

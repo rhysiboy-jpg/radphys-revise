@@ -489,7 +489,7 @@ function accessibility() {
         <ul>
           <li>zoom the page up to 200% and still read everything, with no sideways scrolling;</li>
           <li>use it on a phone, a tablet or a computer;</li>
-          <li>use the questions and the diagrams' controls with a keyboard alone (in practice sets, press 1 to 4 to choose an answer and Enter to check it);</li>
+          <li>use the questions and the diagrams' controls with a keyboard alone (in practice sets, press 1 to 4 to choose an answer and Enter to check it). Parts of a drawing that respond to a tap also have a matching button. The one exception is reading a single pixel's value in the windowing diagram, which needs a mouse or touch; the readouts beside it give the same information;</li>
           <li>choose a light or dark theme, or follow your device's setting;</li>
           <li>turn off animation through your device's "reduce motion" setting;</li>
           <li>read text descriptions of the simulated X-ray images and of what each diagram shows;</li>

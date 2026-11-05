@@ -119,7 +119,14 @@ After changing files, bump `VERSION` in `sw.js`. Anyone with the app open then s
 Opening `index.html` directly doesn't work because browsers block loading the spreadsheets from a local file. Instead, run this from the project folder in PowerShell, then open http://localhost:8080 (press Ctrl+C to stop):
 
 ```
-powershell -ExecutionPolicy Bypass -File tools\serve.ps1
+node tools/serve.mjs
+```
+
+Before publishing, run the two checks. The first checks the content, the second the app's own logic (reading answers, marking, practice sets, backups):
+
+```
+node tools/validate.mjs
+node tools/test.mjs
 ```
 
 You can also ask Claude to publish a preview link.

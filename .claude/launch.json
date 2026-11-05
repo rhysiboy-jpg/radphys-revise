@@ -3,8 +3,8 @@
   "configurations": [
     {
       "name": "radphys",
-      "runtimeExecutable": "powershell",
-      "runtimeArgs": ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", "tools/serve.ps1"],
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["tools/serve.mjs"],
       "port": 8080
     }
   ]
