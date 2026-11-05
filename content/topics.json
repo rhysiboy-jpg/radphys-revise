@@ -14,7 +14,7 @@
         "title": "The Bohr atom",
         "blurb": "Shells, binding energy, and tap-to-trigger excitation and ionisation.",
         "ready": true,
-        "approved": true
+        "approved": false
       },
       {
         "id": "electron-energy",
@@ -94,7 +94,7 @@
         "title": "The rotating-anode tube",
         "blurb": "Step through an exposure, or tap a numbered part to see what it does.",
         "ready": true,
-        "approved": true
+        "approved": false
       },
       {
         "id": "spectrum",
@@ -327,7 +327,7 @@
         "title": "The inverse square law",
         "blurb": "Watch a beam spread over a larger area as distance increases.",
         "ready": true,
-        "approved": true
+        "approved": false
       },
       {
         "id": "regulations",

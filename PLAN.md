@@ -161,6 +161,11 @@ Confirmed with Rhys Morris, 29 October 2026.
   - **Lesson pages:** on wide screens an "In this topic" list sits beside the text (ticks for visited lessons, the current one marked, and a practice button), filling the empty right half. Below 1100px it is left out. The Draft tag moved out of the title onto the lecture line.
   - **Topic contents:** the lessons and "Practise by area" sit side by side on desktop, so both are on the first screen.
   - **Left as they are:** duplicated progress on the practice screen; empty progress bars on the phone home screen.
+- Fixes from the whole-project code review (5 November 2026, at Rhys's request).
+  - **Three diagrams need signing off again.** The Bohr atom, the X-ray tube and the inverse square law were approved on 30 October at 11:32. They then changed later that day (legibility, kVp labels, dark mode) and stayed approved, against the rule that changed diagrams need signing off again. They are back to `approved: false`, so **no diagrams are approved at the moment**.
+  - **No approved diagram is hidden.** A topic's page now lists any approved diagram that no visible lesson shows, under "More to explore". Each such diagram has its own page (`#diagram-<topic>/<id>`). Without this, an approved diagram inside a draft lesson could never reach students.
+  - **Question feedback links** now open the diagram's own page, not the topic page.
+  - **Checked** with review mode off, one lesson approved and one diagram approved; all three test changes were then reverted.
 - Next: Rhys reviews the 63 draft lessons and the 19 new interactives (review mode only). Still waiting: review of the 249 draft questions, and sign-off of the earlier interactives and diagram upgrades.
 - Untested: offline mode. Check it once hosted on GitHub Pages, which needs the repo made public (only with Rhys's go-ahead).
 - Commit identity: Rhys Morris, using the GitHub no-reply email.

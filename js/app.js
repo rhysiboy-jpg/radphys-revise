@@ -418,6 +418,9 @@ function contents(t) {
   const seen = visitedLessons(), list = t.lessonList;
   const { done, next: nextUp } = lessonState(t);
   const qs = questionsFor(t.id);
+  const extras = looseDiagrams(t);
+  const extrasBox = extras.length ? `<section class="box" aria-labelledby="mx-h"><div class="box-head"><h2 id="mx-h">More to explore</h2></div>
+      <ul class="areas">${extras.map(d => `<li><a class="area" href="#diagram-${t.id}/${d.id}"><span>${esc(d.title)}</span><span class="meta">Diagram →</span></a></li>`).join("")}</ul></section>` : "";
   show(`
     <section class="title-row">
       <div>
@@ -427,7 +430,7 @@ function contents(t) {
       <a class="btn primary" href="#learn-${t.id}/${nextUp.id}">${done ? (done === list.length ? "Start again" : "Continue") : "Start the lessons"}</a>
     </section>
     <div class="grid12">
-      <section class="lesson-contents ${qs.length ? "s8" : "s12"}" aria-labelledby="lc-h">
+      <section class="lesson-contents ${qs.length || extras.length ? "s8" : "s12"}" aria-labelledby="lc-h">
         <div class="box-head"><h2 id="lc-h">Lessons</h2><p class="muted">${done} of ${list.length} visited</p></div>
         <ol class="lesson-list">${list.map((l, i) => {
           const v = seen.has(`${t.id}/${l.id}`);
@@ -437,9 +440,38 @@ function contents(t) {
             <span class="lv">${v ? "Visited" : ""}</span></a></li>`;
         }).join("")}</ol>
       </section>
-      ${qs.length ? `<div class="s4 contents-side">${practiseBox(t)}</div>` : ""}
+      ${qs.length || extras.length ? `<div class="s4 contents-side stack">${qs.length ? practiseBox(t) : ""}${extrasBox}</div>` : ""}
     </div>
     ${footer()}`, t.id, { title: t.title });
+}
+
+// Diagrams in this topic that no visible lesson shows. A diagram can be approved while the lesson that holds it is still a
+// draft; without this list students could never reach it.
+function looseDiagrams(t) {
+  const inLessons = new Set(t.lessonList.map(l => l.diagram).filter(Boolean));
+  return t.diagrams.filter(d => shown(d) && !inLessons.has(d.id));
+}
+
+// One diagram on a page of its own: for diagrams outside any visible lesson, and for links from question feedback.
+async function diagramPage(topicId, diagramId) {
+  const t = topicById(topicId), d = t?.diagrams.find(x => x.id === diagramId && shown(x));
+  if (!d) return t ? explore(t.id) : home();
+  const lessons = t.lessonList.filter(l => l.diagram === d.id);
+  const qs = questionsFor(t.id);
+  show(`
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="#explore-${t.id}">${esc(t.title)}</a><span aria-hidden="true">›</span><span>Diagram</span></nav>
+    <section class="title-row">
+      <div>
+        <h1 tabindex="-1">${esc(d.title)}</h1>
+        <p class="sub">${esc(d.blurb)} Schematic and not to scale.</p>
+      </div>
+      ${qs.length ? `<a class="btn" href="#practise-${t.id}">Practise this topic</a>` : ""}
+    </section>
+    ${CONFIG.reviewMode && !d.approved ? '<p class="lesson-src"><span class="status review">Awaiting sign-off</span></p>' : ""}
+    <section class="module" aria-label="${esc(d.title)}"><div data-diagram="${d.id}"><p class="muted">Loading diagram…</p></div></section>
+    ${lessons.length ? `<p>Read more in the lesson${lessons.length > 1 ? "s" : ""}: ${lessons.map(l => `<a href="#learn-${t.id}/${l.id}">${esc(l.title)}</a>`).join(", ")}.</p>` : ""}
+    ${footer()}`, t.id, { title: `${d.title} · ${t.title}` });
+  await mountDiagrams();
 }
 
 // One lesson: explanation, the interactive with what to try, key points, practice for its areas, and Previous / Next.
@@ -639,7 +671,7 @@ function practise(scope, area = null, retry = null) {
     const diagramLink = qLesson
       ? `<p><a href="#learn-${q.topic}/${qLesson.id}">Read the lesson: ${esc(qLesson.title)} →</a></p>`
       : q.diagram && topicById(q.topic)?.diagrams.some(d => d.id === q.diagram && shown(d))
-        ? `<p><a href="#explore-${q.topic}">See this in the explorer →</a></p>` : "";
+        ? `<p><a href="#diagram-${q.topic}/${q.diagram}">See this in the diagram →</a></p>` : "";
     const refreshRail = () => {
       const old = app.querySelector('aside[aria-label="This set"]');
       old.outerHTML = rail(q);
@@ -897,6 +929,7 @@ function route() {
   let m;
   if ((m = h.match(/^explore-([\w-]+)$/))) explore(m[1]);
   else if ((m = h.match(/^learn-([\w-]+)\/([\w-]+)$/))) lesson(m[1], m[2]);
+  else if ((m = h.match(/^diagram-([\w-]+)\/([\w-]+)$/))) diagramPage(m[1], m[2]);
   else if ((m = h.match(/^practise-([\w-]+)(?:\/(.+))?$/))) practise(m[1], m[2] ? decodeURIComponent(m[2]) : null);
   else home();
 }
