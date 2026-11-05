@@ -9,7 +9,7 @@ import { W, H, limb, grain, blur } from "./diagrams/limb.js";
 
 let MAP = null, GRAIN = null;
 
-export function parseSettings(text) {
+function parseSettings(text) {
   const kv = {};
   for (const part of String(text).split(/[;,]/)) {
     const k = part.indexOf("=");

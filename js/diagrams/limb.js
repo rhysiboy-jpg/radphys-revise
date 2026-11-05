@@ -4,7 +4,7 @@
 export const W = 360, H = 240;
 
 // A repeatable pseudo-random sequence, so textures and noise hold still between redraws.
-export function rng(seed) { return () => ((seed = (seed * 1664525 + 1013904223) >>> 0) / 4294967296); }
+function rng(seed) { return () => ((seed = (seed * 1664525 + 1013904223) >>> 0) / 4294967296); }
 
 // Material at each pixel, as attenuation from 0 (air) to 1 (cortical bone).
 export const MATERIAL = { air: 0, fat: 0.36, muscle: 0.44, marrow: 0.62, spot: 0.8, cortex: 1 };

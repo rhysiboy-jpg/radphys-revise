@@ -6,6 +6,7 @@ import CALCULATIONS from "../content/calculations.js";
 
 const LETTERS = ["a", "b", "c", "d", "e"];
 
+/** @public Also used by tools/validate.mjs, which loads this file in a way code scanners can't follow. */
 export function fromRow(row, topicId) {
   const type = (row.type || "mcq").toLowerCase();
   const base = {
@@ -46,6 +47,7 @@ export function fromRow(row, topicId) {
   return { ...base, kind: "mcq", options, answer: (row.answer || "").toUpperCase(), ...critique };
 }
 
+/** @public Also used by tools/validate.mjs. */
 export function isValid(q) {
   if (!q.id || !q.question) return false;
   if (q.kind === "mcq") return q.options.length >= 2 && q.options.some(o => o.key === q.answer);

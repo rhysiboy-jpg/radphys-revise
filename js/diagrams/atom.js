@@ -2,7 +2,7 @@
 // Shells are drawn as rings, electrons as labelled dots. Schematic: real shells are not circles and not to scale.
 import { svgEl as el } from "./util.js";
 
-export const SHELL_NAMES = ["K", "L", "M"];
+const SHELL_NAMES = ["K", "L", "M"];
 
 // counts: electrons per shell from K outwards. Shells beyond M are summarised on one dashed ring.
 export function drawAtom(parent, { cx, cy, counts, radii = [44, 76, 108], outerR = 136, z, label = true, showEmpty = false }) {
