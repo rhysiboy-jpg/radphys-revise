@@ -2,7 +2,7 @@
 //   Interactions: the photoelectric effect beside Compton or coherent scatter, stepped together, with how likely each is;
 //   Attenuation: attenuation per gram against photon energy for four materials, with the K-edges of iodine and lead.
 // Energies use the full Compton formula; likelihoods and attenuation come from NIST XCOM reference data (xcom.js).
-import { svgEl as el, wavy, tween, setLines, keepInside } from "./util.js";
+import { svgEl as el, wavy, tween, setLines, keepInside, tapToSet } from "./util.js";
 import { drawAtom, vacancy } from "./atom.js";
 import { mu, curve, EDGES } from "./xcom.js";
 
@@ -411,6 +411,7 @@ export function mount(root) {
   }
 
   attE.addEventListener("input", () => { eIn.value = attE.value; updateAtt(); });
+  tapToSet(root.querySelector(".att-svg"), { x0: PX0, x1: PX1, y0: PY0, y1: PY1 }, attE, x => EMIN * (EMAX / EMIN) ** ((x - PX0) / (PX1 - PX0)));
   partsIn.addEventListener("input", updateAtt);
   root.querySelectorAll("[data-show]").forEach(b => b.addEventListener("click", () => {
     const k = b.dataset.show;

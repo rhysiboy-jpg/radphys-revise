@@ -410,6 +410,13 @@ svg.has-sel .part:not(.sel) { opacity: 0.35; }
 .badge text { font: 600 13px var(--font-body); fill: var(--sheet); text-anchor: middle; dominant-baseline: central; --fs: 13px; }
 .badge line { stroke: var(--ink); stroke-width: 1.2; }
 .badge { cursor: pointer; }
+.tube-name { font: 500 13px var(--font-body); fill: var(--ink); --fs: 13px; cursor: pointer; }
+.tube-name.sel { font-weight: 650; }
+/* On a phone only the selected part's name shows, with a halo in the panel colour so it reads over the drawing. */
+@container (max-width: 480px) {
+  .tube-svg .tube-name { display: none; }
+  .tube-svg .tube-name.sel { display: inline; paint-order: stroke; stroke: var(--surface); stroke-width: 5px; stroke-linejoin: round; }
+}
 .badge.sel circle { fill: var(--dg-accent); }
 .badge.sel text { fill: var(--dg-accent-ink); }
 .fx { opacity: 0; transition: opacity .5s; pointer-events: none; }
@@ -446,6 +453,8 @@ input[type="range"] { width: 100%; accent-color: var(--dg-accent); min-height: 3
 /* In a lesson the lesson's own Try this list sits above the diagram, so the diagram's built-in list would repeat it. */
 .lesson-diagram.has-try .try { display: none; }
 .axis line, .axis path { stroke: var(--axis); }
+/* Tapping a graph sets its slider (tapToSet in util.js). */
+.tap-area { fill: transparent; cursor: crosshair; }
 .axis text, .ax-title { font: 400 12px var(--font-body); fill: var(--muted); --fs: 12px; }
 .ax-title { font-size: 12.5px; --fs: 12.5px; }
 .grid-l { stroke: var(--line); stroke-dasharray: 2 4; }
@@ -1001,6 +1010,16 @@ details.try[open] summary::after { content: " −"; }
 .link-row button { min-height: 44px; padding: 8px 14px; font-size: 0.9rem; }
 .link-note { color: var(--muted); font-size: 0.9rem; }
 .link-note input { margin-top: 4px; }
+/* Exposure console: the dose creep log, and the fix-it task after a scenario. */
+.creep-wrap { overflow-x: auto; }
+.creep-log { width: 100%; border-collapse: collapse; font-size: 0.9rem; font-variant-numeric: tabular-nums; }
+.creep-log th, .creep-log td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--line); }
+.creep-log th { font-weight: 600; color: var(--muted); }
+.creep-log small { color: var(--muted); }
+.creep-log td:nth-child(2), .creep-log td:nth-child(5) { white-space: nowrap; }
+.creep-log td.over { font-weight: 650; }
+.creep-log td.over small { color: var(--bad); }
+.fix-task { border: 1px solid var(--edge); border-radius: var(--r-row); padding: 12px 14px; }
 /* Figures in practice questions stand still: they're read, not watched. */
 .q-fig .photon, .q-fig .spin, .q-fig .flux { animation: none; }
 

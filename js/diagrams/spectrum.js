@@ -3,7 +3,7 @@
 // (lecture: X-ray Spectrum). Illustrative, but right in its trends:
 //   Bremsstrahlung (Kramers) N(E) ∝ Z · mA · (V − E) ÷ E, worked out across the generator's voltage waveform;
 //   K-lines appear only while the voltage exceeds the target's K-edge; filtration follows NIST attenuation data.
-import { svgEl as el } from "./util.js";
+import { svgEl as el, tapToSet } from "./util.js";
 
 // Mass attenuation coefficients (cm²/g), approximate NIST XCOM values; log-log interpolation between points.
 const AL = [[10, 26.2], [15, 7.96], [20, 3.44], [30, 1.128], [40, 0.5685], [50, 0.3681], [60, 0.2778], [80, 0.2018], [100, 0.1704], [150, 0.1378]];
@@ -267,6 +267,7 @@ export function mount(root) {
   }
 
   [kv, ma, fl].forEach(i => i.addEventListener("input", update));
+  tapToSet($("axes").ownerSVGElement, { x0: PX0, x1: PX1, y0: PY0, y1: PY1 }, kv, x => ((x - PX0) / (PX1 - PX0)) * view);
   gen.addEventListener("change", update);
   root.querySelectorAll("[data-target]").forEach(b => b.addEventListener("click", () => { target = b.dataset.target; update(); }));
   root.querySelectorAll("[data-filter]").forEach(b => b.addEventListener("click", () => { filter = b.dataset.filter; update(); }));

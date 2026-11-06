@@ -14,7 +14,9 @@ const EXAMS = {
 };
 const BUILDS = { slim: { name: "Slim", k: 1.6 }, avg: { name: "Average", k: 1 }, large: { name: "Large", k: 0.5 } };
 const GUARD = 5;                                  // the guard timer ends the exposure at 5 × the usual mAs (illustrative)
-const CH = { L: { x: 215, y: 110 }, C: { x: 300, y: 205 }, R: { x: 385, y: 110 } };
+// Centred on the body (x = 320, the middle of the detector): the outer pair over the middle of each lung, the centre one over
+// the spine, lower down, as on a typical chest stand.
+const CH = { L: { x: 252, y: 150 }, C: { x: 320, y: 232 }, R: { x: 388, y: 150 } };
 const CW = 56, CHH = 62;
 
 const MARKUP = `
@@ -74,13 +76,15 @@ export function mount(root) {
       el("path", { class: "aec-lung", d: "M300 80 C250 80 205 130 200 250 C230 262 280 262 300 250 Z" }, g);
       el("path", { class: "aec-lung", d: "M340 80 C390 80 435 130 440 250 C410 262 360 262 340 250 Z" }, g);
       for (let y = 66; y < 300; y += 18) el("rect", { class: "aec-bone", x: 308, y, width: 24, height: 14, rx: 3 }, g);
-      el("text", { class: "plane-t", x: 160, y: 170, "text-anchor": "middle" }, g).textContent = "lung";
+      el("text", { class: "plane-t", x: 244, y: 232, "text-anchor": "middle" }, g).textContent = "lung";
     } else {
       el("path", { class: "aec-skin", d: "M180 300 C170 200 175 110 190 40 L450 40 C465 110 470 200 460 300 Z" }, g);
       for (let y = 46; y < 300; y += 36) el("rect", { class: "aec-bone", x: 296, y, width: 48, height: 28, rx: 5 }, g);
       el("path", { class: "aec-bone", d: "M190 270 C230 240 270 250 296 300 L200 300 Z" }, g);
       el("path", { class: "aec-bone", d: "M450 270 C410 240 370 250 344 300 L440 300 Z" }, g);
-      el("text", { class: "plane-t", x: 152, y: 170, "text-anchor": "middle" }, g).textContent = "soft tissue";
+      const st0 = el("text", { class: "plane-t", x: 244, y: 82, "text-anchor": "middle" }, g);
+      el("tspan", { class: "wide-only" }, st0).textContent = "soft ";   // on a phone the label grows, and the full words reach the spine
+      el("tspan", {}, st0).textContent = "tissue";
     }
     if (st.extra === "metal") el("rect", { class: "aec-metal", x: CH.C.x - 14, y: CH.C.y - 36, width: 28, height: 72, rx: 4 }, g);
     if (st.extra === "lead") el("rect", { class: "aec-lead", x: CH.C.x - CW / 2 - 4, y: CH.C.y - CHH / 2 - 4, width: CW + 8, height: CHH + 8, rx: 6 }, g);
@@ -102,7 +106,11 @@ export function mount(root) {
     $("go").disabled = !st.sel.size;
     drawBody();
     $("r-mas").textContent = "–"; $("r-mas-s").textContent = ""; $("r-roi").textContent = "–"; $("r-roi-s").textContent = "";
-    $("summary").textContent = st.sel.size ? "Press Expose." : "Select at least one chamber.";
+    // Before the first exposure the summary states the key idea, for the many readers who never press anything.
+    const n = st.sel.size, names = [...st.sel].map(k => ({ L: "left", C: "centre", R: "right" })[k]).join(" and ");
+    $("summary").textContent = n
+      ? `The exposure will end when the ${names} chamber${n > 1 ? "s have" : " has"} measured a set amount${n > 1 ? ", on average" : ""}, however long that takes. Press Expose.`
+      : "Select at least one chamber.";
     $("desc").textContent = `${EXAMS[st.exam].name}, ${BUILDS[st.build].name.toLowerCase()} build, with the ${[...st.sel].map(k => ({ L: "left", C: "centre", R: "right" })[k]).join(" and ")} chamber${st.sel.size > 1 ? "s" : ""} selected.`;
   }
 

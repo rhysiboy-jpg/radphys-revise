@@ -1,5 +1,7 @@
 // Explorer: the exposure console. Set kVp, mAs, focal spot, grid and distance; a simulated image of a cartoon limb shows
 // brightness, contrast, noise and sharpness, with the exposure index (EI) and patient dose alongside.
+// Modes: Explore; "What do I do?" (spot the fault, then fix it in the console, which checks the fix); "Higher or lower?" (dose);
+// "Dose creep" (predict, then add mAs step by step: the image stays good while the EI and dose climb).
 // The model is illustrative and right in its trends, not a simulation of any real system:
 //   detector signal ∝ mAs × kVp⁵ ÷ FRD² (so +15% kVp doubles it: the 15% rule), less what the grid absorbs;
 //   patient entrance dose ∝ mAs × kVp² ÷ (FRD − thickness)², which matches the "Higher or lower?" lecture doses;
@@ -48,6 +50,16 @@ const LADDER = [
   { kv: 96, mas: 8, note: "High kVp with low mAs gives the lowest dose here, but look at the contrast." },
 ].map(r => ({ ...r, esd: r.esd ?? +(ESD_K * r.kv ** 2 * r.mas).toFixed(1), estimated: r.esd == null }));
 
+// "Dose creep": the student predicts, then keeps adding a little mAs. Processing holds the brightness, so the image never looks
+// worse; only the EI and the dose show the cost. The research behind it: most students' predictions about mAs on a digital
+// image are wrong, and many have not been taught about exposure indicators.
+const CREEP_STEPS = 6;
+const CREEP_PREDICT = [
+  { id: "darker", text: "Darker, so I'd notice" },
+  { id: "same", text: "Much the same, if anything a little better" },
+  { id: "lighter", text: "Lighter" },
+];
+
 const CHOICES = [
   { id: "kv", text: "Lower the kVp" },
   { id: "mas", text: "Reduce the mAs" },
@@ -66,8 +78,10 @@ const MARKUP = `
       <button type="button" data-mode="explore" aria-pressed="true">Explore</button>
       <button type="button" data-mode="cases" aria-pressed="false">What do I do?</button>
       <button type="button" data-mode="hol" aria-pressed="false">Higher or lower?</button>
+      <button type="button" data-mode="creep" aria-pressed="false">Dose creep</button>
     </div>
     <div data-role="explore" class="panel">
+      <div class="feedback fix-task" data-role="fix" aria-live="polite" hidden></div>
       <div class="sliders">
         <div class="slider">
           <div class="slider-top"><label for="con-part">Body part</label></div>
@@ -129,6 +143,24 @@ const MARKUP = `
         <div class="controls"><button type="button" class="primary" data-role="hol-next" hidden>Next</button></div>
       </div>
     </div>
+    <div data-role="creep" class="panel" hidden>
+      <div class="stepper">
+        <div class="step-meta"><span class="eyebrow">Dose creep · Knee, AP</span></div>
+        <p>On film, too much exposure made the image too dark, so the mistake showed. A digital system corrects the brightness.</p>
+        <fieldset data-role="creep-opts"><legend class="eyebrow">Predict first: you keep adding a little more mAs, "to be safe". How will the image look?</legend></fieldset>
+        <div data-role="creep-fb" class="feedback" hidden></div>
+        <div class="controls">
+          <button type="button" class="primary" data-role="creep-add" disabled>Add a little more mAs</button>
+          <button type="button" data-role="creep-restart">Start again</button>
+        </div>
+        <div class="creep-wrap"><table class="creep-log" data-role="creep-log" hidden>
+          <caption class="sr">Each exposure so far</caption>
+          <thead><tr><th scope="col">Exposure</th><th scope="col">mAs</th><th scope="col">Image</th><th scope="col">EI</th><th scope="col">Dose</th></tr></thead>
+          <tbody></tbody>
+        </table></div>
+        <div data-role="creep-end" class="feedback" aria-live="polite" hidden></div>
+      </div>
+    </div>
     <div class="readouts" data-role="readouts">
       <div class="readout"><span>Exposure index (EI)</span><b data-role="r-ei"></b><span data-role="r-ei-s"></span></div>
       <div class="readout"><span>Patient dose</span><b data-role="r-dose"></b><span>compared with the suggested setting</span></div>
@@ -188,6 +220,14 @@ export function mount(root) {
 
   const masIndex = v => MAS.reduce((best, m, i) => Math.abs(Math.log(m / v)) < Math.abs(Math.log(MAS[best] / v)) ? i : best, 0);
   const fmtMas = v => (v < 10 ? +v.toFixed(2) : Math.round(v)).toString();
+  const fmtDose = d => (d < 10 ? +d.toFixed(2) : Math.round(d)).toString();
+  const looks = m => `${words.bright(m.level).split(":")[0]}, ${words.noise(m.noise) === "Low" ? "little noise" : words.noise(m.noise).toLowerCase()}`;
+
+  // After a "What do I do?" scenario, "Fix it in the console" keeps its faulty settings and checks the student's fix:
+  // the EI within range and a good image, at no more than about the suggested dose.
+  let fixing = false;
+  const isFixed = m => m.ei >= EI_LOW && m.ei <= EI_HIGH && words.bright(m.level) === "Good" && words.con(m.contrast) === "Good"
+    && words.noise(m.noise) !== "Grainy" && m.dose <= 1.3;
 
   function render(m) {
     const k = Math.round(m.blur * 2) / 2;
@@ -220,7 +260,15 @@ export function mount(root) {
     const inCase = mode !== "explore";
     $("r-ei").textContent = m.ei;
     $("r-ei-s").textContent = words.ei(m.ei);
-    $("r-dose").textContent = `× ${m.dose < 10 ? +m.dose.toFixed(2) : Math.round(m.dose)}`;
+    $("r-dose").textContent = `× ${fmtDose(m.dose)}`;
+    const fix = $("fix");
+    fix.hidden = !(fixing && mode === "explore");
+    if (!fix.hidden) {
+      const html = isFixed(m)
+        ? `<p class="verdict good">Fixed</p><p>The EI is ${m.ei}, within range, and the image is good at ${Math.abs(m.dose - 1) < 0.05 ? "the suggested dose" : `${fmtDose(m.dose)} times the suggested dose`}.</p>`
+        : `<p><b>Fix it:</b> change the settings until the EI is within range (${EI_LOW}–${EI_HIGH}) and the image is good, using no more dose than you need.</p>`;
+      if (fix.innerHTML !== html) fix.innerHTML = html;   // unchanged text is left alone, so a screen reader hears only the change
+    }
     $("r-bright").textContent = words.bright(m.level);
     $("r-con").textContent = words.con(m.contrast);
     $("r-noise").textContent = words.noise(m.noise);
@@ -312,19 +360,81 @@ export function mount(root) {
     $("hol-next").hidden = false;
   }
 
+  // Dose creep
+  let creepN = 0;
+  function startCreep() {
+    creepN = 0;
+    const fs = $("creep-opts");
+    fs.querySelectorAll(".opt").forEach(n => n.remove());
+    fs.classList.remove("locked");
+    CREEP_PREDICT.forEach(ch => {
+      const label = document.createElement("label");
+      label.className = "opt";
+      label.innerHTML = `<input type="radio" name="con-creep" value="${ch.id}"><span>${ch.text}</span><span class="tagline"></span>`;
+      label.querySelector("input").addEventListener("change", () => creepPredict(ch.id));
+      fs.appendChild(label);
+    });
+    $("creep-fb").hidden = true;
+    $("creep-end").hidden = true;
+    $("creep-add").disabled = true;
+    $("creep-log").hidden = true;
+    $("creep-log").tBodies[0].innerHTML = "";
+    $("summary").textContent = "";
+    setSettings(suggested("knee"));
+  }
+  function creepPredict(id) {
+    const fs = $("creep-opts");
+    if (fs.classList.contains("locked")) return;
+    fs.classList.add("locked");
+    fs.querySelectorAll(".opt").forEach(o => {
+      const input = o.querySelector("input");
+      input.disabled = true;
+      if (input.value === "same") { o.classList.add("is-correct"); o.querySelector(".tagline").textContent = "Correct answer"; }
+      else if (input.value === id) { o.classList.add("is-wrong"); o.querySelector(".tagline").textContent = "Your answer"; }
+    });
+    const fb = $("creep-fb");
+    fb.innerHTML = `<p class="verdict ${id === "same" ? "good" : "bad"}">${id === "same" ? "Right" : "Not on a digital system"}</p>` +
+      `<div class="why"><p>Processing rescales the brightness, so extra mAs never shows as a darker image; it only lowers the noise a little. Add mAs and watch the EI and the dose.</p></div>`;
+    fb.hidden = false;
+    $("creep-add").disabled = false;
+    creepRow();
+  }
+  function creepRow() {
+    const m = model(s), table = $("creep-log"), tr = document.createElement("tr");
+    const range = m.ei < EI_LOW ? "below range" : m.ei > EI_HIGH ? "above range" : "in range";
+    tr.innerHTML = `<td>${creepN + 1}</td><td>${fmtMas(s.mas)}</td><td>${looks(m)}</td><td${m.ei > EI_HIGH ? ' class="over"' : ""}>${m.ei} <small>${range}</small></td><td>× ${fmtDose(m.dose)}</td>`;
+    table.tBodies[0].appendChild(tr);
+    table.hidden = false;
+    $("summary").textContent = `Exposure ${creepN + 1}: ${fmtMas(s.mas)} mAs. Image ${looks(m).toLowerCase()}. EI ${m.ei}, ${range}. Patient dose ${fmtDose(m.dose)} times the first.`;
+  }
+  function creepAdd() {
+    creepN++;
+    setSettings({ mas: MAS[Math.min(MAS.length - 1, masIndex(s.mas) + 1)] });
+    creepRow();
+    if (creepN < CREEP_STEPS) return;
+    const m = model(s), end = $("creep-end");
+    $("creep-add").disabled = true;
+    end.innerHTML = `<p class="verdict bad">Dose creep</p><div class="why"><p>Six small increases took the mAs from ${fmtMas(PARTS.knee.mas)} to ${fmtMas(s.mas)}. ` +
+      `The image still looks good, a little smoother if anything. But the EI is ${m.ei}, well above range, and the patient dose is ${fmtDose(m.dose)} times the first exposure. ` +
+      `Only the EI showed it: check the EI on every image, not just how the image looks.</p></div>`;
+    end.hidden = false;
+  }
+
   function setMode(next) {
     mode = next;
     root.querySelectorAll("[data-mode]").forEach(b => b.setAttribute("aria-pressed", b.dataset.mode === mode));
     $("explore").hidden = mode !== "explore";
     $("cases").hidden = mode !== "cases";
     $("hol").hidden = mode !== "hol";
+    $("creep").hidden = mode !== "creep";
     $("try").hidden = mode !== "explore";
     if (mode === "cases") showCase();
     else if (mode === "hol") { rung = 0; score = 0; showRung(); }
+    else if (mode === "creep") startCreep();
     else update();
   }
 
-  partIn.addEventListener("change", () => setSettings(suggested(partIn.value)));
+  partIn.addEventListener("change", () => { fixing = false; setSettings(suggested(partIn.value)); });
   kvIn.addEventListener("input", () => setSettings({ kv: +kvIn.value }));
   masIn.addEventListener("input", () => setSettings({ mas: MAS[+masIn.value] }));
   frdIn.addEventListener("input", () => setSettings({ frd: +frdIn.value }));
@@ -332,9 +442,11 @@ export function mount(root) {
   root.querySelectorAll("[data-grid]").forEach(b => b.addEventListener("click", () => setSettings({ grid: b.dataset.grid === "in" })));
   $("reset").addEventListener("click", () => setSettings(suggested(s.part)));
   $("rule").addEventListener("click", () => setSettings({ kv: Math.min(125, Math.round(s.kv * 1.15)), mas: MAS[Math.max(0, masIndex(s.mas / 2))] }));
-  root.querySelectorAll("[data-mode]").forEach(b => b.addEventListener("click", () => setMode(b.dataset.mode)));
+  root.querySelectorAll("[data-mode]").forEach(b => b.addEventListener("click", () => { fixing = false; setMode(b.dataset.mode); }));
   $("case-next").addEventListener("click", () => { caseIx = (caseIx + 1) % CASES.length; showCase(); });
-  $("case-load").addEventListener("click", () => setMode("explore"));
+  $("case-load").addEventListener("click", () => { fixing = true; setMode("explore"); });
+  $("creep-add").addEventListener("click", creepAdd);
+  $("creep-restart").addEventListener("click", startCreep);
   root.querySelectorAll("[data-guess]").forEach(b => b.addEventListener("click", () => guess(b.dataset.guess)));
   $("hol-next").addEventListener("click", () => {
     if (rung + 1 === LADDER.length - 1) { rung = 0; score = 0; } else rung++;

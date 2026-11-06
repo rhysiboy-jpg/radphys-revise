@@ -34,8 +34,8 @@ RadPhys Revise is a revision app for first-year diagnostic radiography physics (
 | `content/lessons/*.md` | Lessons, one file per topic (format in the README). |
 | `content/topics.json` | Topics, with their question files, lesson file and diagrams. |
 | `js/app.js` | Views and routing (`#explore-`, `#learn-`, `#practise-`). Diagrams are registered in its `DIAGRAMS` map. |
-| `js/diagrams/` | One module per interactive, each exporting `mount(root)`. It may return a cleanup function. `util.js` has shared helpers, and `sortkit.js` is the shared sorting activity. |
-| `js/setup.js` | Shared by every diagram: settings in the web address (the "Copy link" button) and the single screen-reader line when a slider stops. |
+| `js/diagrams/` | One module per interactive, each exporting `mount(root)`. It may return a cleanup function. `util.js` has shared helpers (including `tapToSet`, which lets a tap on a graph set its slider), and `sortkit.js` is the shared sorting activity. |
+| `js/setup.js` | Shared by every diagram: settings in the web address (the "Copy link" button) and the single screen-reader line when a slider stops. The app adds a Reset button beside "Copy link", which rebuilds the diagram from scratch. |
 | `js/content.js`, `js/lessons.js`, `js/csv.js` | Loading and parsing content. |
 | `js/store.js` | Student progress in localStorage. |
 | `css/app.css` | All styles. Diagram colours use the `--dg-*`, `--photon` and `--electron` tokens. Never hard-code colours, and check dark mode. |
@@ -52,6 +52,8 @@ RadPhys Revise is a revision app for first-year diagnostic radiography physics (
 5. Bump `VERSION` in `sw.js`.
 6. Attach it to a lesson with a `diagram:` line, and add a `## Try this` list.
 7. For "Copy link" to record a setting, give sliders and drop-downs an `id`, and put single-choice buttons in a `role="group"` with `aria-pressed` and a `data-` attribute naming the option. Give each slider a `<label for>` and an `<output for>`, which the screen-reader line reads out.
+8. Keep to the shared layout: the drawing first (`.stage`), then the settings in `.panel`. Only a choice of what the drawing shows (a view, a type, explore or test) goes above the drawing, as tabs. The starting state should already show the key idea, and the summary should say it in words before anything is pressed.
+9. Where a graph has a slider for its x axis, mark the current value on the graph and call `tapToSet` so a tap on the graph sets the slider.
 
 ## Writing style
 

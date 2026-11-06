@@ -1,7 +1,7 @@
 // Explorer: the electromagnetic spectrum. Slide from radio waves to gamma rays; wavelength, frequency and photon energy move
 // together (E = hc/λ, f = c/λ). The ionising region (about 10 eV and above) and diagnostic X-rays (about 20–150 keV) are marked.
 // Band edges are approximate: the bands blend into each other, and X-rays and gamma rays overlap, named by where they come from.
-import { svgEl as el, keepInside } from "./util.js";
+import { svgEl as el, keepInside, tapToSet } from "./util.js";
 
 const C = 2.998e8, HC = 1239.84;                 // m/s; eV·nm
 const L0 = 3, L1 = -12;                          // log10 of wavelength in metres, left (1 km) to right (1 pm)
@@ -134,6 +134,8 @@ export function mount(root) {
 
   root.querySelectorAll("[data-pre]").forEach(b => b.addEventListener("click", () => { exact = PRESETS[+b.dataset.pre][1]; sIn.value = -exact; update(); }));
   sIn.addEventListener("input", () => { exact = null; update(); });
+  const svg = root.querySelector("svg");
+  tapToSet(svg, { x0: X0, x1: X1, y0: 0, y1: svg.viewBox.baseVal.height }, sIn, x => -(L0 - ((x - X0) / (X1 - X0)) * (L0 - L1)));
   root.querySelector(`[data-pre="5"]`).click();
   return () => clearTimeout(timer);
 }

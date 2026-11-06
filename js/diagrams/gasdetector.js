@@ -3,7 +3,7 @@
 // nothing more, so the signal is proportional to the energy deposited: good for measuring dose. In the Geiger–Müller region each
 // event sets off an avalanche along the whole wire, so every event gives the same large pulse: very sensitive, but it only counts.
 // The curve's shape is schematic; the voltages are not given because they depend on the detector.
-import { svgEl as el } from "./util.js";
+import { svgEl as el, tapToSet } from "./util.js";
 
 const REGIONS = [
   { to: 0.12, name: "Recombination", short: "Not used", use: "", text: "The voltage is too low to pull the ions apart before many recombine, so only some are collected." },
@@ -100,6 +100,7 @@ export function mount(root) {
   }
   root.querySelectorAll("[data-go]").forEach(b => b.addEventListener("click", () => { vIn.value = b.dataset.go; update(); }));
   vIn.addEventListener("input", update);
+  tapToSet(root.querySelector("svg"), { x0: GX0, x1: GX1, y0: GY0, y1: GY1 }, vIn, x => (x - GX0) / (GX1 - GX0));
   update();
   return () => clearTimeout(timer);
 }

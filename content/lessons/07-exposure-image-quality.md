@@ -31,6 +31,7 @@ Double the mAs and keep everything else the same. What happens to the patient's 
 - Choose a body part, then change the kVp and the mAs separately and watch the image, the EI and the dose.
 - Press the **15% rule** button: similar EI, lower dose, a little less contrast.
 - Play **Higher or lower?** to guess which setting gives the bigger dose.
+- Choose **Dose creep**: predict, then keep adding a little mAs. Watch the image, then the EI and the dose.
 
 ## Key points
 - kVp sets photon energy (penetration); choose it for the body part.
@@ -56,7 +57,7 @@ Digital processing rescales the brightness of every image, so an over-exposed im
 ## Try this
 - Lower the mAs until the image becomes grainy.
 - Raise the kVp and watch the contrast fall.
-- Work through the **What do I do?** scenarios.
+- Work through the **What do I do?** scenarios, then press **Fix it in the console** and correct the settings yourself.
 
 ## Key points
 - Contrast: the difference in grey between areas; it falls as kVp rises and with more scatter.

@@ -23,6 +23,23 @@ export function keepInside(t, x0, x1) {
   if (shift) t.setAttribute("transform", `translate(${shift.toFixed(1)} 0)`);
 }
 
+// Tapping a graph moves its slider to the value under the tap, so the graph and the control work both ways. It is also a
+// tap alternative to dragging the slider (WCAG 2.5.7). The slider stays the keyboard and screen-reader route, so the tap
+// area is hidden from assistive technology. area: the plot in drawing units; toValue turns a drawing x into the slider's value.
+export function tapToSet(svg, area, input, toValue) {
+  const hit = svgEl("rect", { class: "tap-area", x: area.x0, y: area.y0, width: area.x1 - area.x0, height: area.y1 - area.y0, "aria-hidden": "true" });
+  const first = [...svg.children].find(n => !["title", "desc", "defs"].includes(n.tagName));
+  svg.insertBefore(hit, first || null);   // behind the drawing, so the curves stay on top
+  svg.addEventListener("click", e => {
+    const m = svg.getScreenCTM();
+    if (!m) return;
+    const p = new DOMPoint(e.clientX, e.clientY).matrixTransform(m.inverse());
+    if (p.x < area.x0 || p.x > area.x1 || p.y < area.y0 || p.y > area.y1) return;
+    input.value = toValue(p.x);   // the slider rounds to its step and keeps within its range
+    input.dispatchEvent(new Event("input", { bubbles: true }));
+  });
+}
+
 // A wavy line from (x1, y1) to (x2, y2): the usual way of drawing a photon.
 export function wavy(x1, y1, x2, y2, amp = 4, wl = 13) {
   const dx = x2 - x1, dy = y2 - y1, L = Math.hypot(dx, dy), ux = dx / L, uy = dy / L;

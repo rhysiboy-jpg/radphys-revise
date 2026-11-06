@@ -1,35 +1,37 @@
 // Explorer: the rotating-anode X-ray tube. Step-through exposure plus tappable numbered parts.
-import { svgEl as el, wavy, motionPaused } from "./util.js";
+// Each part's name sits beside its number on the drawing (words next to the part, not in a separate key). On a phone there
+// isn't room for all ten, so only the selected part's name shows.
+import { svgEl as el, wavy, motionPaused, keepInside, setLines } from "./util.js";
 
 const PARTS = [
-  { id: "filament", name: "Filament", bx: 210, by: 190, lx: 176, ly: 222,
+  { id: "filament", nx: 228, ny: 194, na: "start", name: "Filament", bx: 210, by: 190, lx: 176, ly: 222,
     text: "A coil of tungsten wire in the cathode. The filament current (about 5 A at 12 V, from a step-down transformer) heats it until electrons escape from its surface. This is <b>thermionic emission</b>. A hotter filament releases more electrons, so filament temperature controls the <b>tube current (mA)</b>.",
     tip: "<b>Why tungsten?</b> High melting point (3422 °C) and it can be drawn into fine wire. Many tubes have two filaments, for broad and fine focus." },
-  { id: "cup", name: "Focusing cup", bx: 128, by: 182, lx: 142, ly: 202,
+  { id: "cup", nx: 112, ny: 160, na: "start", name: "Focusing cup", bx: 128, by: 182, lx: 142, ly: 202,
     text: "A metal cup around the filament, held at the same negative potential. It repels the electrons and squeezes them into a narrow beam aimed at the focal spot.",
     tip: "<b>Exam tip:</b> the filament and focusing cup together make up the <b>cathode</b> assembly." },
-  { id: "target", name: "Target and focal spot", bx: 404, by: 276, lx: 450, ly: 240,
+  { id: "target", nx: 518, ny: 260, na: "start", lines: ["Target and", "focal spot"], name: "Target and focal spot", bx: 500, by: 264, lx: 456, ly: 244,
     text: "A tungsten (often tungsten–rhenium) track on the bevelled edge of the anode. The bevel faces the cathode and is angled towards the window, typically at around 12–16° (the <b>target angle</b>). The electrons stop here. Around <b>99% of their energy becomes heat</b> and only about <b>1% becomes X-rays</b>. The focal spot is the area the electrons actually strike.",
     tip: "<b>Why tungsten?</b> High atomic number (Z = 74) gives efficient X-ray production, and its high melting point survives the heat. A smaller focal spot gives a sharper image but tolerates less heat." },
-  { id: "anode", name: "Rotating anode", bx: 462, by: 50, lx: 466, ly: 88,
+  { id: "anode", nx: 444, ny: 54, na: "end", name: "Rotating anode", bx: 462, by: 50, lx: 466, ly: 88,
     text: "A disc connected to the positive high voltage. It spins at about 3,000 rpm, or about 9,000 rpm in high-speed tubes, so the electrons strike a moving ring of target rather than one spot. Spreading the heat this way allows much higher exposures without melting the target.",
     tip: "<b>Remember:</b> the anode starts spinning when the radiographer presses <b>prep</b>, before any X-rays are made." },
-  { id: "rotor", name: "Rotor", bx: 578, by: 170, lx: 578, ly: 170,
+  { id: "rotor", nx: 578, ny: 224, na: "middle", name: "Rotor", bx: 578, by: 170, lx: 578, ly: 170,
     text: "A copper cylinder on the anode stem, inside the vacuum. The stator's magnetic field turns it, and it turns the anode. It runs on bearings.",
     tip: "<b>Link:</b> rotor and stator together form an <b>induction motor</b>." },
-  { id: "stator", name: "Stator", bx: 664, by: 54, lx: 618, ly: 54,
+  { id: "stator", nx: 664, ny: 88, na: "middle", name: "Stator", bx: 664, by: 54, lx: 618, ly: 54,
     text: "Electromagnet coils outside the envelope, around the rotor. A changing magnetic field drives the rotor through the glass, with no physical connection across the vacuum.",
     tip: "<b>Why outside?</b> Keeping the coils out of the vacuum protects the vacuum and keeps their electrical supply simple." },
-  { id: "envelope", name: "Envelope (vacuum)", bx: 300, by: 96, lx: 300, ly: 96,
+  { id: "envelope", nx: 282, ny: 100, na: "end", name: "Envelope (vacuum)", bx: 300, by: 96, lx: 300, ly: 96,
     text: "A sealed borosilicate glass (or metal-ceramic) container holding a <b>vacuum</b>. Electrons can then travel from cathode to anode without colliding with gas molecules, and the hot filament cannot oxidise. It also supports and insulates the electrodes.",
     tip: "<b>Link:</b> the glass also absorbs some low-energy X-rays, so it contributes to <b>inherent filtration</b>." },
-  { id: "window", name: "Window", bx: 524, by: 306, lx: 490, ly: 292,
+  { id: "window", nx: 374, ny: 310, na: "end", name: "Window", bx: 392, by: 306, lx: 414, ly: 292,
     text: "A thinner part of the envelope where the useful beam leaves the tube. Together with the glass and oil, it forms the tube's <b>inherent filtration</b>, about 1 mm aluminium equivalent.",
     tip: "<b>Remember:</b> inherent filtration is built into the tube and cannot be removed." },
-  { id: "filter", name: "Added filtration", bx: 532, by: 352, lx: 500, ly: 344,
+  { id: "filter", nx: 550, ny: 356, na: "start", name: "Added filtration", bx: 532, by: 352, lx: 500, ly: 344,
     text: "Aluminium sheets at the tube port. They absorb the <b>low-energy photons</b>, which would only be absorbed in the patient's skin, adding dose without reaching the image receptor. This raises the beam's mean energy (<b>beam hardening</b>).",
     tip: "<b>Exam tip:</b> general radiography needs <b>at least 2.5 mm Al equivalent</b> total filtration (inherent + added)." },
-  { id: "housing", name: "Housing and oil", bx: 72, by: 60, lx: 72, ly: 60,
+  { id: "housing", nx: 90, ny: 64, na: "start", name: "Housing and oil", bx: 72, by: 60, lx: 72, ly: 60,
     text: "A metal casing <b>lined with lead</b> to absorb <b>leakage radiation</b>, the X-rays heading in directions other than the window. The space is filled with <b>oil</b>, which insulates against the high voltage and carries heat away from the envelope.",
     tip: "<b>Link to protection:</b> leakage radiation is limited by regulation, which is why the housing matters to IRR17 compliance." },
 ];
@@ -101,13 +103,14 @@ const MARKUP = `
       <g class="fx fx-3" aria-hidden="true"><text class="fxlabel el-t" x="250" y="216">electrons →</text></g>
       <g class="fx fx-4" aria-hidden="true">
         <circle cx="453" cy="232" r="30" fill="url(#g-heat)"/>
-        <text class="fxlabel heat-t" x="374" y="272" text-anchor="end">≈99% heat</text>
+        <text class="fxlabel heat-t" x="430" y="192" text-anchor="end">≈99% heat</text>
       </g>
       <g data-role="strays" class="fx fx-4" aria-hidden="true"></g>
       <g class="fx fx-5" aria-hidden="true"><polygon class="beam" points="453,236 387,436 519,436"/></g>
       <g data-role="useful" class="fx fx-5" aria-hidden="true"></g>
       <g class="fx fx-5" aria-hidden="true"><text class="fxlabel ph-t" x="526" y="420">useful beam</text></g>
       <g data-role="badges"></g>
+      <g data-role="names"></g>
     </svg>
     <p class="scale-note">Schematic · not to scale · cathode (−) left, anode (+) right</p>
   </div>
@@ -133,7 +136,7 @@ const MARKUP = `
   </div>
 </div>`;
 
-const EMPTY_CARD = '<p class="eyebrow">Part detail</p><p>Tap a number on the diagram or a part above.</p>';
+const EMPTY_CARD = '<p class="eyebrow">Part detail</p><p>Tap a part, its name or its number on the diagram, or choose one above.</p>';
 
 export function mount(root) {
   root.innerHTML = MARKUP;
@@ -147,7 +150,9 @@ export function mount(root) {
   function selectPart(id) {
     selected = selected === id ? null : id;
     tube.classList.toggle("has-sel", !!selected);
-    tube.querySelectorAll(".part, .badge").forEach(n => n.classList.toggle("sel", n.dataset.part === selected));
+    tube.querySelectorAll(".part, .badge, .tube-name").forEach(n => n.classList.toggle("sel", n.dataset.part === selected));
+    const name = tube.querySelector(".tube-name.sel");
+    if (name) keepInside(name, 4, 756);
     key.querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", b.dataset.part === selected));
     if (!selected) { card.innerHTML = EMPTY_CARD; return; }
     const i = PARTS.findIndex(p => p.id === selected), p = PARTS[i];
@@ -160,6 +165,9 @@ export function mount(root) {
     el("circle", { cx: p.bx, cy: p.by, r: 13 }, g);
     el("text", { x: p.bx, y: p.by }, g).textContent = i + 1;
     g.addEventListener("click", () => selectPart(p.id));
+    const n = el("text", { class: "tube-name", x: p.nx, y: p.ny, "text-anchor": p.na, "data-part": p.id, "aria-hidden": "true" }, $("names"));
+    if (p.lines) setLines(n, ...p.lines); else n.textContent = p.name;
+    n.addEventListener("click", () => selectPart(p.id));
     const li = document.createElement("li");
     li.innerHTML = `<button type="button" aria-pressed="false" data-part="${p.id}"><span class="num">${i + 1}</span>${p.name}</button>`;
     li.firstChild.addEventListener("click", () => selectPart(p.id));
@@ -170,7 +178,7 @@ export function mount(root) {
   // Photons
   const cross = (g, x, y) => el("path", { class: "stop", d: `M${x - 6} ${y - 6} L${x + 6} ${y + 6} M${x + 6} ${y - 6} L${x - 6} ${y + 6}` }, g);
   const strays = $("strays");
-  [[392, 36], [300, 324], [330, 36]].forEach(([x, y]) => { el("path", { class: "photon weak", d: wavy(450, 228, x, y) }, strays); cross(strays, x, y); });
+  [[392, 36], [250, 324], [330, 36]].forEach(([x, y]) => { el("path", { class: "photon weak", d: wavy(450, 228, x, y) }, strays); cross(strays, x, y); });
   const useful = $("useful");
   [[421, 432], [455, 432], [489, 432]].forEach(([x, y]) => el("path", { class: "photon", d: wavy(453, 240, x, y) }, useful));
   el("path", { class: "photon weak", d: wavy(453, 240, 473, 334, 3, 9) }, useful); cross(useful, 473, 336);

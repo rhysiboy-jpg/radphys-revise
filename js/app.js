@@ -682,13 +682,23 @@ function addPauseButton(box) {
   stage.appendChild(row);
 }
 
-// "Copy link" under each diagram: a link to its own page that opens with the settings as they are now. The starting state
-// is recorded before any set-up from the address is applied, so a link only carries what was changed.
-function addLinkButton(box, start) {
+// The row under each diagram, the same on all 42: "Reset" (only where there are settings to reset) and "Copy link", a link to
+// the diagram's own page that opens with the settings as they are now. The starting state is recorded before any set-up from
+// the address is applied, so a link only carries what was changed.
+function addDiagramRow(box, start, reset) {
   const t = content.topics.find(x => x.diagrams.some(d => d.id === box.dataset.diagram));
   if (!t) return;
   const row = document.createElement("div");
   row.className = "controls link-row";
+  if (Object.keys(start).length) {
+    const rb = document.createElement("button");
+    rb.type = "button";
+    rb.dataset.role = "reset-diagram";
+    rb.textContent = "Reset";
+    rb.setAttribute("aria-label", "Reset this diagram to its starting settings");
+    rb.addEventListener("click", reset);
+    row.appendChild(rb);
+  }
   const b = document.createElement("button");
   b.type = "button";
   b.textContent = Object.keys(start).length ? "Copy link to this set-up" : "Copy link to this diagram";
@@ -719,13 +729,22 @@ async function mountDiagrams(setup = {}) {
     try {
       const mod = await loader();
       if (!box.isConnected) return;   // the user navigated away while loading
-      cleanups.push(mod.mount(box));
-      const start = readSetup(box);
-      if (Object.keys(setup).length) applySetup(box, setup);
-      if (mod.moving) addPauseButton(box);
-      addLinkButton(box, start);
-      cleanups.push(calmSliders(box));
-      cleanups.push(trackScale(box));
+      // Reset builds the diagram again from scratch, which is the one way to be sure every module returns to its start.
+      let undo = [];
+      const run = given => {
+        undo.forEach(fn => { try { fn?.(); } catch { /* already gone */ } });
+        undo = [mod.mount(box)];
+        const start = readSetup(box);
+        if (Object.keys(given).length) applySetup(box, given);
+        if (mod.moving) addPauseButton(box);
+        addDiagramRow(box, start, () => {
+          run({});
+          box.querySelector('[data-role="reset-diagram"]')?.focus();
+        });
+        undo.push(calmSliders(box), trackScale(box));
+      };
+      run(setup);
+      cleanups.push(() => undo.forEach(fn => { try { fn?.(); } catch { /* already gone */ } }));
     } catch (err) {
       console.error(err);
       box.innerHTML = '<p class="muted">This diagram could not load. Try refreshing the page.</p>';
