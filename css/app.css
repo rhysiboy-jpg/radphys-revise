@@ -208,7 +208,7 @@ button.link { background: none; border: none; padding: 0; min-height: 0; color: 
 .jumps a { font-size: 0.9rem; font-weight: 600; text-decoration: none; padding: 8px 14px; min-height: 40px; display: inline-flex; align-items: center; border-radius: var(--pill); background: var(--panel); }
 .jumps a:hover { background: color-mix(in srgb, var(--ink) 9%, var(--panel)); }
 .later { font-size: 0.9rem; color: var(--muted); }
-.areas { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 8px; }
+.areas { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(260px, 100%), 1fr)); gap: 8px; }   /* never wider than its column */
 .area { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 12px 14px; min-height: 48px; background: var(--raised); border: 1px solid var(--edge); border-radius: var(--r-row); text-decoration: none; font-weight: 600; font-size: 0.95rem; transition: border-color .15s; }
 .area:hover { border-color: var(--ink); }
 .area .meta { font-size: 0.85rem; font-weight: 400; color: var(--muted); white-space: nowrap; }
@@ -788,7 +788,7 @@ details.try[open] summary::after { content: " −"; }
 .lesson-body { display: grid; gap: 14px; font-size: 1.125rem; line-height: 1.65; }   /* 18px: larger text reads better on screen (Rello et al. 2016) */
 .lesson-body p, .lesson-body ul { margin: 0; }
 .lesson-body ul { padding-left: 1.3em; display: grid; gap: 6px; }
-.lesson-body h3 { font-size: 1.1rem; margin-top: 6px; }
+.lesson-body h3, .lesson-body h2 { font-size: 1.1rem; margin-top: 6px; }
 .lesson-try { display: grid; gap: 6px; background: var(--panel); border-radius: var(--r-row); padding: 12px 16px; }
 .lesson-try p, .lesson-try ul { margin: 0; }
 .lesson-try ul { padding-left: 1.2em; display: grid; gap: 4px; }
@@ -999,11 +999,11 @@ details.try[open] summary::after { content: " −"; }
 .q-fig .photon, .q-fig .spin, .q-fig .flux { animation: none; }
 
 /* Checkboxes big enough to tap (WCAG 2.5.8: at least 24 by 24 pixels). */
-input[type="checkbox"] { width: 24px; height: 24px; flex: none; }
+input[type="checkbox"], input[type="radio"] { width: 24px; height: 24px; flex: none; }
 
 /* Predict first: a question before the diagram, answered, tried, then checked. */
 .predict { display: grid; gap: 10px; background: var(--panel); border-radius: var(--r-row); padding: 14px 16px; }
-.predict-q { margin: 0; color: var(--ink); }
+.predict .predict-q { margin: 0; color: var(--ink); }   /* beats .module-head p, which greys the blurb */
 .predict-opts { display: flex; flex-wrap: wrap; gap: 8px; }
 .predict-opts button { min-height: 44px; padding: 8px 14px; text-align: left; font-weight: 500; }
 .predict-opts button[aria-pressed="true"] { border-color: var(--ink); box-shadow: inset 0 0 0 1px var(--ink); }
@@ -1011,4 +1011,5 @@ input[type="checkbox"] { width: 24px; height: 24px; flex: none; }
 .predict-opts button.is-wrong { border-color: var(--bad); background: var(--bad-tint); color: var(--ink); opacity: 1; }
 .predict-opts button:disabled { opacity: 1; }
 .predict-next, .predict-why { margin: 0; }
+.predict .predict-why { color: var(--ink); }
 .predict-why .mark { vertical-align: -2px; margin-right: 4px; }

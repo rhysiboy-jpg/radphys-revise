@@ -486,7 +486,7 @@ function policyPage(key, title, check, body) {
     <article class="lesson">
       <h1 tabindex="-1">${title}</h1>
       ${CONFIG.reviewMode ? `<p class="lesson-src"><span class="status review">Draft</span> ${check}</p>` : ""}
-      <div class="lesson-body">${body}</div>
+      <div class="lesson-body">${body.replace(/<(\/?)h3>/g, "<$1h2>")}</div>
     </article>
     ${footer()}`, key, { title });
 }
