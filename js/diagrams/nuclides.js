@@ -105,3 +105,6 @@ export function mount(root) {
   root.querySelectorAll("[data-mode]").forEach(b => b.addEventListener("click", () => { guess = b.dataset.mode; update(); }));
   update();
 }
+
+// It moves by itself (flowing photons or electrons), so the page offers a "Pause motion" button for it.
+export const moving = true;

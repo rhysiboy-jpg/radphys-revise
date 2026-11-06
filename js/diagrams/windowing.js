@@ -28,7 +28,7 @@ const cx = v => CX0 + (v / MAX) * (CX1 - CX0);
 const MARKUP = `
 <div class="grid">
   <div class="stage">
-    <canvas class="xray" width="${W}" height="${H}" role="img" data-role="img"></canvas>
+    <canvas class="xray" width="${W}" height="${H}" role="img" tabindex="0" data-role="img"></canvas>
     <svg viewBox="0 0 640 238" role="img" aria-labelledby="win-t win-d">
       <title id="win-t">Histogram of pixel values with the window and look-up table</title>
       <desc id="win-d" data-role="desc"></desc>
@@ -40,7 +40,7 @@ const MARKUP = `
       <g data-role="peaks"></g>
     </svg>
     <p class="legend"><span><i class="lut-key"></i>look-up table: the shade shown for each pixel value (higher = whiter)</span><span><i class="band-key"></i>the window</span></p>
-    <p class="scale-note">Simulated image · cartoon limb, not a real patient · 12-bit pixel values (0–4095) · tap the image to read a pixel</p>
+    <p class="scale-note">Simulated image · cartoon limb, not a real patient · 12-bit pixel values (0–4095) · tap the image to read a pixel, or select it and use the arrow keys</p>
   </div>
   <div class="panel">
     <div class="sliders">
@@ -66,7 +66,7 @@ const MARKUP = `
       <div class="readout"><span>Shown black</span><b data-role="r-black"></b><span data-role="r-black-s"></span></div>
       <div class="readout"><span>In the window</span><b data-role="r-in"></b></div>
       <div class="readout"><span>Pixel values per grey shade</span><b data-role="r-step"></b><span>256 shades of grey</span></div>
-      <div class="readout"><span>Tapped pixel</span><b data-role="r-pick">–</b><span data-role="r-pick-s">tap the image</span></div>
+      <div class="readout"><span>Tapped pixel</span><b data-role="r-pick">–</b><span data-role="r-pick-s" aria-live="polite">tap the image, or use the arrow keys</span></div>
       <div class="readout"><span>Stored data</span><b>Unchanged</b><span>windowing alters only the display</span></div>
     </div>
     <p class="summary" data-role="summary" aria-live="polite"></p>
@@ -134,6 +134,7 @@ export function mount(root) {
       d[i * 4] = d[i * 4 + 1] = d[i * 4 + 2] = g; d[i * 4 + 3] = 255;
     }
     ctx.putImageData(pixels, 0, 0);
+    if (cursor) mark();
 
     $("band").setAttribute("x", cx(Math.max(0, lo)));
     $("band").setAttribute("width", Math.max(1, cx(Math.min(MAX, hi)) - cx(Math.max(0, lo))));
@@ -162,10 +163,22 @@ export function mount(root) {
     summaryTimer = setTimeout(() => { $("summary").textContent = sentence; }, 250);
   }
 
+  // Reading a pixel: by tapping, or (WCAG 2.1.1) by selecting the image and moving a marker with the arrow keys.
+  let cursor = null;
+  function mark() {
+    const [x, y] = cursor;
+    ctx.strokeStyle = getComputedStyle(root).getPropertyValue("--dg-accent").trim() || "#0B6A88";
+    ctx.lineWidth = 2;
+    ctx.strokeRect(x - 5, y - 5, 11, 11);
+  }
   function pick(e) {
     const r = canvas.getBoundingClientRect();
-    const x = Math.floor(((e.clientX - r.left) / r.width) * W), y = Math.floor(((e.clientY - r.top) / r.height) * H);
+    readAt(Math.floor(((e.clientX - r.left) / r.width) * W), Math.floor(((e.clientY - r.top) / r.height) * H));
+  }
+  function readAt(x, y) {
     if (x < 0 || y < 0 || x >= W || y >= H) return;
+    cursor = [x, y];
+    update();
     const v = data[y * W + x], wl = +wlIn.value, ww = +wwIn.value, g = grey(v, wl, ww);
     $("r-pick").textContent = v;
     $("r-pick-s").textContent = `${name(v)}, shown ${g >= 1 ? "white" : g <= 0 ? "black" : g < 1 / 3 ? "dark grey" : g < 2 / 3 ? "mid grey" : "light grey"}`;
@@ -176,6 +189,13 @@ export function mount(root) {
   wwIn.addEventListener("input", update);
   root.querySelectorAll("[data-preset]").forEach(b => b.addEventListener("click", () => { const p = PRESETS[b.dataset.preset]; setWindow(p.wl, p.ww); }));
   canvas.addEventListener("click", pick);
+  canvas.addEventListener("keydown", e => {
+    const step = e.shiftKey ? 20 : 4, [x, y] = cursor || [W / 2, H / 2];
+    const moves = { ArrowLeft: [-step, 0], ArrowRight: [step, 0], ArrowUp: [0, -step], ArrowDown: [0, step] };
+    if (!moves[e.key]) return;
+    e.preventDefault();
+    readAt(Math.max(0, Math.min(W - 1, x + moves[e.key][0])), Math.max(0, Math.min(H - 1, y + moves[e.key][1])));
+  });
   setWindow(PRESETS.full.wl, PRESETS.full.ww);
   return () => clearTimeout(summaryTimer);
 }

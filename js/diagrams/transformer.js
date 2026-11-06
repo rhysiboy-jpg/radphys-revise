@@ -136,3 +136,6 @@ export function mount(root) {
   setTo(PRESETS.hv);
   return () => clearTimeout(summaryTimer);
 }
+
+// It moves by itself (flowing photons or electrons), so the page offers a "Pause motion" button for it.
+export const moving = true;

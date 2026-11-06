@@ -1,5 +1,5 @@
 // Explorer: the inverse square law. Move the detector; the same photons spread over a larger area, so intensity falls with distance².
-import { svgEl as el, reducedMotion } from "./util.js";
+import { svgEl as el, motionPaused } from "./util.js";
 
 const DMIN = 50, DMAX = 300, GRID = 12, PHOTONS = GRID * GRID;
 const SX0 = 44, SX1 = 400, SY = 176;                       // side view: source at SX0, distances up to DMAX at SX1
@@ -142,7 +142,7 @@ export function mount(root) {
   // Photons travelling out along the rays and stopping at the detector.
   function frame(t) {
     if (!alive) return;
-    const d = +dIn.value, x = sx(d), h = half(d), still = reducedMotion();
+    const d = +dIn.value, x = sx(d), h = half(d), still = motionPaused();
     movers.forEach(m => {
       const p = still ? m.p : (m.p + t * 0.00035) % 1;
       const y2 = SY - h + (2 * h * m.ray) / 6;
@@ -160,3 +160,6 @@ export function mount(root) {
 
   return () => { alive = false; clearTimeout(summaryTimer); };
 }
+
+// It moves by itself (flowing photons or electrons), so the page offers a "Pause motion" button for it.
+export const moving = true;

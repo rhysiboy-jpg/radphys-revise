@@ -179,3 +179,6 @@ export function mount(root) {
   $("show").addEventListener("click", () => check(true));
   start("alpha");
 }
+
+// It moves by itself (flowing photons or electrons), so the page offers a "Pause motion" button for it.
+export const moving = true;

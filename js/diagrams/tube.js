@@ -1,5 +1,5 @@
 // Explorer: the rotating-anode X-ray tube. Step-through exposure plus tappable numbered parts.
-import { svgEl as el, wavy, reducedMotion } from "./util.js";
+import { svgEl as el, wavy, motionPaused } from "./util.js";
 
 const PARTS = [
   { id: "filament", name: "Filament", bx: 210, by: 190, lx: 176, ly: 222,
@@ -183,7 +183,7 @@ export function mount(root) {
   let running = true;
   function frame(t) {
     if (!running) return;
-    const still = reducedMotion();
+    const still = motionPaused();
     cloudDots.forEach((d, i) => {
       const a = d.a + (still ? 0 : t * 0.0015 * (i % 2 ? 1 : -1));
       d.n.setAttribute("cx", (190 + Math.cos(a) * d.r * 0.7).toFixed(1));
@@ -229,3 +229,6 @@ export function mount(root) {
 
   return () => { running = false; clearInterval(timer); };
 }
+
+// It moves by itself (flowing photons or electrons), so the page offers a "Pause motion" button for it.
+export const moving = true;

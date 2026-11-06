@@ -37,6 +37,10 @@ export function wavy(x1, y1, x2, y2, amp = 4, wl = 13) {
 
 const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
 export const reducedMotion = () => mq.matches;
+// True while motion should stand still: the device asks for reduced motion, or the student pressed "Pause motion"
+// (WCAG 2.2.2: anything that moves by itself for more than five seconds needs a way to pause it). Loops that run by
+// themselves check this every frame, so they freeze where they are and carry on when it's switched back.
+export const motionPaused = () => mq.matches || document.documentElement.classList.contains("motion-paused");
 
 // Runs step(t) for t from 0 to 1 over ms milliseconds. With reduced motion it jumps straight to the end.
 // Resolves false if cancelled (alive() returned false), so a sequence can stop when the view closes.

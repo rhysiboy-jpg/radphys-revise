@@ -1,7 +1,7 @@
 // Explorer: the electronvolt. An electron accelerated across a chosen tube voltage gains that many electronvolts, so 80 kV
 // gives 80 keV, the highest photon energy the tube can make. At the target about 99% becomes heat and about 1% X-rays.
 // A prefix ladder below links the units used across the module (µGy, mSv, keV, kV, mA, MBq).
-import { svgEl as el, wavy, reducedMotion } from "./util.js";
+import { svgEl as el, wavy, reducedMotion, motionPaused } from "./util.js";
 
 const EV = 1.602e-19;            // joules in one electronvolt
 const CX = 96, AX = 544, Y = 120; // cathode and anode faces, and the electron's path
@@ -107,10 +107,12 @@ export function mount(root) {
   function frame(now) {
     if (!alive) return;
     const dt = Math.min(50, now - last); last = now;
-    // Uniform field: constant acceleration, so position grows with time²; a higher voltage crosses faster.
-    pos += dt * 0.0007 * Math.sqrt(+kvIn.value / 80);
-    if (pos >= 1) { pos = 0; arrive(); }
-    place(pos * pos);   // distance ∝ t², and energy ∝ distance in a uniform field
+    if (!motionPaused()) {
+      // Uniform field: constant acceleration, so position grows with time²; a higher voltage crosses faster.
+      pos += dt * 0.0007 * Math.sqrt(+kvIn.value / 80);
+      if (pos >= 1) { pos = 0; arrive(); }
+      place(pos * pos);   // distance ∝ t², and energy ∝ distance in a uniform field
+    }
     requestAnimationFrame(frame);
   }
   place(0);
@@ -126,3 +128,6 @@ export function mount(root) {
   update();
   return () => { alive = false; clearTimeout(timer); };
 }
+
+// It moves by itself (flowing photons or electrons), so the page offers a "Pause motion" button for it.
+export const moving = true;

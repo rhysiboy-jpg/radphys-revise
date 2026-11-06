@@ -200,3 +200,6 @@ export function mount(root) {
   jumpTo(0);
   return () => { alive = false; };
 }
+
+// It moves by itself (flowing photons or electrons), so the page offers a "Pause motion" button for it.
+export const moving = true;

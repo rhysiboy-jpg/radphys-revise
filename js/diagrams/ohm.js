@@ -1,7 +1,7 @@
 // Explorer: potential difference, current and resistance. A simple circuit: set the voltage, and the length and thickness of
 // the wire. Resistance rises with length and falls with thickness; the current follows Ohm's law (I = V / R), shown as a
 // straight line through the origin; the energy turned to heat each second is V × I. Values are illustrative.
-import { svgEl as el, reducedMotion } from "./util.js";
+import { svgEl as el, reducedMotion, motionPaused } from "./util.js";
 
 const THICK = { thin: { name: "Thin", area: 1, h: 6 }, medium: { name: "Medium", area: 2, h: 11 }, thick: { name: "Thick", area: 4, h: 18 } };
 const K = 6;                                   // ohms for one unit of length at the thinnest wire
@@ -118,7 +118,8 @@ export function mount(root) {
   }
   function frame(now) {
     if (!alive) return;
-    move(Math.min(50, now - last)); last = now;
+    if (!motionPaused()) move(Math.min(50, now - last));
+    last = now;
     requestAnimationFrame(frame);
   }
   if (!reducedMotion()) requestAnimationFrame(frame);
@@ -128,3 +129,6 @@ export function mount(root) {
   update();
   return () => { alive = false; clearTimeout(timer); };
 }
+
+// It moves by itself (flowing photons or electrons), so the page offers a "Pause motion" button for it.
+export const moving = true;

@@ -399,6 +399,7 @@ async function explore(id) {
       const mod = await loader();
       if (!box.isConnected) return;   // the user navigated away while loading
       cleanups.push(mod.mount(box));
+      if (mod.moving) addPauseButton(box);
       cleanups.push(trackScale(box));
     } catch (err) {
       console.error(err);
@@ -503,33 +504,23 @@ function accessibility() {
       <li>use it on a phone, a tablet or a computer;</li>
       <li>answer the questions and use the diagrams' controls with a keyboard alone (in practice sets, press 1 to 4 to choose an answer and Enter to check it);</li>
       <li>choose a light or dark theme, or follow your device's setting;</li>
-      <li>stop animation through your device's "reduce motion" setting;</li>
+      <li>pause anything that moves with the "Pause motion" button beside the diagram, or stop animation through your device's "reduce motion" setting;</li>
       <li>read text descriptions of the simulated X-ray images and of what each diagram shows;</li>
       <li>tell right from wrong answers without relying on colour: each is marked with a tick or a cross and words.</li>
     </ul>
     <h3>How accessible this app is</h3>
-    <p>Some parts are not fully accessible:</p>
-    <ul>
-      <li>reading a single pixel's value in the windowing diagram needs a mouse or touch, although the readouts beside it give the same information;</li>
-      <li>in a few diagrams the moving electrons and photons can't be paused on the page; your device's "reduce motion" setting stops them;</li>
-      <li>the interactive diagrams are visual and have not yet been tested with a screen reader, so some may be hard to follow that way. The lessons and questions explain the same physics in words.</li>
-    </ul>
+    <p>The interactive diagrams are visual and have not yet been tested with a screen reader, so some may be hard to follow that way. Each has labelled controls and a written summary of what it shows, and the lessons and questions explain the same physics in words.</p>
     <h3>Feedback and contact information</h3>
     <p>If you find something you can't use, or need the content in another format, ${reportRoute()}. Say which page and what happened.</p>
     <h3>Enforcement procedure</h3>
     <p>The Equality and Human Rights Commission is responsible for enforcing the Public Sector Bodies (Websites and Mobile Applications) (No. 2) Accessibility Regulations 2018. If you're not happy with how your complaint is handled, you can contact the Equality Advisory and Support Service (EASS).</p>
     <h3>Technical information about this app's accessibility</h3>
     <p>The aim is to meet the Web Content Accessibility Guidelines (WCAG) version 2.2, level AA, in line with the 2018 regulations.</p>
-    <p><b>Compliance status:</b> this app is partially compliant with WCAG 2.2 AA, because of the non-compliances listed below.</p>
+    <p><b>Compliance status:</b> this app is partially compliant with WCAG 2.2 AA. No failures are known, but it has not yet been tested with screen readers, so it does not claim full compliance.</p>
     <h3>Non-accessible content</h3>
-    <ul>
-      <li>Reading a pixel's value in the windowing diagram can't be done with a keyboard. This fails WCAG 2.2 success criterion 2.1.1 (Keyboard).</li>
-      <li>Animations in some diagrams start by themselves and have no pause control on the page. This fails success criterion 2.2.2 (Pause, Stop, Hide).</li>
-      <li>The diagrams have not been tested with screen readers, so there may be further problems we don't yet know about.</li>
-    </ul>
-    <p>No disproportionate burden is claimed, and no content is outside the scope of the regulations. These issues are being worked on before the app is given to students.</p>
+    <p>The diagrams have not been tested with screen readers, so there may be problems we don't yet know about. No disproportionate burden is claimed, and no content is outside the scope of the regulations.</p>
     <h3>Preparation of this accessibility statement</h3>
-    <p>This statement was prepared on 5 November 2026. The app was last tested on 5 November 2026 by its developer, using automated checks and manual testing at phone and computer widths, in light and dark themes, and with a keyboard. It has not had an independent audit.</p>`);
+    <p>This statement was prepared on 5 November 2026 and last reviewed on 6 November 2026. The app was last tested on 6 November 2026 by its developer, using automated checks (including tap-target sizes and line contrast in both themes) and manual testing at phone and computer widths, in light and dark themes, and with a keyboard. It has not had an independent audit.</p>`);
 }
 
 // Privacy: what the app keeps on the device and why (the storage law's "clear information" requirement), that nothing is
@@ -636,6 +627,29 @@ async function lesson(topicId, lessonId) {
   await mountDiagrams();
 }
 
+// "Pause motion" for diagrams with something that moves by itself (WCAG 2.2.2). One switch for the whole app, so a student
+// who pauses once isn't met by moving diagrams on the next page.
+function addPauseButton(box) {
+  const stage = box.querySelector(".stage") || box;
+  const row = document.createElement("div");
+  row.className = "controls motion-row";
+  const b = document.createElement("button");
+  b.type = "button";
+  const label = () => {
+    const paused = document.documentElement.classList.contains("motion-paused");
+    b.textContent = paused ? "Play motion" : "Pause motion";
+    b.setAttribute("aria-pressed", paused);
+  };
+  b.addEventListener("click", () => {
+    document.documentElement.classList.toggle("motion-paused");
+    document.querySelectorAll(".motion-row button").forEach(x => x.dispatchEvent(new Event("relabel")));
+  });
+  b.addEventListener("relabel", label);
+  label();
+  row.appendChild(b);
+  stage.appendChild(row);
+}
+
 // Loads and mounts every [data-diagram] box on the page.
 async function mountDiagrams() {
   for (const box of app.querySelectorAll("[data-diagram]")) {
@@ -645,6 +659,7 @@ async function mountDiagrams() {
       const mod = await loader();
       if (!box.isConnected) return;   // the user navigated away while loading
       cleanups.push(mod.mount(box));
+      if (mod.moving) addPauseButton(box);
       cleanups.push(trackScale(box));
     } catch (err) {
       console.error(err);

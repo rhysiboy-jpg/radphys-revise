@@ -188,3 +188,6 @@ export function mount(root) {
   $("next").addEventListener("click", () => { step++; update(); });
   update();
 }
+
+// It moves by itself (flowing photons or electrons), so the page offers a "Pause motion" button for it.
+export const moving = true;

@@ -1,7 +1,7 @@
 // Explorer: charge, conductors and insulators. Left, two charges that attract or repel. Right, a strip of material with a
 // voltage across it: in a conductor the loosely bound outer electrons drift towards the positive end; in an insulator they stay
 // with their atoms. Each material is linked to where it is found in the X-ray tube and circuit.
-import { svgEl as el, reducedMotion } from "./util.js";
+import { svgEl as el, reducedMotion, motionPaused } from "./util.js";
 
 const MATERIALS = {
   copper: { name: "Copper", cond: true, where: "Circuit wiring and transformer windings, and the anode's copper stem, which conducts heat away." },
@@ -130,7 +130,8 @@ export function mount(root) {
   let last = performance.now();
   function frame(now) {
     if (!alive) return;
-    place(Math.min(50, now - last)); last = now;
+    if (!motionPaused()) place(Math.min(50, now - last));
+    last = now;
     requestAnimationFrame(frame);
   }
   if (!reducedMotion()) requestAnimationFrame(frame);
@@ -142,3 +143,6 @@ export function mount(root) {
   update();
   return () => { alive = false; clearTimeout(timer); };
 }
+
+// It moves by itself (flowing photons or electrons), so the page offers a "Pause motion" button for it.
+export const moving = true;
