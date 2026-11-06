@@ -218,6 +218,7 @@ Confirmed with Rhys Morris, 29 October 2026.
     - 34 questions written, one per simulation diagram, on its first lesson. The sorting activities and the two diagrams with their own prediction step (dose–response, chart of nuclides) have none.
     - All are drafts, like their lessons.
     - The content checker validates the format, and a test covers the reader.
+- One "Try this" list per lesson (6 November 2026, at Rhys's request): 13 older diagrams carry their own Try this list. Inside a lesson that has its own list, the diagram's list is now hidden, so students see one list, above the diagram. The diagram's own list still shows on its diagram page and in the sign-off gallery. Some of those lists are longer than the lesson's (the spectrum one especially), so Rhys may want to move the best steps into the lessons when reviewing.
 - Next: Rhys reviews the 63 draft lessons and the 19 new interactives (review mode only). Still waiting: review of the 249 draft questions, and sign-off of the earlier interactives and diagram upgrades.
 - Untested: offline mode. Check it once hosted on GitHub Pages, which needs the repo made public (only with Rhys's go-ahead).
 - Commit identity: Rhys Morris, using the GitHub no-reply email.

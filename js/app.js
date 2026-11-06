@@ -612,7 +612,7 @@ async function lesson(topicId, lessonId) {
         ${qs.length ? `<a class="btn" href="#practise-${t.id}" aria-label="Practise ${esc(t.title)}">Practise this topic</a>` : ""}
       </aside>
     </div>
-    ${d ? `<section class="module lesson-diagram" aria-labelledby="ld-h">
+    ${d ? `<section class="module lesson-diagram${l.tryThis ? " has-try" : ""}" aria-labelledby="ld-h">
         <div class="module-head"><h2 id="ld-h">Explore: ${esc(d.title)}</h2>${predictCard(l)}${l.tryThis ? `<div class="lesson-try"><b>Try this</b>${l.tryThis}</div>` : ""}</div>
         <div data-diagram="${d.id}"><p class="muted">Loading diagram…</p></div>
       </section>` : ""}

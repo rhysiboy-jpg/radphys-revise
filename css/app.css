@@ -443,6 +443,8 @@ input[type="range"] { width: 100%; accent-color: var(--dg-accent); min-height: 3
 .try { display: grid; gap: 8px; }
 .try ol { margin: 0; padding-left: 1.3em; display: grid; gap: 6px; color: var(--muted); }
 .try ol b { color: var(--ink); font-weight: 600; }
+/* In a lesson the lesson's own Try this list sits above the diagram, so the diagram's built-in list would repeat it. */
+.lesson-diagram.has-try .try { display: none; }
 .axis line, .axis path { stroke: var(--axis); }
 .axis text, .ax-title { font: 400 12px var(--font-body); fill: var(--muted); --fs: 12px; }
 .ax-title { font-size: 12.5px; --fs: 12.5px; }
