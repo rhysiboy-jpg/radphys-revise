@@ -5,6 +5,7 @@ import { getProgress, record, resetProgress, lastResult, MAX_BOX, visitedLessons
 import { buildSet, shuffle, parseNumber, isNumericCorrect, isUpsideDown } from "./quiz.js";
 import { FIGURES, drawFigure } from "./figures.js";
 import { drawCritique } from "./critique.js";
+import { readSetup, applySetup, changedFrom, encodeSetup, decodeSetup, calmSliders } from "./setup.js";
 
 const DIAGRAMS = {
   tube: () => import("./diagrams/tube.js"),
@@ -392,20 +393,7 @@ async function explore(id) {
     });
   }
 
-  for (const box of app.querySelectorAll("[data-diagram]")) {
-    const loader = DIAGRAMS[box.dataset.diagram];
-    if (!loader) { box.innerHTML = '<p class="muted">This diagram is not available yet.</p>'; continue; }
-    try {
-      const mod = await loader();
-      if (!box.isConnected) return;   // the user navigated away while loading
-      cleanups.push(mod.mount(box));
-      if (mod.moving) addPauseButton(box);
-      cleanups.push(trackScale(box));
-    } catch (err) {
-      console.error(err);
-      box.innerHTML = '<p class="muted">This diagram could not load. Try refreshing the page.</p>';
-    }
-  }
+  await mountDiagrams();
 }
 
 /* ---------- Lessons ---------- */
@@ -509,7 +497,7 @@ function accessibility() {
       <li>tell right from wrong answers without relying on colour: each is marked with a tick or a cross and words.</li>
     </ul>
     <h3>How accessible this app is</h3>
-    <p>The interactive diagrams are visual and have not yet been tested with a screen reader, so some may be hard to follow that way. Each has labelled controls and a written summary of what it shows, and the lessons and questions explain the same physics in words.</p>
+    <p>The interactive diagrams are visual and have not yet been tested with a screen reader, so some may be hard to follow that way. Each has labelled controls and a written summary of what it shows. When a slider stops moving, a screen reader reads its new value and the updated summary once, rather than at every step. The lessons and questions explain the same physics in words.</p>
     <h3>Feedback and contact information</h3>
     <p>If you find something you can't use, or need the content in another format, ${reportRoute()}. Say which page and what happened.</p>
     <h3>Enforcement procedure</h3>
@@ -564,7 +552,7 @@ function about() {
 }
 
 // One diagram on a page of its own: for diagrams outside any visible lesson, and for links from question feedback.
-async function diagramPage(topicId, diagramId) {
+async function diagramPage(topicId, diagramId, query) {
   const t = topicById(topicId), d = t?.diagrams.find(x => x.id === diagramId && shown(x));
   if (!d) return t ? explore(t.id) : home();
   const lessons = t.lessonList.filter(l => l.diagram === d.id);
@@ -582,7 +570,7 @@ async function diagramPage(topicId, diagramId) {
     <section class="module" aria-label="${esc(d.title)}"><div data-diagram="${d.id}"><p class="muted">Loading diagram…</p></div></section>
     ${lessons.length ? `<p>Read more in the lesson${lessons.length > 1 ? "s" : ""}: ${lessons.map(l => `<a href="#learn-${t.id}/${l.id}">${esc(l.title)}</a>`).join(", ")}.</p>` : ""}
     ${footer()}`, t.id, { title: `${d.title} · ${t.title}` });
-  await mountDiagrams();
+  await mountDiagrams(decodeSetup(query));
 }
 
 // One lesson: explanation, the interactive with what to try, key points, practice for its areas, and Previous / Next.
@@ -694,8 +682,37 @@ function addPauseButton(box) {
   stage.appendChild(row);
 }
 
-// Loads and mounts every [data-diagram] box on the page.
-async function mountDiagrams() {
+// "Copy link" under each diagram: a link to its own page that opens with the settings as they are now. The starting state
+// is recorded before any set-up from the address is applied, so a link only carries what was changed.
+function addLinkButton(box, start) {
+  const t = content.topics.find(x => x.diagrams.some(d => d.id === box.dataset.diagram));
+  if (!t) return;
+  const row = document.createElement("div");
+  row.className = "controls link-row";
+  const b = document.createElement("button");
+  b.type = "button";
+  b.textContent = Object.keys(start).length ? "Copy link to this set-up" : "Copy link to this diagram";
+  const note = document.createElement("span");
+  note.className = "link-note";
+  note.setAttribute("aria-live", "polite");
+  b.addEventListener("click", async () => {
+    const q = encodeSetup(changedFrom(start, readSetup(box)));
+    const url = `${location.origin}${location.pathname}#diagram-${t.id}/${box.dataset.diagram}${q ? "?" + q : ""}`;
+    try {
+      await navigator.clipboard.writeText(url);
+      note.textContent = "Link copied. It opens this diagram with these settings.";
+    } catch {
+      // No clipboard (an older browser, or permission refused): show the link to copy by hand.
+      note.innerHTML = `<label>Copy this link: <input type="text" readonly value="${esc(url)}"></label>`;
+      note.querySelector("input").select();
+    }
+  });
+  row.append(b, note);
+  box.appendChild(row);
+}
+
+// Loads and mounts every [data-diagram] box on the page. A set-up from the address applies to the diagram page's one diagram.
+async function mountDiagrams(setup = {}) {
   for (const box of app.querySelectorAll("[data-diagram]")) {
     const loader = DIAGRAMS[box.dataset.diagram];
     if (!loader) { box.innerHTML = '<p class="muted">This diagram is not available yet.</p>'; continue; }
@@ -703,7 +720,11 @@ async function mountDiagrams() {
       const mod = await loader();
       if (!box.isConnected) return;   // the user navigated away while loading
       cleanups.push(mod.mount(box));
+      const start = readSetup(box);
+      if (Object.keys(setup).length) applySetup(box, setup);
       if (mod.moving) addPauseButton(box);
+      addLinkButton(box, start);
+      cleanups.push(calmSliders(box));
       cleanups.push(trackScale(box));
     } catch (err) {
       console.error(err);
@@ -1108,7 +1129,7 @@ function route() {
   let m;
   if ((m = h.match(/^explore-([\w-]+)$/))) explore(m[1]);
   else if ((m = h.match(/^learn-([\w-]+)\/([\w-]+)$/))) lesson(m[1], m[2]);
-  else if ((m = h.match(/^diagram-([\w-]+)\/([\w-]+)$/))) diagramPage(m[1], m[2]);
+  else if ((m = h.match(/^diagram-([\w-]+)\/([\w-]+)(?:\?(.*))?$/))) diagramPage(m[1], m[2], m[3]);
   else if (h === "revisit") practiseRevisit();
   else if (h === "accessibility") accessibility();
   else if (h === "privacy") privacy();

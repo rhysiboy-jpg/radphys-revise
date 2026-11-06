@@ -35,6 +35,7 @@ RadPhys Revise is a revision app for first-year diagnostic radiography physics (
 | `content/topics.json` | Topics, with their question files, lesson file and diagrams. |
 | `js/app.js` | Views and routing (`#explore-`, `#learn-`, `#practise-`). Diagrams are registered in its `DIAGRAMS` map. |
 | `js/diagrams/` | One module per interactive, each exporting `mount(root)`. It may return a cleanup function. `util.js` has shared helpers, and `sortkit.js` is the shared sorting activity. |
+| `js/setup.js` | Shared by every diagram: settings in the web address (the "Copy link" button) and the single screen-reader line when a slider stops. |
 | `js/content.js`, `js/lessons.js`, `js/csv.js` | Loading and parsing content. |
 | `js/store.js` | Student progress in localStorage. |
 | `css/app.css` | All styles. Diagram colours use the `--dg-*`, `--photon` and `--electron` tokens. Never hard-code colours, and check dark mode. |
@@ -50,6 +51,7 @@ RadPhys Revise is a revision app for first-year diagnostic radiography physics (
 4. Add the file to `CORE` in `sw.js`. Every script needs listing there; spreadsheets and lessons are cached from `topics.json` automatically.
 5. Bump `VERSION` in `sw.js`.
 6. Attach it to a lesson with a `diagram:` line, and add a `## Try this` list.
+7. For "Copy link" to record a setting, give sliders and drop-downs an `id`, and put single-choice buttons in a `role="group"` with `aria-pressed` and a `data-` attribute naming the option. Give each slider a `<label for>` and an `<output for>`, which the screen-reader line reads out.
 
 ## Writing style
 

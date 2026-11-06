@@ -1,11 +1,11 @@
 // Offline support: saves a copy of every file, and serves the saved copies when there's no connection.
 // Change VERSION to force every device to drop its old copies.
-const VERSION = "radphys-revise-v54";
+const VERSION = "radphys-revise-v55";
 // The app itself: every page, script and diagram. tools/validate.mjs checks nothing is missing from this list.
 const CORE = [
   "./", "index.html", "css/app.css", "css/fonts.css", "fonts/figtree-latin.woff2", "fonts/figtree-latin-ext.woff2",
   "fonts/noto-sans-latin.woff2", "fonts/noto-sans-latin-ext.woff2", "fonts/noto-sans-greek.woff2", "manifest.webmanifest", "icons/icon.svg", "js/app.js", "js/config.js", "js/content.js",
-  "js/csv.js", "js/quiz.js", "js/store.js", "js/diagrams/util.js", "js/diagrams/atom.js", "js/diagrams/tube.js",
+  "js/csv.js", "js/quiz.js", "js/setup.js", "js/store.js", "js/diagrams/util.js", "js/diagrams/atom.js", "js/diagrams/tube.js",
   "js/diagrams/spectrum.js", "js/diagrams/bohr.js", "js/diagrams/target.js", "js/diagrams/pecompton.js", "js/diagrams/xcom.js",
   "js/figures.js", "js/lessons.js", "js/critique.js", "js/diagrams/isl.js", "js/diagrams/limb.js", "js/diagrams/console.js",
   "js/diagrams/windowing.js", "js/diagrams/dose.js", "js/diagrams/sorter.js", "js/diagrams/cell.js",

@@ -997,6 +997,10 @@ details.try[open] summary::after { content: " −"; }
 .motion-paused .photon, .motion-paused .spin, .motion-paused .flux { animation-play-state: paused; }
 .motion-row { justify-content: flex-end; }
 .motion-row button { min-height: 44px; padding: 8px 14px; font-size: 0.9rem; }
+.link-row { align-items: center; margin-top: 12px; }
+.link-row button { min-height: 44px; padding: 8px 14px; font-size: 0.9rem; }
+.link-note { color: var(--muted); font-size: 0.9rem; }
+.link-note input { margin-top: 4px; }
 /* Figures in practice questions stand still: they're read, not watched. */
 .q-fig .photon, .q-fig .spin, .q-fig .flux { animation: none; }
 

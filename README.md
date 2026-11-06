@@ -101,6 +101,14 @@ Double the mA and keep the kVp the same. What happens to the spectrum?
 
 Keep to one question that the diagram can answer, with exactly one right option. The content checker reports any Predict section that's missing a part.
 
+## Linking to a diagram set-up
+
+Under every diagram is a **Copy link to this set-up** button. It copies a web address that opens the diagram on a page of its own, with its sliders and options as they are now, for example the spectrum at 120 kVp with a molybdenum target. Paste it into a slide, Blackboard or an email, or use it to set a task ("Open this, then halve the mA").
+
+- Only settings you changed go in the link, so it stays short.
+- Activities with answers (sorting, quizzes, the dose choices, the AEC chambers) aren't recorded, so a link never gives answers away.
+- Students only see approved diagrams, so a link to a diagram awaiting sign-off works only while review mode is on.
+
 ## Before giving the link to students
 
 In `js/config.js`:

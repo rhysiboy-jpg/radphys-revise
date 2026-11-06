@@ -1,5 +1,5 @@
 // Tests for the app's own logic: reading answers, marking, picking practice sets, saving and loading progress, and reading
-// the spreadsheets and lesson files. Run before publishing, alongside the content checker:  node tools/test.mjs
+// the spreadsheets and lesson files, and diagram set-up links. Run before publishing, alongside the content checker:  node tools/test.mjs
 // No installs needed. Exit code 1 if any test fails.
 import path from "path";
 import { fileURLToPath, pathToFileURL } from "url";
@@ -17,6 +17,7 @@ const { parseNumber, isNumericCorrect, isUpsideDown, buildSet } = await load("js
 const store = await load("js/store.js");
 const { parseCSV } = await load("js/csv.js");
 const { parseLessons } = await load("js/lessons.js");
+const { changedFrom, encodeSetup, decodeSetup } = await load("js/setup.js");
 
 let passed = 0;
 const failures = [];
@@ -173,6 +174,22 @@ Raise the **kVp**: what happens to the highest photon energy?
   equal(l.predict.options.map(o => o.right), [false, true], "which is right:");
   equal(l.predict.why, "The highest energy in keV equals the kVp.", "explanation:");
   equal(parseLessons("# A\nid: a\n\nText.\n")[0].predict, null, "no Predict section:");
+});
+
+// ---------- Diagram set-ups in the web address ----------
+test("set-up links: only changed settings, and they read back the same", () => {
+  const start = { "spec-kv": "80", "spec-ma": "200", target: "W" };
+  const now = { "spec-kv": "120", "spec-ma": "200", target: "Mo" };
+  const changed = changedFrom(start, now);
+  equal(changed, { "spec-kv": "120", target: "Mo" }, "changed:");
+  equal(decodeSetup(encodeSetup(changed)), changed, "round trip:");
+  equal(decodeSetup(encodeSetup({ a: "+" })), { a: "+" }, "a value needing escaping:");
+});
+test("set-up links: odd addresses are ignored, not trusted", () => {
+  equal(decodeSetup(""), {}, "empty:");
+  equal(decodeSetup(undefined), {}, "none:");
+  equal(Object.keys(decodeSetup("<b>=1&ok=2")), ["ok"], "a strange name:");
+  equal(decodeSetup("k=" + "9".repeat(200)).k.length, 40, "a long value is cut short:");
 });
 
 console.log(`${passed} of ${passed + failures.length} tests passed.`);
