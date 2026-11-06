@@ -152,6 +152,14 @@ for (const t of topics) {
     for (const a of l.areas || []) if (!areas.get(t.id).has(a)) warn(where, `area "${a}" has no questions, so its "Check yourself" link leads nowhere`);
     if (!l.body || !l.body.length) problem(where, "no text");
     if (!l.keyPoints || !l.keyPoints.length) warn(where, "no Key points");
+    if (l.predict) {
+      const right = l.predict.options.filter(o => o.right).length;
+      if (!l.predict.question) problem(where, "the Predict section has no question");
+      if (l.predict.options.length < 2) problem(where, "the Predict section needs at least two options (\"- \" lines)");
+      if (right !== 1) problem(where, `the Predict section needs exactly one right option, marked "- * " (it has ${right})`);
+      if (!l.predict.why) problem(where, "the Predict section has no explanation (a \"> \" line)");
+      if (!l.diagram) warn(where, "a Predict section with no diagram to try it on");
+    }
   }
 }
 

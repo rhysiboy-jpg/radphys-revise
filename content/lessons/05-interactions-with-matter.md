@@ -20,6 +20,13 @@ As an X-ray beam passes through a patient, each photon does one of three things:
 
 Different tissues attenuate by different amounts, and that is what forms the image. **Bone** attenuates the most, so few photons reach the detector behind it and it appears **white**. **Soft tissue** lets more through and appears **grey**. **Air** lets almost everything through and appears **black**.
 
+## Predict
+In the photoelectric effect, what happens to the X-ray photon?
+- It scatters with less energy
+- * It's absorbed completely
+- It passes straight through
+> Its energy goes into ejecting an inner-shell electron. In Compton scatter, by contrast, the photon survives with less energy and a new direction.
+
 ## Try this
 - Step through the photoelectric effect on the left and Compton scatter on the right: one absorbs the photon, the other scatters it.
 

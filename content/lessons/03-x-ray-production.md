@@ -29,6 +29,13 @@ About **99%** of the electrons' energy becomes heat, so the anode **rotates**, a
 
 The **envelope** (glass, or metal and ceramic) holds the vacuum. Around it, the **housing** is lined with lead to absorb **leakage radiation**, and filled with **oil**, which insulates against the high voltage and carries heat away. The useful beam leaves through the **window**, then passes through **added filtration**.
 
+## Predict
+The radiographer presses prep. What happens before any X-rays are made?
+- The high voltage is applied across the tube
+- * The filament heats up and the anode starts to spin
+- The exposure timer starts
+> Prep heats the filament (thermionic emission) and spins the anode up to speed. Only when the exposure starts is the kVp applied.
+
 ## Try this
 - Tap each number on the diagram to read about that part.
 - Press **Play** to follow one exposure, from prep to the useful beam.
@@ -84,6 +91,13 @@ In the target it meets tungsten atoms and loses its energy in many small interac
 - **4 Braking.** The electron is slowed by the nucleus, giving **Bremsstrahlung**.
 
 The outer-shell interactions happen far more often, and each involves only a few electronvolts. That is why about **99%** of the electrons' energy becomes **heat** and only about **1%** becomes X-rays, and why so much of anode design is about managing heat.
+
+## Predict
+When the electron beam hits the target, where does most of its energy end up?
+- As X-rays
+- * As heat
+- As visible light
+> About 99% becomes heat. Interactions with outer-shell electrons only excite or ionise them; only Bremsstrahlung and inner-shell ionisation produce X-rays.
 
 ## Try this
 - Fire an electron with **1** and with **2** selected. Neither makes an X-ray photon.
@@ -144,6 +158,13 @@ Two words describe a beam:
 **kVp** changes the energy of the electrons. Raising it moves the maximum photon energy up and shifts the curve to higher energies, so the **quality rises**. The quantity rises too, roughly with kVp², and the K-lines appear once the kVp passes 69.5.
 
 The **target material** and the **generator** matter too. A lower atomic number target such as molybdenum makes fewer Bremsstrahlung photons and has its own K-lines, used in mammography. A generator with more ripple gives a lower average voltage, so fewer photons with a lower mean energy.
+
+## Predict
+Double the mA and keep the kVp the same. What happens to the spectrum?
+- It shifts to higher energies
+- * It gets twice as tall, with the same shape
+- Its maximum energy doubles
+> The mA controls quantity (how many photons), not quality. The curve keeps its shape and its end point at the kVp; it just doubles in height.
 
 ## Try this
 - **Pin** the beam, then double the mA. Quantity doubles; quality is unchanged.

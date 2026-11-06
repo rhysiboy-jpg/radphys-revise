@@ -20,6 +20,13 @@ The two are linked by the **15% rule**: raising the kVp by about 15% roughly dou
 
 In short: **mAs sets how many quanta; kVp sets how penetrating they are.**
 
+## Predict
+Double the mAs and keep everything else the same. What happens to the patient's dose?
+- It stays the same
+- * It roughly doubles
+- It quadruples
+> Dose is proportional to mAs. Raising the kVp instead (the 15% rule) gives a similar detector exposure for less dose.
+
 ## Try this
 - Choose a body part, then change the kVp and the mAs separately and watch the image, the EI and the dose.
 - Press the **15% rule** button: similar EI, lower dose, a little less contrast.
@@ -76,6 +83,13 @@ It shrinks as the **focus–receptor distance** (FRD) increases, because the ray
 
 A **small (fine) focal spot** gives sharper detail but concentrates the heat on a smaller area, which limits the exposure. A **large (broad) focal spot** tolerates more heat but gives less detail. For sharp images, use the smallest suitable focal spot and keep the part **close to the receptor**. A larger ORD also **magnifies** the image.
 
+## Predict
+Move the part further from the detector (a larger ORD). What happens to the geometric unsharpness?
+- It falls
+- * It grows
+- It doesn't change
+> The penumbra is the focal spot size × ORD ÷ FOD, so a larger ORD widens it, and the image is magnified too.
+
 ## Try this
 - Raise the ORD and watch the penumbra and magnification grow.
 - Switch from fine to broad focus: the penumbra doubles.
@@ -125,6 +139,13 @@ There are usually **three chambers**. The radiographer must:
 - **centre** the patient accurately over them.
 
 If the chambers sit under the wrong tissue, the exposure will be wrong. **Metal prostheses** and some pathologies can make the AEC end the exposure too early or too late, so the result still needs checking.
+
+## Predict
+For a PA chest, you select only the centre chamber, which lies over the spine. How will the lungs be exposed?
+- Correctly: the AEC compensates
+- * Too much: the AEC runs on until enough gets through the spine
+- Too little
+> The chamber under the dense spine needs longer to collect its set amount, so the lungs, which let far more through, are overexposed.
 
 ## Try this
 - Expose a **PA chest** with the two outer chambers, then with the centre chamber only: the spine makes the AEC run too long.

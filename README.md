@@ -88,6 +88,19 @@ Another paragraph. Lines starting "- " become bullet points.
 - `sources` is shown to you in review mode only.
 - Lessons appear in the order they are written in the file.
 
+**A "Predict first" question** (optional) goes just before `## Try this`. It appears above the interactive: the student picks an answer, tries it on the diagram, then checks. Write the question, then the options as `- ` lines with the right one marked `- * `, then the explanation on a line starting `> `:
+
+```
+## Predict
+Double the mA and keep the kVp the same. What happens to the spectrum?
+- It shifts to higher energies
+- * It gets twice as tall, with the same shape
+- Its maximum energy doubles
+> The mA controls quantity, not quality: the curve keeps its shape and just doubles in height.
+```
+
+Keep to one question that the diagram can answer, with exactly one right option. The content checker reports any Predict section that's missing a part.
+
 ## Before giving the link to students
 
 In `js/config.js`:

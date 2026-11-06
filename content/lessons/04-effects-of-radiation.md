@@ -16,6 +16,13 @@ Many ions **recombine** within about 10⁻¹¹ s. If they form exactly the molec
 
 Cells are mostly water, so most of the damage is **indirect**: ionised water forms **free radicals**, which go on to damage DNA. Less often, the radiation ionises the DNA itself (**direct action**). If an important molecule such as DNA is changed, the cell may **repair** the damage, **die**, or survive with a **mutation**. Biological damage has then taken place.
 
+## Predict
+For X-rays, how is most DNA damage caused?
+- By the photon hitting the DNA directly
+- * By free radicals from ionised water attacking the DNA
+- By the cell heating up
+> Cells are mostly water. Most damage from X-rays is indirect: ionising water makes free radicals, which then attack the DNA.
+
 ## Try this
 - Step through one photon, choosing each path after ionisation in turn.
 - Press **Fire 1,000 photons** a few times. The outcome of each event is down to chance.
@@ -90,6 +97,13 @@ The lecture's example uses a leukaemia risk factor of 2 × 10⁻³ per Sv. Give 
 
 Risk applies to a **population**. Nobody can say in advance **who** will be affected, which is exactly what makes the effect stochastic. These figures assume risk rises in proportion to dose, however small: they are for planning protection, not predictions for one person.
 
+## Predict
+A million people each have one chest X-ray (0.02 mSv). At about 5% per sievert, roughly how many extra cancer deaths might result?
+- About 1,000
+- About 100
+- * About 1
+> 1,000,000 × 0.00002 Sv × 0.05 per Sv ≈ 1. It's so small that, run again, the simulation sometimes shows none.
+
 ## Try this
 - Start with a chest X-ray for a million people, then run it again: sometimes one case, sometimes none.
 - Try the lecture example, then turn on the background of cancer deaths that would happen anyway.
@@ -112,6 +126,13 @@ Some tissues are more **radiosensitive** than others. Cells that **divide rapidl
 So the risk from a dose depends on **which tissues** are irradiated. Each organ is given a **tissue weighting factor**: its share of the total stochastic risk if the whole body were irradiated. Red bone marrow, lung, stomach, colon and breast each have 0.12; the gonads 0.08; the thyroid, liver, oesophagus and bladder 0.04; skin, brain, bone surface and salivary glands 0.01.
 
 **Effective dose** adds up the dose to each organ multiplied by its weighting factor. That is why a chest or abdomen examination gives a far higher effective dose than a hand or knee, even at the same exposure.
+
+## Predict
+Which has the larger tissue weighting factor?
+- The skin
+- * The lungs
+- They're the same
+> In ICRP 103 the lungs have 0.12 and the skin 0.01: the lungs count twelve times as much towards effective dose.
 
 ## Try this
 - Tap organs on the body to compare their weighting factors.
@@ -161,6 +182,13 @@ Many factors affect a patient's dose:
 - **The equipment**: filtration, rectification and tube shielding are built in, so choosing the most appropriate equipment matters.
 - **The patient**: a larger patient needs higher exposure factors for the same image quality, so receives more dose. An uncooperative patient needs extra care to avoid repeats.
 - **The department**: room design (lead-equivalent walls and a protective barrier), and written protocols for each examination.
+
+## Predict
+For an AP pelvis, which of these doubles the patient's dose?
+- Collimating to the pelvis
+- * A repeat because the patient moved
+- Using the 15% rule
+> A repeat gives the whole dose again. Collimating and the 15% rule both lower the dose.
 
 ## Try this
 - Make the choices for an AP pelvis and watch the dose meter.

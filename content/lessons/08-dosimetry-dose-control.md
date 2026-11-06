@@ -42,6 +42,13 @@ A **dose–area product** (DAP) meter is a large, flat **ionisation chamber** ju
 
 **Diagnostic reference levels** (DRLs) are benchmark doses (such as ESD or DAP) for standard examinations on typical patients, set nationally and locally and reviewed regularly. They are **not limits** for individual patients. But if a department **consistently exceeds** a DRL, it must investigate and take **corrective action**, such as changing techniques, equipment settings or training.
 
+## Predict
+Open the collimators from 20 to 40 cm square, with the same exposure. What happens to the ESD?
+- It quadruples
+- * It stays about the same, while the DAP quadruples
+- It halves
+> Skin dose depends on the exposure, not the field size. DAP is dose × area, and doubling the side of the field quadruples the area.
+
 ## Try this
 - Open the field from 20 to 40 cm: the ESD stays the same while the DAP rises past the reference level.
 - Double the **exposure**: now ESD and DAP both double.
@@ -63,6 +70,13 @@ sources: 12-2 s27, s31
 Most radiation measurement relies on **ionisation**. In an **ionisation chamber**, radiation ionises the gas inside. A voltage across the chamber collects all the ions, and the current that flows is **proportional to the radiation**. Ionisation chambers are accurate, which is why they are used in **DAP meters**, **AEC** systems and for **calibrating** equipment.
 
 A **Geiger–Müller (GM) tube** works at a much higher voltage, so each ionising event sets off an avalanche of ions and a pulse that can be counted. That makes it very **sensitive**: good for **detecting** low levels of radiation or **contamination**. But it can't tell a small event from a large one, so it doesn't measure **dose** accurately.
+
+## Predict
+In a Geiger–Müller tube, how does the pulse from a large event compare with a small one?
+- Larger, in proportion
+- * The same size
+- Smaller
+> Each event sets off an avalanche along the whole wire, so every pulse is the same size. A GM tube counts; an ionisation chamber measures.
 
 ## Try this
 - In the **ionisation chamber** region, compare the two events: the larger one gives a proportionally larger signal.
@@ -88,6 +102,13 @@ Under **IRR17**, workers likely to receive an effective dose of more than **6 mS
 A **thermoluminescent dosimeter** (TLD) uses a crystal, usually **lithium fluoride**. Radiation frees electrons that become **trapped** at imperfections in the crystal. When the TLD is **heated**, they are released and give off **light** in proportion to the dose. Lithium fluoride has an effective atomic number close to **soft tissue**, so it absorbs radiation much as tissue does: a more accurate dosimeter than film.
 
 **Pocket and electronic dosimeters** give an **immediate reading**, useful during procedures, though they cost more and some types keep no permanent record.
+
+## Predict
+A film badge is exposed to high-energy gamma rays. How will the film look behind its filters?
+- Dark only under the open window
+- * Much the same under every filter
+- Dark only under the metal filters
+> High-energy photons pass through all the filters, so the darkening is even. Low-energy X-rays are stopped by the metal filters, so the pattern tells them apart.
 
 ## Try this
 - Compare **low-energy X-rays** with **gamma rays** on the film badge: the filters tell them apart.
@@ -144,6 +165,13 @@ UKHSA's typical adult effective doses include:
 - CT abdomen and pelvis: about **10 mSv**, around 4.5 years.
 
 When explaining, start with the **benefit**: the examination has been requested because the information will help their care. Then put the dose in context, and keep it honest: every exposure carries a small risk, and that is why it is only done when justified and kept as low as possible.
+
+## Predict
+A CT abdomen and pelvis is about 10 mSv. How much natural background radiation is that equal to?
+- About a week
+- About six months
+- * About 4.5 years
+> UKHSA puts it at about 4.5 years of natural background. A single chest X-ray is a few days' worth.
 
 ## Try this
 - Tap an examination to read how you might explain its dose to a patient.

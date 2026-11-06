@@ -207,6 +207,17 @@ Confirmed with Rhys Morris, 29 October 2026.
     - the IP question;
     - a privacy line at the top of the feedback Form.
   - **Children's code:** judged unlikely to apply (adult students, no data collected).
+- Top three diagram upgrades from the research report (6 November 2026, at Rhys's request; evidence in `reports/Interactive diagram upgrades.md`):
+  - **Pause motion:** a button on the 13 diagrams that move by themselves. One switch pauses flowing photons and the animation loops (WCAG 2.2.2). Question figures in practice sets no longer animate.
+  - **Accessibility fixes:**
+    - the windowing image reads pixels from the keyboard as well (arrow keys, WCAG 2.1.1);
+    - axes, ticks, circuit wires and cell edges use a new `--axis` colour, at least 3:1 in both themes (WCAG 1.4.11);
+    - checkboxes are 24px (WCAG 2.5.8);
+    - the accessibility statement no longer lists failures, but stays "partially compliant" until screen-reader testing is done.
+  - **Predict first:** a `## Predict` section in a lesson shows a question above its diagram. The student picks an answer, tries the diagram, then checks, and sees the right answer and why. Nothing is recorded.
+    - 34 questions written, one per simulation diagram, on its first lesson. The sorting activities and the two diagrams with their own prediction step (dose–response, chart of nuclides) have none.
+    - All are drafts, like their lessons.
+    - The content checker validates the format, and a test covers the reader.
 - Next: Rhys reviews the 63 draft lessons and the 19 new interactives (review mode only). Still waiting: review of the 249 draft questions, and sign-off of the earlier interactives and diagram upgrades.
 - Untested: offline mode. Check it once hosted on GitHub Pages, which needs the repo made public (only with Rhys's go-ahead).
 - Commit identity: Rhys Morris, using the GitHub no-reply email.

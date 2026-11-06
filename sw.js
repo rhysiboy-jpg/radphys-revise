@@ -1,6 +1,6 @@
 // Offline support: saves a copy of every file, and serves the saved copies when there's no connection.
 // Change VERSION to force every device to drop its old copies.
-const VERSION = "radphys-revise-v51";
+const VERSION = "radphys-revise-v52";
 // The app itself: every page, script and diagram. tools/validate.mjs checks nothing is missing from this list.
 const CORE = [
   "./", "index.html", "css/app.css", "css/fonts.css", "fonts/figtree-latin.woff2", "fonts/figtree-latin-ext.woff2",

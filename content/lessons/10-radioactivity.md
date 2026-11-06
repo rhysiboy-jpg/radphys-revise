@@ -43,6 +43,13 @@ Decay is **random**. You can't predict when one particular nucleus will decay. B
 
 The **half-life** is the time for **half** the radioactive nuclei in a sample, and so its activity, to decay. After one half-life 50% remain, after two 25%, after three 12.5%, and so on. The same **fraction** decays in each half-life, so the activity falls **exponentially**: steeply at first, then more and more slowly, approaching but never reaching zero. Technetium-99m has a half-life of about **6 hours**.
 
+## Predict
+After three half-lives, what fraction of the radioactive nuclei is left?
+- A third
+- * An eighth
+- None
+> Each half-life halves what's left: a half, a quarter, then an eighth.
+
 ## Try this
 - Step one half-life at a time: 100%, 50%, 25%, 12.5%…
 - Switch to 36 nuclei: the sample wanders off the expected curve, because decay is random.
@@ -67,6 +74,13 @@ An **alpha particle** is two protons and two neutrons: a **helium-4 nucleus**. I
 In **alpha decay** the nucleus loses two protons and two neutrons, so **Z falls by 2** and **A falls by 4**. It becomes a different element, two places lower in the periodic table. Radium-226, for example, becomes radon-222.
 
 Being heavy and highly charged, alpha particles interact very strongly. They are **strongly ionising** and are stopped by thin plastic or a few centimetres of air. Inside the body they would deposit a **heavy local dose** and could never be detected outside it, so alpha emitters are **unsuitable for diagnostic imaging**.
+
+## Predict
+In alpha decay, how do Z and A change?
+- Z falls by 1; A is unchanged
+- * Z falls by 2; A falls by 4
+- Z rises by 1; A is unchanged
+> An alpha particle is 2 protons and 2 neutrons, so the nucleus loses 2 from Z and 4 from A.
 
 ## Try this
 - Choose **Alpha** and build the daughter nucleus: count how Z and A change.

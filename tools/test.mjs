@@ -156,6 +156,25 @@ An **X-ray tube** turns energy into X-rays.
   equal(l.keyPoints.includes("Tungsten target"), true, "Key points:");
 });
 
+test("lessons: a Predict question, its options, the right one and the explanation", () => {
+  const [l] = parseLessons(`# Spectrum
+id: spectrum
+status: draft
+
+Text.
+
+## Predict
+Raise the **kVp**: what happens to the highest photon energy?
+- It stays the same
+- * It rises to match the new kVp
+> The highest energy in keV equals the kVp.
+`);
+  equal(l.predict.question, "Raise the <b>kVp</b>: what happens to the highest photon energy?", "question:");
+  equal(l.predict.options.map(o => o.right), [false, true], "which is right:");
+  equal(l.predict.why, "The highest energy in keV equals the kVp.", "explanation:");
+  equal(parseLessons("# A\nid: a\n\nText.\n")[0].predict, null, "no Predict section:");
+});
+
 console.log(`${passed} of ${passed + failures.length} tests passed.`);
 if (failures.length) { console.log("\nFailed:"); failures.forEach(f => console.log(`  - ${f}`)); }
 process.exitCode = failures.length ? 1 : 0;

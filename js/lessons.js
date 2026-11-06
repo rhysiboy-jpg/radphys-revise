@@ -24,6 +24,20 @@ function blocks(lines) {
   return out.join("");
 }
 
+// "## Predict": a question line, then options as "- " lines with the right one written "- * ", then the explanation as
+// "> " lines. Asked before the diagram, so the student commits to an answer, then checks it on the diagram.
+function predictBlock(lines) {
+  const rows = lines.map(l => l.trim()).filter(Boolean);
+  if (!rows.length) return null;
+  const question = rows.filter(r => !r.startsWith("- ") && !r.startsWith(">")).join(" ");
+  const options = rows.filter(r => r.startsWith("- ")).map(r => {
+    const right = r.startsWith("- * ");
+    return { text: inline(r.slice(right ? 4 : 2)), right };
+  });
+  const why = rows.filter(r => r.startsWith(">")).map(r => r.replace(/^>\s?/, "")).join(" ");
+  return { question: inline(question), options, why: inline(why) };
+}
+
 export function parseLessons(text) {
   text = text.replace(/^﻿/, "").replace(/<!--[\s\S]*?-->/g, "").replace(/\r\n?/g, "\n");
   const lessons = [];
@@ -35,13 +49,14 @@ export function parseLessons(text) {
       const l = lines.shift().trim(), k = l.indexOf(":");
       meta[l.slice(0, k).trim().toLowerCase()] = l.slice(k + 1).trim();
     }
-    // Split the body into the explanation and the two named boxes.
-    const parts = { body: [], try: [], key: [] };
+    // Split the body into the explanation and the named boxes.
+    const parts = { body: [], try: [], key: [], predict: [] };
     let into = "body";
     for (const l of lines) {
       const h = l.trim().toLowerCase();
       if (h === "## try this") { into = "try"; continue; }
       if (h === "## key points") { into = "key"; continue; }
+      if (h === "## predict") { into = "predict"; continue; }
       parts[into].push(l);
     }
     if (!title || !meta.id) continue;
@@ -56,6 +71,7 @@ export function parseLessons(text) {
       body: blocks(parts.body),
       tryThis: blocks(parts.try),
       keyPoints: blocks(parts.key),
+      predict: predictBlock(parts.predict),
     });
   }
   return lessons;

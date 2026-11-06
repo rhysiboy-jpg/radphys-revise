@@ -90,6 +90,13 @@ The employer must consult a **radiation protection adviser** (RPA), an expert wh
 
 Once an employee tells the employer **in writing** that she is **pregnant**, the employer must ensure the dose to the **fetus** is unlikely to exceed **1 mSv** for the rest of the pregnancy.
 
+## Predict
+What is the annual dose limit for a member of the public, such as a visitor in the corridor?
+- 20 mSv
+- 6 mSv
+- * 1 mSv
+> IRR17 sets 1 mSv a year for the public and 20 mSv for employees aged 18 or over. Workers likely to exceed 6 mSv are classified.
+
 ## Try this
 - Tap the **room**, the **screen**, the **door** and the **corridor** to see how each is treated.
 - Choose each person: compare the limits for a radiographer, a pregnant radiographer and a visitor.
@@ -118,6 +125,13 @@ Staff reduce their own dose in three ways.
 **Shielding**: barriers, walls and aprons absorb radiation. Their protection is given as **lead equivalence**: the thickness of lead that would attenuate the same amount of radiation of the same type and quality. An apron of 0.35 mm lead equivalent attenuates the beam like 0.35 mm of lead.
 
 Current UK guidance (from the BIR, IPEM, RCR and SCoR, 2020) **no longer recommends** routinely placing lead shields on patients for plain radiography: shields can hide anatomy, interfere with the AEC and lead to repeats, for very little benefit. (The lecture slide predates this guidance.)
+
+## Predict
+You step back from 1 m to 2 m from the source. What happens to the intensity?
+- It halves
+- * It falls to a quarter
+- It falls to an eighth
+> The inverse square law: double the distance and the same radiation spreads over four times the area.
 
 ## Try this
 - Move the distance and watch the intensity fall with the square of the distance.

@@ -1000,3 +1000,15 @@ details.try[open] summary::after { content: " −"; }
 
 /* Checkboxes big enough to tap (WCAG 2.5.8: at least 24 by 24 pixels). */
 input[type="checkbox"] { width: 24px; height: 24px; flex: none; }
+
+/* Predict first: a question before the diagram, answered, tried, then checked. */
+.predict { display: grid; gap: 10px; background: var(--panel); border-radius: var(--r-row); padding: 14px 16px; }
+.predict-q { margin: 0; color: var(--ink); }
+.predict-opts { display: flex; flex-wrap: wrap; gap: 8px; }
+.predict-opts button { min-height: 44px; padding: 8px 14px; text-align: left; font-weight: 500; }
+.predict-opts button[aria-pressed="true"] { border-color: var(--ink); box-shadow: inset 0 0 0 1px var(--ink); }
+.predict-opts button.is-right { border-color: var(--good); background: var(--good-tint); color: var(--ink); opacity: 1; }
+.predict-opts button.is-wrong { border-color: var(--bad); background: var(--bad-tint); color: var(--ink); opacity: 1; }
+.predict-opts button:disabled { opacity: 1; }
+.predict-next, .predict-why { margin: 0; }
+.predict-why .mark { vertical-align: -2px; margin-right: 4px; }

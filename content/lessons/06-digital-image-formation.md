@@ -16,6 +16,13 @@ In the **reader**, a finely focused **laser** scans the plate line by line (a ra
 
 CR processing makes assumptions: the area of interest is in the **centre** of the plate, **collimation** has been used, there is only **one exposure** on the plate, the smallest suitable plate is used, and the **body part selected** matches. Breaking these can make processing fail.
 
+## Predict
+After a CR plate has been read, what has to happen before it's used again?
+- Nothing: it's ready straight away
+- * It's erased with bright light
+- It's developed in chemicals
+> Reading releases most of the stored image but not all of it. A bright erasure light clears the rest before the next exposure.
+
 ## Try this
 - Choose **CR** and step through from exposure to erasing the plate.
 
@@ -64,6 +71,13 @@ The signal from a detector has to be turned into numbers, in two steps.
 
 If the sampling frequency is **too low**, fine detail can't be reproduced faithfully. This is **aliasing**: detail is lost, and false patterns can appear.
 
+## Predict
+Halve the number of pixels across the same field of view. What happens to each pixel?
+- It gets smaller
+- * It gets bigger, so fine detail is lost
+- It stays the same size
+> Pixel size is the field of view divided by the matrix: fewer pixels across the same field means bigger pixels and less detail.
+
 ## Try this
 - Reduce the **pixels across**: edges step and fine detail disappears.
 - Reduce the **bit depth** to 2 bits: smooth changes become bands of grey.
@@ -91,6 +105,13 @@ Then a **look-up table** (LUT) maps each pixel value to a displayed **grey level
 
 That is why selecting the **correct body part and projection** matters: it chooses the histogram model and the LUT. A wrong selection, or poor **collimation** that lets unexpected values into the histogram, can process the image wrongly, giving poor contrast or a misleading appearance.
 
+## Predict
+An image is taken at double the usual exposure. After processing, how does it look?
+- Twice as dark
+- * About the same brightness
+- Twice as light
+> Histogram analysis rescales the pixel values, so the brightness is corrected. That's why the exposure index, not the image's look, shows the exposure was too high.
+
 ## Try this
 - Look at the **raw data** at half and double exposure, then switch to **Processed**: the brightness is corrected.
 - Select **Chest PA** for this limb: the wrong histogram model gives poor contrast.
@@ -115,6 +136,13 @@ The **window level** is the centre of the range of pixel values displayed, so it
 
 The **window width** is the range of pixel values spread between black and white, so it controls **contrast**. A **narrow** window spreads a small range of values across all the greys: small differences between tissues look larger, so **contrast increases**. A **wide** window shows a larger range, with lower contrast.
 
+## Predict
+Narrow the window width. What happens to the contrast?
+- It falls
+- * It rises
+- It stays the same
+> A narrower range of pixel values is spread from white to black, so small differences become bigger steps of grey. Values outside the window show plain white or black.
+
 ## Try this
 - Narrow the window width and watch the contrast rise; widen it and the image flattens.
 - Move the window level and watch the brightness change while the histogram stays the same.
@@ -138,6 +166,13 @@ Every image contains **noise**: random variation that isn't part of the anatomy.
 If the **mAs is too low**, too few photons reach the detector: a low SNR and a **grainy** image. Processing can fix the brightness, but it **can't create information** that never reached the detector, so fine detail is lost.
 
 **Detective quantum efficiency** (DQE) measures how efficiently a detector turns the incoming X-rays into useful signal. A **higher DQE** means the same image quality with **less dose**.
+
+## Predict
+Halve the dose. After processing, how does the image look?
+- Darker
+- * The same brightness, but grainier
+- Exactly the same
+> Processing restores the brightness, but fewer photons means more quantum noise. The signal-to-noise ratio follows the square root of the photons, so halving them lowers it by about 30%.
 
 ## Try this
 - Lower the dose: the brightness stays the same, but the image becomes grainy.

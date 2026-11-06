@@ -18,6 +18,13 @@ This gives a neat link to the X-ray tube. An electron accelerated through **80 k
 
 Energy is never lost; it changes form. In the X-ray tube, electrical energy becomes the electrons' kinetic energy, and in the target about **99%** of that becomes **heat** and only about **1%** becomes X-rays.
 
+## Predict
+An electron is accelerated across 80 kV. How much energy does it gain?
+- 80 eV
+- * 80 keV
+- 80 joules
+> Each volt gives one electron 1 eV of energy, so 80,000 V gives 80,000 eV: 80 keV. That's the highest energy any X-ray photon from the tube can have.
+
 ## Try this
 - Set **80 kV**: the electron arrives with 80 keV, the highest photon energy the tube can make.
 - Halve the voltage: the energy halves too.
@@ -44,6 +51,13 @@ The **atomic number**, **Z**, is the number of protons. It defines the element: 
 **Isotopes** of an element have the same number of protons but different numbers of neutrons. Chlorine-35 and chlorine-37 both have 17 protons; one has 18 neutrons and the other 20.
 
 The **Bohr model** pictures the electrons in fixed **shells**, or energy levels, lettered outwards from the nucleus: **K, L, M** and so on. It is a simplification (real electrons don't follow circular paths), but it explains X-ray production and attenuation well.
+
+## Predict
+Which of a tungsten atom's shells holds its electrons most tightly?
+- The outermost shell
+- * The K shell, nearest the nucleus
+- All the shells equally
+> Binding energy is highest in the K shell and falls shell by shell outwards. Tungsten's K electrons are bound by about 69.5 keV.
 
 ## Try this
 - Change the element and count the electrons in each shell.
@@ -140,6 +154,13 @@ All EM radiation travels at the **speed of light** in a vacuum, about 3 × 10⁸
 X-rays and gamma rays overlap in energy. They differ in **where they come from**: X-rays from electrons outside the nucleus, gamma rays from the nucleus during radioactive decay.
 
 Only high-energy photons (X-rays, gamma rays and the highest-energy ultraviolet) can ionise. X-rays also travel in straight lines, carry no charge (so they can't be focused or deflected), are invisible, penetrate matter by different amounts depending on the tissue, and make some materials fluoresce.
+
+## Predict
+Moving from radio waves towards gamma rays, what happens to the wavelength?
+- It gets longer
+- * It gets shorter
+- It stays the same; only the frequency changes
+> As photon energy and frequency rise, wavelength falls. A diagnostic X-ray's wavelength is more than a hundred billion times shorter than an FM radio wave's.
 
 ## Try this
 - Slide from left to right: the wavelength shortens as the frequency and energy rise.

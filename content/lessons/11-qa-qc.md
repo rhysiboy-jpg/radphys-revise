@@ -41,6 +41,13 @@ QA follows an X-ray system through its whole life.
 
 **Routine performance testing** compares later results with those baselines. Equipment drifts over time, so this detects **gradual deterioration** before it affects patients. After a repair, a further test confirms that the fault has been put right.
 
+## Predict
+What are routine QA test results compared with?
+- The manufacturer's brochure
+- * The baseline recorded at commissioning
+- The national DRLs
+> Commissioning records how the equipment performs when it's working well. Routine tests compare against that baseline to catch gradual drift.
+
 ## Try this
 - Step through the **gradual drift**: when does routine testing catch it, and what happens next?
 - Now the **sudden fault**: why is this one handled differently?
@@ -66,6 +73,13 @@ sources: 24-1 s14–16
 Some tests, such as image quality checks, are partly **subjective**, so they have remedial levels but **no suspension level**.
 
 All results must be **documented** and remedial actions followed up promptly. Records may be needed as evidence for HSE inspectors, and test equipment such as dosemeters must itself be in calibration.
+
+## Predict
+A test result crosses the remedial level but not the suspension level. What happens to the equipment?
+- It's taken out of use straight away
+- * Action is needed, but it may stay in use after a risk assessment
+- Nothing: the result is just recorded
+> Remedial means act on it, with a timescale agreed; the suspension level is the one that takes equipment out of use at once.
 
 ## Try this
 - Choose a test and move the measured result: watch it cross the remedial, then the suspension level.

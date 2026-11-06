@@ -613,7 +613,7 @@ async function lesson(topicId, lessonId) {
       </aside>
     </div>
     ${d ? `<section class="module lesson-diagram" aria-labelledby="ld-h">
-        <div class="module-head"><h2 id="ld-h">Explore: ${esc(d.title)}</h2>${l.tryThis ? `<div class="lesson-try"><b>Try this</b>${l.tryThis}</div>` : ""}</div>
+        <div class="module-head"><h2 id="ld-h">Explore: ${esc(d.title)}</h2>${predictCard(l)}${l.tryThis ? `<div class="lesson-try"><b>Try this</b>${l.tryThis}</div>` : ""}</div>
         <div data-diagram="${d.id}"><p class="muted">Loading diagram…</p></div>
       </section>` : ""}
     ${l.keyPoints ? `<section class="key-points" aria-labelledby="kp-h"><h2 id="kp-h">Key points</h2>${l.keyPoints}</section>` : ""}
@@ -624,7 +624,51 @@ async function lesson(topicId, lessonId) {
       ${next ? `<a class="btn primary" href="#learn-${t.id}/${next.id}"><span class="dir">Next →</span><span>${esc(next.title)}</span></a>` : (qs.length ? `<a class="btn primary" href="#practise-${t.id}"><span class="dir">Finished: practise →</span><span>${esc(t.title)}</span></a>` : "")}
     </nav>
     ${footer()}`, t.id, { title: `${l.title} · ${t.title}` });
+  wirePredict();
   await mountDiagrams();
+}
+
+// "Predict first": commit to an answer, try it on the diagram, then check. Predicting before seeing is one of the
+// best-supported ways to make an interactive teach (reports/Interactive diagram upgrades.md). Nothing is recorded.
+function predictCard(l) {
+  const p = l.predict;
+  if (!p || p.options.length < 2) return "";
+  return `<div class="predict" data-role="predict">
+      <p class="predict-q"><b>Predict first:</b> ${p.question}</p>
+      <div class="predict-opts" role="group" aria-label="Your prediction">${p.options.map((o, i) =>
+        `<button type="button" data-opt="${i}">${o.text}</button>`).join("")}</div>
+      <p class="predict-next" hidden>Now try it on the diagram below, then <button type="button" class="link" data-role="check">check your prediction</button>.</p>
+      <p class="predict-why" aria-live="polite" hidden></p>
+    </div>`;
+}
+function wirePredict() {
+  const card = app.querySelector('[data-role="predict"]');
+  if (!card) return;
+  const lesson = currentLesson(), p = lesson?.predict;
+  if (!p) return;
+  let chosen = null;
+  card.querySelectorAll("[data-opt]").forEach(b => b.addEventListener("click", () => {
+    chosen = +b.dataset.opt;
+    card.querySelectorAll("[data-opt]").forEach(x => x.setAttribute("aria-pressed", x === b));
+    card.querySelector(".predict-next").hidden = false;
+  }));
+  card.querySelector('[data-role="check"]').addEventListener("click", () => {
+    const right = p.options[chosen]?.right, answer = p.options.find(o => o.right);
+    card.querySelectorAll("[data-opt]").forEach((x, i) => {
+      x.disabled = true;
+      if (p.options[i].right) x.classList.add("is-right");
+      else if (i === chosen) x.classList.add("is-wrong");
+    });
+    card.querySelector(".predict-next").hidden = true;
+    const why = card.querySelector(".predict-why");
+    why.innerHTML = `<b>${right ? `${MARKS.right}You predicted it.` : `${MARKS.wrong}Not this time. Answer: ${answer.text}.`}</b> ${p.why}`;
+    why.hidden = false;
+  });
+}
+// The lesson on screen, from the address (#learn-topic/lesson).
+function currentLesson() {
+  const m = location.hash.match(/^#learn-([\w-]+)\/([\w-]+)$/);
+  return m ? topicById(m[1])?.lessonList.find(l => l.id === m[2]) : null;
 }
 
 // "Pause motion" for diagrams with something that moves by itself (WCAG 2.2.2). One switch for the whole app, so a student
