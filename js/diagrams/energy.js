@@ -1,6 +1,7 @@
 // Explorer: the electronvolt. An electron accelerated across a chosen tube voltage gains that many electronvolts, so 80 kV
 // gives 80 keV, the highest photon energy the tube can make. At the target about 99% becomes heat and about 1% X-rays.
 // A prefix ladder below links the units used across the module (µGy, mSv, keV, kV, mA, MBq).
+// Simplified: one electron crossing a gap that is drawn wide, starting at rest. The 99% and 1% split is approximate and changes with the tube voltage.
 import { svgEl as el, wavy, reducedMotion, motionPaused } from "./util.js";
 
 const EV = 1.602e-19;            // joules in one electronvolt

@@ -101,6 +101,10 @@ Double the mA and keep the kVp the same. What happens to the spectrum?
 
 Keep to one question that the diagram can answer, with exactly one right option. The content checker reports any Predict section that's missing a part.
 
+Two more settings in `js/config.js` rarely need changing:
+- `setSize`: how many questions are in a practice set (10).
+- `maxWrittenPerSet`: the most self-marked written questions in one set (2), so a set never fills up with long answers.
+
 ## Linking to a diagram set-up
 
 Under every diagram is a **Copy link to this set-up** button. It copies a web address that opens the diagram on a page of its own, with its sliders and options as they are now, for example the spectrum at 120 kVp with a molybdenum target. Paste it into a slide, Blackboard or an email, or use it to set a task ("Open this, then halve the mA").
@@ -109,24 +113,27 @@ Under every diagram is a **Copy link to this set-up** button. It copies a web ad
 - Activities with answers (sorting, quizzes, the dose choices, the AEC chambers) aren't recorded, so a link never gives answers away.
 - Students only see approved diagrams, so a link to a diagram awaiting sign-off works only while review mode is on.
 
+## Checking the diagrams
+
+`review/diagram-checklist.xlsx` lists all 42 diagrams, one per row, with a link to open each one (start the preview first, below). For each diagram there are seven checks to mark Yes, No or N/A, a verdict (Approve or Needs changes) and room for comments. Rows changed in the latest round are marked in red. The "How to use" sheet explains each column. When a diagram is approved, tell Claude, or set `"approved": true` for it in `content/topics.json`.
+
 ## Before giving the link to students
 
 In `js/config.js`:
 - set `reviewMode` to `false` (hides drafts)
 - paste the Microsoft Form link into `feedbackUrl`
-- put an email address in `contactEmail` if error reports should come to you by email (otherwise "Report an error" opens the feedback Form)
+- put an email address in `contactEmail` if error reports should come to you by email (otherwise "Report an error" opens the feedback Form; with both empty, as now, the link is hidden and the Privacy page says the app sends nothing)
 - update `lastUpdated` (shown in every page's footer) whenever you publish changes
 
-- add the link to the university's privacy notice in `privacyNoticeUrl`
 
 Also read the three pages linked at the foot of every page. Each is a draft, and says what to check while review mode is on:
-- **Privacy:** confirm with the university's information governance team who the data controller is.
-- **About and terms:** settle the wording on using the content once the IP question is answered.
-- **Accessibility:** check it against the university's accessibility guidance.
+- **Privacy:** the app collects nothing, and the page names no data controller, because the app is an independent effort. Its wording follows the settings: with no contact email or feedback Form it says the app sends nothing; add either and it says where reports go. If the app is launched more widely, check whether a fuller privacy notice is needed.
+- **About and terms:** settle the wording on using the content, and the "not an official Bangor University resource" statement, once the IP question is answered.
+- **Accessibility:** as an independent app it follows the public sector standard voluntarily. If the university takes it on, check it against the university's guidance.
 
 ## Publishing
 
-The app is a plain static website with no build step. It's published to GitHub Pages: upload the whole folder (except `prototypes/`) to a GitHub repository, then turn on Pages. Claude will walk you through this before the pilot.
+The app is a plain static website with no build step. It's published to GitHub Pages: upload the whole folder (except `prototypes/` and `review/`) to a GitHub repository, then turn on Pages. Claude will walk you through this before the pilot.
 
 Before publishing, check the content. In PowerShell, from the project folder, run:
 

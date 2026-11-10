@@ -2,7 +2,7 @@
 // that turns pixel values into shades of grey. Moving the window changes only the display, never the stored data.
 // Convention, as in the lecture (Formation of an Image, slide 37): the pixel value follows the exposure reaching the detector,
 // so air is high and bone low, higher values show darker, and raising the window level makes the image brighter.
-import { svgEl as el } from "./util.js";
+import { svgEl as el, token } from "./util.js";
 import { W, H, limb, grain, blur, MATERIAL } from "./limb.js";
 
 const MAX = 4095, BINS = 128;
@@ -167,7 +167,7 @@ export function mount(root) {
   let cursor = null;
   function mark() {
     const [x, y] = cursor;
-    ctx.strokeStyle = getComputedStyle(root).getPropertyValue("--dg-accent").trim() || "#0B6A88";
+    ctx.strokeStyle = token(root, "--dg-accent");
     ctx.lineWidth = 2;
     ctx.strokeRect(x - 5, y - 5, 11, 11);
   }

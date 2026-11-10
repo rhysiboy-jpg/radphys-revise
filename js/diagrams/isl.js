@@ -1,4 +1,5 @@
 // Explorer: the inverse square law. Move the detector; the same photons spread over a larger area, so intensity falls with distance².
+// Simplified: a point source with nothing absorbing or scattering the beam, and a fixed number of photons drawn (144).
 import { svgEl as el, motionPaused } from "./util.js";
 
 const DMIN = 50, DMAX = 300, GRID = 12, PHOTONS = GRID * GRID;

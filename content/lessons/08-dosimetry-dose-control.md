@@ -158,23 +158,20 @@ sources: 12-2 s46–47
 
 Patients often ask how much radiation an examination gives. Effective doses in millisieverts mean little to most people, so it helps to compare them with **natural background radiation**, which everyone receives from the ground, the air and space: about **2.1 mSv a year** on average in the UK.
 
-UKHSA's typical adult effective doses include:
-
-- Chest X-ray (single PA): about **0.02 mSv**, a few days of background.
-- Lumbar spine: about **1.3 mSv**, around 7 months.
-- CT abdomen and pelvis: about **10 mSv**, around 4.5 years.
+UKHSA publishes typical adult effective doses for common examinations, each with its matching time of natural background. They cover a very wide range, from a few days of background to several years. Try estimating some in the diagram below before you look them up.
 
 When explaining, start with the **benefit**: the examination has been requested because the information will help their care. Then put the dose in context, and keep it honest: every exposure carries a small risk, and that is why it is only done when justified and kept as low as possible.
 
 ## Predict
-A CT abdomen and pelvis is about 10 mSv. How much natural background radiation is that equal to?
-- About a week
-- About six months
-- * About 4.5 years
-> UKHSA puts it at about 4.5 years of natural background. A single chest X-ray is a few days' worth.
+For the same examination, how does a child's extra lifetime risk compare with an adult's?
+- About the same
+- * About twice as high
+- About five times lower
+> UKHSA's guidance: the risk is about twice as high for a child, and about five times lower for a patient over 70. Explore the ladder and change the patient's age to see it.
 
 ## Try this
-- Tap an examination to read how you might explain its dose to a patient.
+- Start with **Guess first**: estimate six doses before you see them, and compare your estimates with UKHSA's.
+- Then choose **Explore the ladder** and tap an examination to read how you might explain its dose to a patient.
 - Change the age group and see how the risk changes for children and older adults.
 
 ## Key points

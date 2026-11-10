@@ -1,6 +1,7 @@
 // Explorer: charge, conductors and insulators. Left, two charges that attract or repel. Right, a strip of material with a
 // voltage across it: in a conductor the loosely bound outer electrons drift towards the positive end; in an insulator they stay
 // with their atoms. Each material is linked to where it is found in the X-ray tube and circuit.
+// Simplified: atoms are fixed circles and only the outer electrons move. Real electrons drift far more slowly than drawn, on top of random thermal motion.
 import { svgEl as el, reducedMotion, motionPaused } from "./util.js";
 
 const MATERIALS = {

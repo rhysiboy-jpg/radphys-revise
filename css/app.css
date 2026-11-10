@@ -1,6 +1,6 @@
 /* Layout: an L-shaped frame (sidebar on a slate-tinted ground) around a white sheet that holds each view.
    Home, explore and practise sit on a 12-column grid: 1100px wide, 16px gutters, so 12 × 77px + 11 × 16px = 1100px.
-   Brand: Bangor University colours and type. Red marks the brand and what needs attention (a wrong answer, a question due again);
+   Brand: a strong red and a sun yellow, with Figtree and Noto Sans. Red marks the brand and what needs attention (a wrong answer, a question due again);
    Sun fills mastery; buttons are near-black. Diagram colours are separate (--dg-*) and unchanged from the signed-off style. */
 :root {
   --chrome: #ECEEF1;      /* slate-tinted frame */
@@ -11,9 +11,9 @@
   --control: #D3D7DD;
   --ink: #15171B;
   --muted: #5A606A;
-  --brand: #CF0A0A;       /* Bangor red #ED0000, deepened to pass 4.5:1 on white */
+  --brand: #CF0A0A;       /* red, deepened to pass 4.5:1 on white */
   --brand-tint: #FCEBEA;
-  --sun: #FDB913;         /* Bangor Sun */
+  --sun: #FDB913;         /* sun yellow */
   --sun-tint: #FFF4D6;
   --sun-ink: #6B4A00;
   --primary: #15171B;
@@ -44,6 +44,10 @@
   --on-electron: #FFFFFF;   /* signs drawn on an electron or nucleus */
   --on-copper: #FFFFFF;
 
+  /* Visible light, red to violet, on the electromagnetic spectrum. Lifted a little in dark mode. */
+  --vis-red: #DD3333; --vis-orange: #EE9900; --vis-yellow: #DDDD22; --vis-green: #33AA33; --vis-blue: #2277DD; --vis-violet: #8833CC;
+  --xray-black: #000;     /* behind a simulated radiograph: an X-ray image is black in either theme */
+
   --font-display: "Figtree", "Segoe UI", system-ui, sans-serif;
   --font-body: "Noto Sans", "Segoe UI", system-ui, sans-serif;
   --pill: 999px;
@@ -56,7 +60,7 @@
     --ink: #ECEDEF; --muted: #A4A9B1; --brand: #FF5C52; --brand-tint: #3A1B1A; --sun-tint: #3A2F12; --sun-ink: #FDB913;
     --primary: #ECEDEF; --primary-ink: #15171B; --good: #5CC98A; --good-tint: #16301F;
     --paper: #0D141A; --surface: #151F27; --line: #3A4C59; --axis: #5F7787; --dg-accent: #4CB3D3; --dg-accent-ink: #06222C;
-    --electron: #7AA2FF; --photon: #E27BCB; --heat: #F28A3C;
+    --electron: #7AA2FF; --photon: #E27BCB; --heat: #F28A3C; --vis-red: #F0605A; --vis-orange: #FFA733; --vis-yellow: #EFE04A; --vis-green: #5BC25B; --vis-blue: #4FA0F0; --vis-violet: #A873E0;
     --oil: #3A3420; --vacuum: #0F1920; --glass: #8DB4C6; --lead: #8D97A1; --metal: #76818B;
     --tungsten: #A9B2BA; --copper: #D08F59; --al: #7D8B96; --on-electron: #0D141A; --on-copper: #0D141A; color-scheme: dark;
   }
@@ -66,7 +70,7 @@
   --ink: #ECEDEF; --muted: #A4A9B1; --brand: #FF5C52; --brand-tint: #3A1B1A; --sun-tint: #3A2F12; --sun-ink: #FDB913;
   --primary: #ECEDEF; --primary-ink: #15171B; --good: #5CC98A; --good-tint: #16301F;
   --paper: #0D141A; --surface: #151F27; --line: #3A4C59; --axis: #5F7787; --dg-accent: #4CB3D3; --dg-accent-ink: #06222C;
-  --electron: #7AA2FF; --photon: #E27BCB; --heat: #F28A3C;
+  --electron: #7AA2FF; --photon: #E27BCB; --heat: #F28A3C; --vis-red: #F0605A; --vis-orange: #FFA733; --vis-yellow: #EFE04A; --vis-green: #5BC25B; --vis-blue: #4FA0F0; --vis-violet: #A873E0;
   --oil: #3A3420; --vacuum: #0F1920; --glass: #8DB4C6; --lead: #8D97A1; --metal: #76818B;
   --tungsten: #A9B2BA; --copper: #D08F59; --al: #7D8B96; --on-electron: #0D141A; --on-copper: #0D141A; color-scheme: dark;
 }
@@ -451,7 +455,7 @@ input[type="range"] { width: 100%; accent-color: var(--dg-accent); min-height: 3
 .try ol { margin: 0; padding-left: 1.3em; display: grid; gap: 6px; color: var(--muted); }
 .try ol b { color: var(--ink); font-weight: 600; }
 /* In a lesson the lesson's own Try this list sits above the diagram, so the diagram's built-in list would repeat it. */
-.lesson-diagram.has-try .try { display: none; }
+.lesson-diagram.has-try .try:not(.guide) { display: none; }   /* .guide: guidance that isn't a list of things to try */
 .axis line, .axis path { stroke: var(--axis); }
 /* Tapping a graph sets its slider (tapToSet in util.js). */
 .tap-area { fill: transparent; cursor: crosshair; }
@@ -534,7 +538,7 @@ circle.shell.empty, circle.shell.outer { stroke-dasharray: 4 5; opacity: 0.7; }
 
 /* ---------- Diagrams: exposure console ---------- */
 /* The simulated image is greyscale in both themes, as a radiograph is; a fine edge keeps it from bleeding into a dark stage. */
-.xray { width: 100%; height: auto; display: block; border-radius: 8px; background: #000; outline: 1px solid var(--line); }
+.xray { width: 100%; height: auto; display: block; border-radius: 8px; background: var(--xray-black); outline: 1px solid var(--line); }
 .slider .label { font-weight: 600; }
 .readout b + span { font-size: 0.8rem; color: var(--muted); }
 fieldset legend { margin-bottom: 4px; }
@@ -666,7 +670,7 @@ details.try[open] summary::after { content: " −"; }
 .theme-switch { display: inline-flex; justify-self: start; padding: 3px; gap: 2px; border-radius: var(--pill); background: var(--panel); border: 1px solid var(--edge); }
 .theme-switch button { min-height: 36px; padding: 6px 12px; border: 0; background: transparent; font-size: 0.82rem; font-weight: 500; color: var(--muted); }
 .theme-switch button:hover:not([aria-pressed="true"]) { color: var(--ink); }
-.theme-switch button[aria-pressed="true"] { background: var(--raised); color: var(--ink); font-weight: 600; box-shadow: 0 0 0 1px var(--control); }
+.theme-switch button[aria-pressed="true"] { background: var(--raised); color: var(--ink); font-weight: 600; box-shadow: inset 0 0 0 1px var(--control); }
 
 /* ---------- Diagrams: focal spot and geometry ---------- */
 .geo-ray { fill: none; stroke: var(--photon); stroke-width: 1.2; stroke-dasharray: 5 4; }
@@ -748,7 +752,7 @@ details.try[open] summary::after { content: " −"; }
 /* ---------- Activities: justify it? ---------- */
 .just-stage { align-content: start; gap: 12px; padding: 16px; }
 .request { background: var(--raised); border: 1px solid var(--edge); border-radius: var(--r-row); padding: 16px 18px; display: grid; gap: 10px; }
-.request-head { font: 650 1rem var(--font-display); letter-spacing: 0.02em; text-transform: uppercase; color: var(--muted); padding-bottom: 8px; border-bottom: 1px solid var(--edge); }
+.request-head { font: 650 1rem var(--font-display); color: var(--muted); padding-bottom: 8px; border-bottom: 1px solid var(--edge); }
 .request dl { margin: 0; display: grid; gap: 10px; }
 .request dt { font-size: 0.8rem; color: var(--muted); }
 .request dd { margin: 0; font-size: 1.05rem; font-weight: 500; }
@@ -978,7 +982,7 @@ details.try[open] summary::after { content: " −"; }
 /* New version notice */
 .update-bar { position: fixed; left: 50%; bottom: 16px; transform: translateX(-50%); z-index: 20; width: min(560px, calc(100% - 32px));
   display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; padding: 12px 16px; border-radius: var(--r-panel);
-  background: var(--raised); color: var(--ink); border: 1px solid var(--control); box-shadow: 0 6px 24px rgb(0 0 0 / 0.18); }
+  background: var(--raised); color: var(--ink); border: 1px solid var(--control); }
 .update-bar span { flex: 1 1 14rem; font-size: 0.95rem; }
 .update-bar button.primary { min-height: 40px; padding: 8px 16px; }
 
@@ -1012,6 +1016,15 @@ details.try[open] summary::after { content: " −"; }
 .link-note input { margin-top: 4px; }
 /* Exposure console: the dose creep log, and the fix-it task after a scenario. */
 .creep-wrap { overflow-x: auto; }
+/* Guess first on the dose ladder: the student's estimates beside the true doses. */
+.dose-guess { display: grid; gap: 12px; }
+.guess-log { margin: 0; padding-left: 1.3em; display: grid; gap: 6px; font-size: 0.9rem; }
+.guess-log li span { display: block; }
+.pop-guess { border: 1px solid var(--edge); border-radius: var(--r-row); padding: 12px 14px; margin: 0; display: grid; gap: 10px; }
+/* A long question: float the legend so it sits inside the box rather than across its border. */
+.pop-guess legend { float: left; width: 100%; padding: 0; font-weight: 600; }
+.pop-guess legend + * { clear: both; }
+.guess-log li span + span { color: var(--muted); font-variant-numeric: tabular-nums; }
 .creep-log { width: 100%; border-collapse: collapse; font-size: 0.9rem; font-variant-numeric: tabular-nums; }
 .creep-log th, .creep-log td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--line); }
 .creep-log th { font-weight: 600; color: var(--muted); }

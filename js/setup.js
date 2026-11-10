@@ -5,7 +5,7 @@
 //    screen reader; while a slider moves its live text is muted, then one line says what changed once it stops.
 
 // What counts as a setting:
-// - sliders, drop-downs and number boxes with an id;
+// - sliders, drop-downs and number boxes with an id, unless marked data-answer (a student's estimate or prediction);
 // - groups of buttons that pick one option (aria-pressed, inside role="group", exactly one pressed). Groups with several
 //   pressed are left out: they are either multi-select or an activity whose answers a link would give away.
 function settingButtons(root) {
@@ -20,7 +20,7 @@ function settingButtons(root) {
   }
   return groups;
 }
-const settingInputs = root => [...root.querySelectorAll("input[type=range][id], input[type=number][id], select[id]")];
+const settingInputs = root => [...root.querySelectorAll("input[type=range][id]:not([data-answer]), input[type=number][id]:not([data-answer]), select[id]:not([data-answer])")];
 
 export function readSetup(root) {
   const out = {};
@@ -33,7 +33,13 @@ export function readSetup(root) {
 }
 
 // Buttons first, because a preset button sets the sliders, which the link's own slider values then override.
+// While it runs the diagram carries data-setting-up, so a diagram that asks for a guess before a result can skip the
+// question: a link should open on the set-up it was copied from.
 export function applySetup(root, setup) {
+  root.setAttribute("data-setting-up", "");
+  try { apply(root, setup); } finally { root.removeAttribute("data-setting-up"); }
+}
+function apply(root, setup) {
   for (const [key, list] of settingButtons(root)) {
     if (!(key in setup)) continue;
     const hit = list.find(x => x.value === setup[key]);

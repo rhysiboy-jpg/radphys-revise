@@ -23,6 +23,10 @@ export function keepInside(t, x0, x1) {
   if (shift) t.setAttribute("transform", `translate(${shift.toFixed(1)} 0)`);
 }
 
+// A colour token's value, for drawing on a canvas (which can't use CSS variables). If the token is missing, the element's
+// own text colour stands in, so no colour is ever written into the code.
+export const token = (el, name) => getComputedStyle(el).getPropertyValue(name).trim() || getComputedStyle(el).color;
+
 // Tapping a graph moves its slider to the value under the tap, so the graph and the control work both ways. It is also a
 // tap alternative to dragging the slider (WCAG 2.5.7). The slider stays the keyboard and screen-reader route, so the tap
 // area is hidden from assistive technology. area: the plot in drawing units; toValue turns a drawing x into the slider's value.

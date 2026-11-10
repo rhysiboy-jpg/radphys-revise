@@ -106,6 +106,7 @@ A million people each have one chest X-ray (0.02 mSv). At about 5% per sievert, 
 
 ## Try this
 - Start with a chest X-ray for a million people, then run it again: sometimes one case, sometimes none.
+- Choose another dose or group size: guess how many cases first, then see the result.
 - Try the lecture example, then turn on the background of cancer deaths that would happen anyway.
 
 ## Key points

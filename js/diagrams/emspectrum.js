@@ -33,8 +33,8 @@ const MARKUP = `
       <title id="em-t">The electromagnetic spectrum</title>
       <desc id="em-d" data-role="desc"></desc>
       <defs><linearGradient id="em-vis" x1="0" x2="1">
-        <stop offset="0" stop-color="#d33"/><stop offset="0.25" stop-color="#e90"/><stop offset="0.45" stop-color="#dd2"/>
-        <stop offset="0.6" stop-color="#3a3"/><stop offset="0.8" stop-color="#27d"/><stop offset="1" stop-color="#83c"/></linearGradient></defs>
+        <stop offset="0" style="stop-color:var(--vis-red)"/><stop offset="0.25" style="stop-color:var(--vis-orange)"/><stop offset="0.45" style="stop-color:var(--vis-yellow)"/>
+        <stop offset="0.6" style="stop-color:var(--vis-green)"/><stop offset="0.8" style="stop-color:var(--vis-blue)"/><stop offset="1" style="stop-color:var(--vis-violet)"/></linearGradient></defs>
       <path class="em-wave" data-role="wave"/>
       <g data-role="bands"></g>
       <g class="axis" data-role="axis"></g>

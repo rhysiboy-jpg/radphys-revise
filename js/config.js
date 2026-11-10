@@ -10,10 +10,6 @@ export const CONFIG = {
   // Shown in the footer of every page. Change it whenever you publish new or corrected content.
   lastUpdated: "November 2026",
 
-  // Link to Bangor University's privacy notice covering the feedback Form and error-report emails (ask the university's
-  // information governance team which one). Shown on the Privacy page; leave empty until you have it.
-  privacyNoticeUrl: "",
-
   // Where "Report an error" goes: an email address. Leave empty to use the feedback Form link instead;
   // with both empty, the link is hidden.
   contactEmail: "",

@@ -2,6 +2,7 @@
 // using the expected histogram for the selected body part, rescales them to a standard range, and a look-up table (LUT) gives the
 // contrast for that body part. The model is deliberately simple: the expected histogram is reduced to "the anatomy lies between
 // these two percentiles of the pixel values", which is enough to show why the right body part and good collimation matter.
+// The percentiles and look-up tables are illustrative, not any manufacturer's.
 // Convention as in the windowing explorer: higher exposure shows darker.
 import { svgEl as el, keepInside } from "./util.js";
 import { W, H, limb, grain } from "./limb.js";
@@ -32,7 +33,7 @@ const MARKUP = `
         <text class="ax-title" x="20" y="${(CY0 + CY1) / 2}" text-anchor="middle" transform="rotate(-90 20 ${(CY0 + CY1) / 2})">Pixels</text></g>
       <text class="peak-t" data-role="band-t" y="18" text-anchor="middle">range treated as anatomy</text>
     </svg>
-    <p class="scale-note">Simulated · cartoon limb, not a patient · simplified histogram analysis · shaded band: the values rescaled to fill the grey scale</p>
+    <p class="scale-note">Simulated · cartoon limb, not a patient · illustrative: a simplified histogram analysis · shaded band: the values rescaled to fill the grey scale</p>
   </div>
   <div class="panel">
     <div class="sliders">

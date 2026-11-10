@@ -1,4 +1,5 @@
 // Explorer: the Bohr atom. Pick an element, then step through excitation or ionisation and the characteristic X-ray that follows.
+// Simplified: the Bohr picture, with electrons on circular shells; one sub-shell stands for each of L and M, and the outer shells are summarised. Not to scale.
 import { svgEl as el, wavy, tween, lerp, keepInside } from "./util.js";
 import { drawAtom, moveTo, vacancy } from "./atom.js";
 

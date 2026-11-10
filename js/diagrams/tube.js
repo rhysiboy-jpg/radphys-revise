@@ -1,6 +1,7 @@
 // Explorer: the rotating-anode X-ray tube. Step-through exposure plus tappable numbered parts.
 // Each part's name sits beside its number on the drawing (words next to the part, not in a separate key). On a phone there
 // isn't room for all ten, so only the selected part's name shows.
+// Simplified: a schematic side view, not to scale. A few electrons and photons stand for the whole beam, and the 99% heat figure is approximate.
 import { svgEl as el, wavy, motionPaused, keepInside, setLines } from "./util.js";
 
 const PARTS = [

@@ -75,7 +75,7 @@ const MARKUP = `
       <p>The curves are hidden. What shape is each graph?</p>
       <div class="match-list">${PANELS.map(p => `<div class="match-row" data-panel="${p.id}">
         <label for="dr-p-${p.id}">${p.title}</label>
-        <select id="dr-p-${p.id}" class="select"><option value="">Choose…</option>${Object.entries(SHAPES).map(([k, t]) => `<option value="${k}">${t}</option>`).join("")}</select>
+        <select id="dr-p-${p.id}" class="select" data-answer><option value="">Choose…</option>${Object.entries(SHAPES).map(([k, t]) => `<option value="${k}">${t}</option>`).join("")}</select>
         <span class="tagline"></span></div>`).join("")}</div>
       <div class="controls"><button type="button" class="primary" data-role="reveal">Reveal the graphs</button><button type="button" data-role="hide" hidden>Hide and try again</button></div>
       <p data-role="score" aria-live="polite"></p>

@@ -3,16 +3,27 @@
 // Risk: about 5% per Sv (1 in 20,000 per mSv), the basis of UKHSA's patient risk figures (a chest X-ray is about 1 in a million).
 // The lecture's leukaemia example (risk factor 2 × 10⁻³ per Sv) is offered as its own preset. The optional background
 // shows that about 1 in 4 deaths in the UK are from cancer anyway (Cancer Research UK).
+// Guess first (on by default): after the opening run, each new dose or group asks how many cases to expect before showing
+// them, so students commit to an estimate. The bands are powers of ten, because the point is the order of magnitude.
+import { token } from "./util.js";
+
 const RISK_PER_MSV = 0.05 / 1000;
 const BACKGROUND = 2.1;      // mSv a year, UK average natural background (as in the dose ladder)
 const CXR = 0.02;            // mSv, chest PA (UKHSA)
 const POPS = [1000, 10000, 100000, 1000000];
 const DOSES = [
-  { id: "cxr", name: "One chest X-ray", mSv: 0.02 },
-  { id: "bg", name: "A year of natural background", mSv: 2.1 },
-  { id: "ct", name: "CT abdomen and pelvis", mSv: 10 },
-  { id: "limit", name: "A year at the employee dose limit", mSv: 20 },
-  { id: "lecture", name: "Lecture example: leukaemia at 20 mSv", mSv: 20, risk: 2e-3 / 1000, pop: 1000000 },
+  { id: "cxr", name: "One chest X-ray", phrase: "one chest X-ray", mSv: 0.02 },
+  { id: "bg", name: "A year of natural background", phrase: "a year of natural background", mSv: 2.1 },
+  { id: "ct", name: "CT abdomen and pelvis", phrase: "a CT abdomen and pelvis", mSv: 10 },
+  { id: "limit", name: "A year at the employee dose limit", phrase: "a year at the employee dose limit", mSv: 20 },
+  { id: "lecture", name: "Lecture example: leukaemia at 20 mSv", phrase: "20 mSv (the lecture's leukaemia example)", mSv: 20, risk: 2e-3 / 1000, pop: 1000000 },
+];
+const BANDS = [
+  { id: 0, text: "Less than 1", test: e => e < 1 },
+  { id: 1, text: "1 to 9", test: e => e >= 1 && e < 10 },
+  { id: 2, text: "10 to 99", test: e => e >= 10 && e < 100 },
+  { id: 3, text: "100 to 999", test: e => e >= 100 && e < 1000 },
+  { id: 4, text: "1,000 or more", test: e => e >= 1000 },
 ];
 const SIZE = 1000;   // the canvas is drawn at 1000 × 1000 and scaled to fit
 
@@ -44,9 +55,15 @@ const MARKUP = `
         <div class="slider-top"><span class="label">People</span></div>
         <div class="modes" role="group" aria-label="People">${POPS.map(p => `<button type="button" data-pop="${p}">${fmtN(p)}</button>`).join("")}</div>
       </div>
+      <label class="check-row"><input type="checkbox" data-role="guess-on" checked> Guess before each result</label>
       <label class="check-row"><input type="checkbox" data-role="bg"> Show deaths from cancer that would happen anyway</label>
       <div class="controls"><button type="button" class="primary" data-role="again">Run again</button></div>
     </div>
+    <fieldset class="pop-guess" data-role="guess" hidden>
+      <legend data-role="guess-q"></legend>
+      <div class="controls">${BANDS.map(b => `<button type="button" data-band="${b.id}">${b.text}</button>`).join("")}</div>
+    </fieldset>
+    <div class="feedback" data-role="guess-fb" aria-live="polite" hidden></div>
     <div class="readouts">
       <div class="readout"><span>Risk to each person</span><b data-role="r-risk"></b><span data-role="r-risk-s"></span></div>
       <div class="readout"><span>Expected cases</span><b data-role="r-exp"></b><span data-role="r-exp-s"></span></div>
@@ -62,7 +79,8 @@ export function mount(root) {
   const $ = r => root.querySelector(`[data-role="${r}"]`);
   const canvas = $("canvas"), ctx = canvas.getContext("2d");
   let dose = DOSES[0], pop = 1000000, cases = 0;   // opens on one chest X-ray each: about one case in a million
-  const css = name => getComputedStyle(root).getPropertyValue(name).trim() || "#888";
+  let waiting = false;                             // a guess is due before this result shows
+  const css = name => token(root, name);
 
   function draw() {
     const cols = Math.ceil(Math.sqrt(pop)), rows = Math.ceil(pop / cols), cell = SIZE / cols;
@@ -83,6 +101,7 @@ export function mount(root) {
         for (let i = 0; i < Math.min(pop, 250000) / 4; i++) ctx.fillRect(Math.random() * SIZE, Math.random() * SIZE, 2, 2);
       }
     }
+    if (waiting) return;
     // The cases, drawn large enough to find even among a million.
     ctx.fillStyle = hit; ctx.strokeStyle = sheet; ctx.lineWidth = 3;
     const r = Math.max(cell * 0.45, cases <= 20 ? 22 : cases <= 200 ? 10 : 5);   // a lone case is easy to find, even on a phone; hundreds stay apart
@@ -95,6 +114,8 @@ export function mount(root) {
   function update(rerun = true) {
     const risk = (dose.risk ?? RISK_PER_MSV) * dose.mSv, expected = risk * pop;
     if (rerun) cases = poisson(expected);
+    $("guess").hidden = !waiting;
+    $("again").disabled = waiting;
     root.querySelectorAll("[data-dose]").forEach(b => b.setAttribute("aria-pressed", b.dataset.dose === dose.id));
     root.querySelectorAll("[data-pop]").forEach(b => { b.setAttribute("aria-pressed", +b.dataset.pop === pop); b.disabled = !!dose.pop; });
     $("legend-bg").hidden = !$("bg").checked;
@@ -113,18 +134,44 @@ export function mount(root) {
         ? `On average <b>fewer than one</b> of these ${fmtN(pop)} people would develop a fatal cancer from this dose. Run it again: sometimes nobody, occasionally one. Nobody can say in advance who.`
         : `On average about <b>${$("r-exp").textContent}</b> of these ${fmtN(pop)} people would develop a fatal cancer from this dose, but nobody can say in advance who. That is what makes the effect stochastic.`)
       + ($("bg").checked ? ` For comparison, about <b>${fmtN(anyway)}</b> of them would die of cancer anyway (about 1 in 4 UK deaths, Cancer Research UK).` : "");
-    canvas.setAttribute("aria-label", `${fmtN(pop)} people, each receiving ${dose.name.toLowerCase()} (${dose.mSv} mSv). ${fmtN(cases)} highlighted as radiation-induced cases this run; about ${$("r-exp").textContent} expected.`);
+    canvas.setAttribute("aria-label", `${fmtN(pop)} people, each receiving ${dose.phrase} (${dose.mSv} mSv). ${fmtN(cases)} highlighted as radiation-induced cases this run; about ${$("r-exp").textContent} expected.`);
+    if (waiting) {
+      // Hide everything that gives the answer away; the dose comparison stays, as a clue.
+      ["r-risk", "r-exp", "r-run"].forEach(k => { $(k).textContent = "?"; });
+      $("guess-q").textContent = `Guess first: among ${fmtN(pop)} people each receiving ${dose.phrase}, how many radiation-induced cases would you expect?`;
+      $("summary").textContent = "Make a guess to see the result.";
+      canvas.setAttribute("aria-label", `${fmtN(pop)} people, each receiving ${dose.phrase} (${dose.mSv} mSv). Make a guess to see the cases.`);
+    }
     draw();
+  }
+  // A new dose or group: ask for a guess first, if that's switched on.
+  function choose() {
+    waiting = $("guess-on").checked && !root.hasAttribute("data-setting-up");   // a copied link opens on its result
+    $("guess-fb").hidden = true;
+    update();
+    // On a phone the question sits below the controls, out of sight: bring it into view.
+    if (waiting) requestAnimationFrame(() => { const g = $("guess"), r = g.getBoundingClientRect(); if (r.bottom > innerHeight || r.top < 0) g.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "center" }); });
+  }
+  function guess(id) {
+    const expected = (dose.risk ?? RISK_PER_MSV) * dose.mSv * pop, truth = BANDS.find(b => b.test(expected)), right = truth.id === id;
+    const exp = expected >= 10 ? fmtN(Math.round(expected)) : +expected.toPrecision(1);
+    const far = Math.abs(truth.id - id);
+    $("guess-fb").innerHTML = `<p class="verdict ${right ? "good" : "bad"}">${right ? "Right" : far === 1 ? "Close: one step out" : `${far} steps out: ${["", "", "a hundred", "a thousand", "ten thousand"][far]} times ${id > truth.id ? "too many" : "too few"}`}</p><div class="why"><p>Expected: <b>${exp}</b> (${truth.text.toLowerCase()}). The risk to each person times the number of people: ${oneIn((dose.risk ?? RISK_PER_MSV) * dose.mSv)} × ${fmtN(pop)}.</p></div>`;
+    $("guess-fb").hidden = false;
+    waiting = false;
+    update(false);
   }
 
   root.querySelectorAll("[data-dose]").forEach(b => b.addEventListener("click", () => {
     dose = DOSES.find(d => d.id === b.dataset.dose);
     if (dose.pop) pop = dose.pop;
-    update();
+    choose();
   }));
-  root.querySelectorAll("[data-pop]").forEach(b => b.addEventListener("click", () => { pop = +b.dataset.pop; update(); }));
+  root.querySelectorAll("[data-pop]").forEach(b => b.addEventListener("click", () => { pop = +b.dataset.pop; choose(); }));
+  root.querySelectorAll("[data-band]").forEach(b => b.addEventListener("click", () => guess(+b.dataset.band)));
+  $("guess-on").addEventListener("change", () => { if (!$("guess-on").checked && waiting) { waiting = false; update(false); } });
   $("bg").addEventListener("change", () => update(false));
-  $("again").addEventListener("click", () => update());
+  $("again").addEventListener("click", () => { if (!waiting) update(); });
   // Redraw when the theme changes, so the dots take the new colours.
   const mo = new MutationObserver(() => draw());
   mo.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });

@@ -13,7 +13,7 @@ globalThis.localStorage = {
   getItem: k => (mem.has(k) ? mem.get(k) : null), setItem: (k, v) => mem.set(k, String(v)), removeItem: k => mem.delete(k),
 };
 
-const { parseNumber, isNumericCorrect, isUpsideDown, buildSet } = await load("js/quiz.js");
+const { parseNumber, isNumericCorrect, isUpsideDown, buildSet, resultMark } = await load("js/quiz.js");
 const store = await load("js/store.js");
 const { parseCSV } = await load("js/csv.js");
 const { parseLessons } = await load("js/lessons.js");
@@ -174,6 +174,17 @@ Raise the **kVp**: what happens to the highest photon energy?
   equal(l.predict.options.map(o => o.right), [false, true], "which is right:");
   equal(l.predict.why, "The highest energy in keV equals the kVp.", "explanation:");
   equal(parseLessons("# A\nid: a\n\nText.\n")[0].predict, null, "no Predict section:");
+});
+
+// ---------- Summarising an answered question ----------
+test("results: each kind of answer gets the right colour class and label", () => {
+  const strip = s => s.replace(/<svg.*?<\/svg>/g, "✓");   // the tick and cross are drawings
+  equal(resultMark({ kind: "self", ticked: 2, q: { points: [1, 2, 3] } }), { cls: "self", label: "2 of 3 points" }, "self-marked:");
+  equal(resultMark({ kind: "auto", score: 1 }).cls, "good", "right:");
+  equal(resultMark({ kind: "auto", score: 0 }).cls, "bad", "wrong:");
+  equal(strip(resultMark({ kind: "auto", score: 1, got: 5, of: 5 }, " right").label), "✓5 of 5 right", "all parts right:");
+  equal(resultMark({ kind: "auto", score: 0.6, got: 3, of: 5 }), { cls: "self", label: "3 of 5" }, "partly right:");
+  equal(resultMark({ kind: "auto", score: 0.2, got: 1, of: 5 }).cls, "bad", "mostly wrong:");
 });
 
 // ---------- Diagram set-ups in the web address ----------

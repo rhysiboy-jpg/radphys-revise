@@ -183,7 +183,7 @@ Confirmed with Rhys Morris, 29 October 2026.
   - **Accessibility statement:** a new page at `#accessibility`. **It's a draft for Rhys to check against the university's guidance.**
   - **Sizes:** buttons on topic rows and in "On This Device" are now 44px; topic descriptions are 16px; lesson text is 18px.
 - Project check against the Karpathy guidelines (5 November 2026, at Rhys's request):
-  - **Tests:** `node tools/test.mjs` (11 tests: number entry, marking, practice-set picking, progress, backup merge, the spreadsheet and lesson readers). Proven to fail when the written-question cap was deliberately broken.
+  - **Tests:** `node tools/test.mjs` (11 tests when written, 15 by 10 November 2026: number entry, marking, practice-set picking, progress, backup merge, the spreadsheet and lesson readers). Proven to fail when the written-question cap was deliberately broken.
   - **Preview server:** `tools/serve.mjs` (Node) replaces `tools/serve.ps1`, which handled one request at a time and dropped files. It passed 120 requests at once with no failures.
   - **Sorter:** the stochastic/deterministic sorter now uses the shared sorting component (84 lines down to 34).
   - **Accessibility statement:** keyboard use checked. Every tappable part of a drawing has a matching button, except reading one pixel in the windowing diagram, which the statement now says.
@@ -192,7 +192,7 @@ Confirmed with Rhys Morris, 29 October 2026.
   - **Privacy** (`#privacy`):
     - it says what's stored on the device (progress, lesson ticks, theme), why, and how to clear it;
     - it says nothing is sent anywhere, and that GitHub Pages logs IP addresses;
-    - feedback and error emails are handled under Bangor's privacy notice (`privacyNoticeUrl` in config, still to add);
+    - feedback and error emails: superseded on 6 November 2026, see "An independent revision aid" below;
     - the ICO is named as where to complain.
     - **Why no cookie banner:** the storage falls under the ICO's "strictly necessary" and "appearance" exceptions, which still require clear information and an easy way to object.
   - **About and terms of use** (`#about`): a revision aid, not clinical guidance; reference data and error reporting; free for own study, don't republish without permission (pending the IP check); font and data credits.
@@ -201,7 +201,7 @@ Confirmed with Rhys Morris, 29 October 2026.
     - It now declares partial compliance with WCAG 2.2 AA, naming two failures: 2.1.1 (pixel reading in windowing) and 2.2.2 (animations without a pause control).
     - It also notes that screen-reader testing hasn't been done, and gives the test date of 5 November 2026.
   - **Clearing data:** "Reset my progress" is now "Clear everything this app has stored", and also clears the theme.
-  - **For Rhys to check with the university:**
+  - **For Rhys to check with the university** (the first two superseded on 6 November 2026, see below):
     - who the data controller is, and the privacy notice link;
     - whether the 2018 accessibility regulations cover the app;
     - the IP question;
@@ -215,11 +215,11 @@ Confirmed with Rhys Morris, 29 October 2026.
     - checkboxes are 24px (WCAG 2.5.8);
     - the accessibility statement no longer lists failures, but stays "partially compliant" until screen-reader testing is done.
   - **Predict first:** a `## Predict` section in a lesson shows a question above its diagram. The student picks an answer, tries the diagram, then checks, and sees the right answer and why. Nothing is recorded.
-    - 34 questions written, one per simulation diagram, on its first lesson. The sorting activities and the two diagrams with their own prediction step (dose–response, chart of nuclides) have none.
+    - 34 questions written, one per simulation diagram, on its first lesson. The sorting activities and the two diagrams with their own prediction step (dose–response, chart of nuclides) have none. The dose ladder and population risk later gained guess steps and keep their Predict questions, which ask something different (see 10 November 2026).
     - All are drafts, like their lessons.
     - The content checker validates the format, and a test covers the reader.
 - Diagram upgrades 5 and 7 from the research report (6 November 2026, at Rhys's request), both in the shared `js/setup.js`, so no diagram needed its own changes:
-  - **Set-up links:** a "Copy link to this set-up" button under every diagram copies a link to its diagram page with the current settings (`#diagram-production/spectrum?spec-kv=120&target=Mo`). Only changed settings are included. Sliders, drop-downs and single-choice button groups are recorded; multi-select groups (the AEC chambers) and answer activities are not. Tested on all 42 diagrams: random settings, link, reopen, same settings and readouts on all 35 that have settings.
+  - **Set-up links:** a "Copy link to this set-up" button under every diagram copies a link to its diagram page with the current settings (`#diagram-production/spectrum?spec-kv=120&target=Mo`). Only changed settings are included. Sliders, drop-downs and single-choice button groups are recorded; multi-select groups (the AEC chambers) and answer activities are not. Tested on all 42 diagrams: random settings, link, reopen, same settings and readouts on all 34 that have settings (first recorded as 35, which wrongly counted the tube).
   - **Screen readers and sliders:** a diagram's live summary used to change at every step of a slider. Now it is muted while the slider moves, and once it stops a screen reader hears one line: the slider's name and value, then the updated summary. Button presses are announced as before. Still needs checking with a real screen reader.
 - Diagram upgrades 6, 4, 9 and 8 from the research report (6 November 2026, at Rhys's request). The changed diagrams (console, tube, AEC, and the five graphs below) need Rhys's recheck before sign-off:
   - **6, exposure console:**
@@ -229,9 +229,46 @@ Confirmed with Rhys Morris, 29 October 2026.
   - **4, tube labels:** each part's name now sits beside its number on the drawing. On a phone only the tapped part's name shows, with a halo. Two moves made room: the window's number sits left of the port, and the "≈99% heat" label sits above the glow. The circuit diagram already worked this way.
   - **9, graphs:** most graphs already marked the slider's value. Now a tap on the graph also sets the slider, on the spectrum, Ohm's law, gas detector, EM spectrum and attenuation graphs (a tap alternative to dragging, WCAG 2.5.7). Not done on the dose–response graphs: four small graphs that rearrange on a phone, with their own predict-and-reveal.
   - **8, consistency:**
-    - every diagram with settings has a **Reset** button beside "Copy link", in the same place on all of them. Tested on all 33 such diagrams: random changes, Reset, back to the starting settings and readouts.
+    - every diagram with settings has a **Reset** button beside "Copy link", in the same place on all of them. Tested on all 34 such diagrams (first recorded as 33, a miscount): random changes, Reset, back to the starting settings and readouts.
     - Placement was already consistent (drawing first, settings in the panel; tabs above only for choosing what the drawing shows), so nothing moved. The rule is now in AGENTS.md.
     - Starting states: the AEC used to open on "Press Expose."; it now says how the exposure will end before anything is pressed. Its chambers were also 20 units left of the body (Rhys spotted it): they are now centred, the outer pair over the middle of each lung and the centre one over the spine, and the "lung" and "soft tissue" labels sit inside the anatomy they name. The others already show and state their idea.
+- An independent revision aid (6 November 2026, Rhys's decision). The app is kept as Rhys's own in-house effort, not a university service, so it names no data controller. If it launches more widely, the wording can be revisited.
+  - **Wording:** the footer and the About page say it is "an independent revision aid… not an official Bangor University resource, and not endorsed by Bangor University". These are now the only mentions of Bangor in the app. (Rhys asked for "no affiliation"; that would not be strictly true for a module lecturer's resource, so the wording says what it is not instead.)
+  - **Privacy page:** names no controller, and `privacyNoticeUrl` is removed. The work email set here on 6 November was taken out again on 10 November 2026 (below).
+  - **Accessibility statement:** an independent app isn't covered by the 2018 public sector regulations, so it now follows WCAG 2.2 AA voluntarily, and the enforcement section is removed.
+  - **Style comments:** the colour notes in `css/app.css` no longer name the university; the colours are unchanged. The red and yellow still echo Bangor's palette, which Rhys may want to change if the app is to look clearly separate.
+  - **Needs Rhys's sign-off (flagged, not legal advice):**
+    - if a bangor.ac.uk address is ever used for reports, they are held on the university's email system whatever the app says, so check with the line manager first (no address is set at present);
+    - confirm the "not an official resource" wording with the line manager alongside the IP question;
+    - if the feedback Form is made in the university's Microsoft 365, the same applies to its answers.
+- No fluoroscopy content in RDR-1173 (6 November 2026, Rhys), so the report's upgrade 10 (fluoroscopy scatter diagram) is dropped. Passing mentions of fluoroscopy are fine (10 November 2026, Rhys): the detail is second-year content.
+- Estimate before you see it (6 November 2026, at Rhys's request; the research found dose estimation is students' weakest area and their confidence outruns their knowledge):
+  - **Dose ladder:** opens on **Guess first**: six examinations in a random order (chest, hip, lumbar spine, CT head, barium enema, CT abdomen and pelvis). The student slides to an estimate (with its time of natural background shown), checks it against UKHSA's figure, and gets "Close" (within a factor of 2), "In the right range" (within 5) or "Some way off". A list of estimates builds up, and the end says whether they tended to under- or overestimate. **Explore the ladder** shows the full ladder as before.
+  - **Population risk:** after the opening run, each new dose or group size asks for a guess in powers of ten (less than 1, 1 to 9, 10 to 99, 100 to 999, 1,000 or more) before showing the cases. A "Guess before each result" tick box turns it off.
+  - Both lessons' Try this lists mention the new step.
+- Diagram checklist (6 November 2026, at Rhys's request): `review/diagram-checklist.xlsx`, one row per diagram (42), with a link to open each, the lessons that use it, the latest changes marked, seven checks with drop-downs (physics, references, phone, dark mode, controls, Try this and Predict, starting state), a verdict and comments, and counts that update. A "How to use" sheet explains each column. It is for Rhys's review, not part of the app, so `review/` is not published.
+- Whole-project review and fixes (10 November 2026, at Rhys's request). Two reviewers checked the project against this plan and against AGENTS.md, DESIGN.md and README.md. Both checks passed; these were fixed:
+  - **Dose ladder, Guess first:**
+    - the slider used to rest on 0.3 mSv, exactly the hip's dose, so an untouched slider scored "spot on". It now rests on a value that is no answer, shows no estimate, and "Check" stays off until the slider is moved;
+    - the "Explaining dose to patients" lesson gave three of the six answers above the diagram. Its three figures are replaced by a sentence on the range, and its Predict question now asks how a child's risk compares with an adult's (about twice as high, UKHSA). **Lesson content, for Rhys's review.**
+  - **Links never carry answers:** a slider or drop-down marked `data-answer` (the dose ladder's estimate, the dose–response predictions) is left out of "Copy link".
+  - **A link to the population risk diagram opens on its result,** not on the guess question.
+  - **"Explaining dose to a patient"** (guidance inside the dose ladder) shows again inside its lesson; the one-list-per-lesson rule had hidden it.
+  - **No contact email for now** (Rhys): `contactEmail` is empty again, so "Report an error" is hidden, and the Privacy and Accessibility pages say to tell the module lecturer. The Privacy page's wording follows the settings, so adding an email or Form later changes it automatically. With this, the two "not an official resource" statements really are the only mentions of Bangor.
+  - **Processing diagram:** says "illustrative" on screen and in its header.
+  - **Design rules:**
+    - the "new version" notice has no drop shadow;
+    - the "Imaging request" heading is no longer in capitals;
+    - the theme switch's ring is inset;
+    - the visible-light band on the EM spectrum uses colour tokens, with lifted colours in dark mode;
+    - the black behind simulated X-rays is a named token (`--xray-black`), the same in both themes because a radiograph is black either way;
+    - no fallback colours are written into code: a shared `token()` helper reads colour tokens for canvases, and the phone's status bar takes its colour from the theme.
+  - **Header comments:** bohr, isl, tube, target, conductors and energy now say what is simplified.
+  - **README:** documents `setSize` and `maxWrittenPerSet`.
+  - **Decided:** the dose ladder and population risk keep their Predict questions alongside their guess steps, because each asks something the guess step doesn't.
+  - **Which diagrams have no settings (so no Reset):** tube (a step-through with tappable parts) and the answer activities, which links never record. In full: tube, sorter, justify, dose-choices, regulations, duty-holders, consent, qa-sort. That is 8 of 42, leaving 34 with settings.
+  - **Practice moved out of `js/app.js`** (Rhys chose this): practice sets now live in `js/practise.js` (about 390 lines), which leaves `app.js` at about 840. `esc` and `MARKS` are shared through `js/html.js`. The result label that was written twice is one function, `resultMark` (in `js/quiz.js`), with a test. Behaviour is unchanged. Not done: one table of question types, which is only worth it when a new type is added.
+  - **Renamed:** `standing` to `topicProgress`, `tally` to `resultCounts`, `looseDiagrams` to `diagramsOutsideLessons`.
 - One "Try this" list per lesson (6 November 2026, at Rhys's request): 13 older diagrams carry their own Try this list. Inside a lesson that has its own list, the diagram's list is now hidden, so students see one list, above the diagram. The diagram's own list still shows on its diagram page and in the sign-off gallery. Some of those lists are longer than the lesson's (the spectrum one especially), so Rhys may want to move the best steps into the lessons when reviewing.
 - Next: Rhys reviews the 63 draft lessons and the 19 new interactives (review mode only). Still waiting: review of the 249 draft questions, and sign-off of the earlier interactives and diagram upgrades.
 - Untested: offline mode. Check it once hosted on GitHub Pages, which needs the repo made public (only with Rhys's go-ahead).
@@ -242,4 +279,6 @@ Confirmed with Rhys Morris, 29 October 2026.
 - [ ] Create a free GitHub account (before February).
 - [ ] Create the Microsoft feedback Form (Claude drafts the questions).
 - [ ] Ask Canolfan Bedwyr about Welsh language requirements.
-- [ ] Ask line manager about IP.
+- [ ] Ask line manager about IP and the "independent revision aid" wording.
+- [ ] Decide how students report errors: no email or feedback Form is set at present, so the app says "tell your module lecturer".
+- [ ] Work through `review/diagram-checklist.xlsx` to sign off the 42 diagrams.

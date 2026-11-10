@@ -1,6 +1,7 @@
 // Explorer: what happens when one electron reaches a tungsten atom in the target. The lecture's four interactions:
 // outer-shell excitation and outer-shell ionisation (both heat), inner-shell ionisation (characteristic radiation, or an
 // Auger electron), and braking (Bremsstrahlung).
+// Simplified: one electron meeting one atom, where a real electron has many interactions on its way into the target. Shells are drawn as circles and the outer shells are summarised. Not to scale.
 import { svgEl as el, wavy, tween, setLines } from "./util.js";
 import { drawAtom, electron, moveTo, vacancy } from "./atom.js";
 

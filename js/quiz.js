@@ -1,4 +1,5 @@
 // Picks practice sets and marks answers.
+import { MARKS } from "./html.js";
 import { MAX_BOX } from "./store.js";
 
 export function shuffle(arr) {
@@ -71,4 +72,12 @@ export function isUpsideDown(value, answer, tolerance) {
 export function isNumericCorrect(value, answer, tolerance) {
   if (value === null) return false;
   return Math.abs(value - answer) <= Math.max(Math.abs(answer) * tolerance, 0.005);
+}
+
+// How one answered question is summarised, in the set's side list and on the results page: a class for its colour and
+// mark, and a label. suffix: " right" on the results page, where there is room ("3 of 5 right").
+export function resultMark(r, suffix = "") {
+  if (r.kind === "self") return { cls: "self", label: `${r.ticked} of ${r.q.points.length} points` };
+  if (r.of) return { cls: r.score >= 0.7 ? "good" : r.score >= 0.4 ? "self" : "bad", label: `${r.score === 1 ? MARKS.right : ""}${r.got} of ${r.of}${suffix}` };
+  return r.score ? { cls: "good", label: `${MARKS.right}Right` } : { cls: "bad", label: `${MARKS.wrong}Not quite` };
 }

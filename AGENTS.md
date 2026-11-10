@@ -15,6 +15,7 @@ RadPhys Revise is a revision app for first-year diagnostic radiography physics (
 
 - **Commit or push only when Rhys asks.** He usually asks for one commit per finished piece of work. Work on the current branch (`content/phase-1`) unless told otherwise.
 - **Keep the GitHub repository private** until Rhys gives the go-ahead (an IP check is pending).
+- **The app is an independent effort**, not a university service. Bangor University appears only in the "not an official Bangor University resource" statements (footer and About page). Don't add university branding, names or a data controller unless Rhys asks.
 - **No real patient images** anywhere. Simulated images use the cartoon limb in `js/diagrams/limb.js`.
 - **Never commit the lecture slides** or other source material Rhys shares from his own files.
 - **Use reference data** (for example NIST XCOM, ICRP 103, UKHSA, IRR17, IR(ME)R 2017, IPEM Report 91) rather than the slides alone. Where a slide differs, follow the reference, say so where students meet it, and record the difference in PLAN.md.
@@ -33,7 +34,9 @@ RadPhys Revise is a revision app for first-year diagnostic radiography physics (
 | `content/*.csv` | Question banks, one per topic (format in the README). |
 | `content/lessons/*.md` | Lessons, one file per topic (format in the README). |
 | `content/topics.json` | Topics, with their question files, lesson file and diagrams. |
-| `js/app.js` | Views and routing (`#explore-`, `#learn-`, `#practise-`). Diagrams are registered in its `DIAGRAMS` map. |
+| `js/app.js` | Views and routing (`#explore-`, `#learn-`, `#practise-`), except practice sets. Diagrams are registered in its `DIAGRAMS` map. |
+| `js/practise.js` | A practice set: every question type, marking, feedback and the results page. `app.js` hands it the page helpers it needs, so it never imports `app.js`. |
+| `js/html.js` | `esc` (safe text) and `MARKS` (the tick and cross), shared by `app.js` and `practise.js`. |
 | `js/diagrams/` | One module per interactive, each exporting `mount(root)`. It may return a cleanup function. `util.js` has shared helpers (including `tapToSet`, which lets a tap on a graph set its slider), and `sortkit.js` is the shared sorting activity. |
 | `js/setup.js` | Shared by every diagram: settings in the web address (the "Copy link" button) and the single screen-reader line when a slider stops. The app adds a Reset button beside "Copy link", which rebuilds the diagram from scratch. |
 | `js/content.js`, `js/lessons.js`, `js/csv.js` | Loading and parsing content. |
@@ -42,6 +45,7 @@ RadPhys Revise is a revision app for first-year diagnostic radiography physics (
 | `fonts/`, `css/fonts.css` | Figtree and Noto Sans, stored in the app (SIL Open Font License, licences alongside). Never load fonts or scripts from another site: the checker fails it. |
 | `sw.js` | Offline cache. List every new file in `CORE`. |
 | `prototypes/` | Old experiments. Not published. |
+| `review/` | Rhys's review files, such as `diagram-checklist.xlsx`. Not published. Never overwrite a file here without asking: it holds his ticks and comments. |
 
 ## Adding a diagram
 
@@ -50,8 +54,8 @@ RadPhys Revise is a revision app for first-year diagnostic radiography physics (
 3. Add it to the topic's `diagrams` in `content/topics.json` with `"ready": true, "approved": false`.
 4. Add the file to `CORE` in `sw.js`. Every script needs listing there; spreadsheets and lessons are cached from `topics.json` automatically.
 5. Bump `VERSION` in `sw.js`.
-6. Attach it to a lesson with a `diagram:` line, and add a `## Try this` list.
-7. For "Copy link" to record a setting, give sliders and drop-downs an `id`, and put single-choice buttons in a `role="group"` with `aria-pressed` and a `data-` attribute naming the option. Give each slider a `<label for>` and an `<output for>`, which the screen-reader line reads out.
+6. Attach it to a lesson with a `diagram:` line, and add a `## Try this` list. Inside a lesson, a diagram's own `.try` list is hidden; give guidance that isn't a list of things to try the class `try guide` to keep it.
+7. For "Copy link" to record a setting, give sliders and drop-downs an `id`, and put single-choice buttons in a `role="group"` with `aria-pressed` and a `data-` attribute naming the option. Give each slider a `<label for>` and an `<output for>`, which the screen-reader line reads out. Mark a slider or drop-down that holds a student's estimate or prediction with `data-answer`, so links never record answers. While a link's set-up is being applied the diagram has `data-setting-up`: a diagram that asks for a guess before a result should skip the question then.
 8. Keep to the shared layout: the drawing first (`.stage`), then the settings in `.panel`. Only a choice of what the drawing shows (a view, a type, explore or test) goes above the drawing, as tabs. The starting state should already show the key idea, and the summary should say it in words before anything is pressed.
 9. Where a graph has a slider for its x axis, mark the current value on the graph and call `tapToSet` so a tap on the graph sets the slider.
 
