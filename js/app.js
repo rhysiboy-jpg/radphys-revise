@@ -4,6 +4,7 @@ import { loadContent } from "./content.js";
 import { getProgress, resetProgress, lastResult, MAX_BOX, visitedLessons, markVisited, exportProgress, importProgress } from "./store.js";
 import { esc, MARKS } from "./html.js";
 import { practise as runPractise } from "./practise.js";
+import { apaCredit, creditYear, diagramSvg, svgToPng, save, graphics } from "./export.js";
 import { readSetup, applySetup, changedFrom, encodeSetup, decodeSetup, calmSliders } from "./setup.js";
 
 const DIAGRAMS = {
@@ -572,6 +573,32 @@ async function diagramPage(topicId, diagramId, query) {
   await mountDiagrams(decodeSetup(query));
 }
 
+// Presentation view: one diagram and nothing else, filling the screen. For projecting in a lecture, and for showing the live
+// diagram inside a slide through a web viewer add-in. The address carries the settings, like the diagram page's.
+async function present(topicId, diagramId, query) {
+  const t = topicById(topicId), d = t?.diagrams.find(x => x.id === diagramId && shown(x));
+  if (!d) return t ? explore(t.id) : home();
+  document.body.classList.add("presenting");
+  document.documentElement.dataset.theme = "light";   // a light background projects best; route() puts the usual theme back
+  show(`
+    <div class="present-bar">
+      <h1 tabindex="-1">${esc(d.title)}</h1>
+      <div class="controls">
+        <button type="button" data-role="fullscreen">Full screen</button>
+        <a class="btn" href="#diagram-${t.id}/${d.id}${query ? "?" + esc(query) : ""}">Exit</a>
+      </div>
+    </div>
+    <section class="module" aria-label="${esc(d.title)}"><div data-diagram="${d.id}"><p class="muted">Loading diagram…</p></div></section>`,
+    t.id, { title: `${d.title} · Presentation` });
+  const fs = app.querySelector('[data-role="fullscreen"]');
+  if (!document.documentElement.requestFullscreen) fs.hidden = true;   // not offered where the browser or an embedding slide forbids it
+  fs.addEventListener("click", async () => {
+    try { if (document.fullscreenElement) await document.exitFullscreen(); else await document.documentElement.requestFullscreen(); }
+    catch { fs.hidden = true; }
+  });
+  await mountDiagrams(decodeSetup(query));
+}
+
 // One lesson: explanation, the interactive with what to try, key points, practice for its areas, and Previous / Next.
 async function lesson(topicId, lessonId) {
   const t = topicById(topicId);
@@ -716,7 +743,47 @@ function addDiagramRow(box, start, reset) {
       note.querySelector("input").select();
     }
   });
-  row.append(b, note);
+  row.append(b);
+
+  // "Present": the diagram alone on a clean page, for projecting or for a web viewer on a slide.
+  const setupQuery = () => { const q = encodeSetup(changedFrom(start, readSetup(box))); return q ? "?" + q : ""; };
+  const d = t.diagrams.find(x => x.id === box.dataset.diagram);
+  const present = document.createElement("button");
+  present.type = "button";
+  present.dataset.role = "present";
+  present.textContent = "Present";
+  present.setAttribute("aria-label", "Show this diagram on its own, for projecting");
+  present.addEventListener("click", () => { location.hash = `#present-${t.id}/${d.id}${setupQuery()}`; });
+  row.append(present);
+
+  // "Download": the diagram as it is now, as a picture for a slide. SVG stays sharp at any size; PNG works everywhere.
+  if (graphics(box).length) {
+    const download = async kind => {
+      note.textContent = "Making the picture…";   // a PNG takes about a second
+      try {
+        const hosted = !/^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname);
+        const credit = apaCredit({ author: "Morris, R.", year: creditYear(CONFIG.lastUpdated), title: d.title, site: "RadPhys Revise",
+          url: hosted ? `${location.origin}${location.pathname}#diagram-${t.id}/${d.id}` : "" });
+        const svg = await diagramSvg(box, { title: d.title, credit });
+        const blob = kind === "svg" ? new Blob([svg], { type: "image/svg+xml" }) : await svgToPng(svg);
+        save(blob, `radphys-${d.id}.${kind}`);
+        note.textContent = `Picture saved as radphys-${d.id}.${kind}.`;
+      } catch (err) {
+        console.error(err);
+        note.textContent = "The picture could not be made. Try the other format.";
+      }
+    };
+    for (const kind of ["svg", "png"]) {
+      const db = document.createElement("button");
+      db.type = "button";
+      db.dataset.role = `download-${kind}`;
+      db.textContent = `Download ${kind.toUpperCase()}`;
+      db.setAttribute("aria-label", `Download this diagram as ${kind === "svg" ? "an SVG" : "a PNG"} picture`);
+      db.addEventListener("click", () => download(kind));
+      row.append(db);
+    }
+  }
+  row.append(note);
   box.appendChild(row);
 }
 
@@ -775,11 +842,17 @@ const practise = (...args) => runPractise(practiceHelpers, ...args);
 function route() {
   cleanups.forEach(fn => { try { fn?.(); } catch { /* already gone */ } });
   cleanups = [];
+  if (document.body.classList.contains("presenting")) {
+    document.body.classList.remove("presenting");
+    const usual = theme();   // back from the presentation view's light theme to the student's own choice
+    if (usual === "auto") delete document.documentElement.dataset.theme; else document.documentElement.dataset.theme = usual;
+  }
   const h = location.hash.slice(1) || "home";
   let m;
   if ((m = h.match(/^explore-([\w-]+)$/))) explore(m[1]);
   else if ((m = h.match(/^learn-([\w-]+)\/([\w-]+)$/))) lesson(m[1], m[2]);
   else if ((m = h.match(/^diagram-([\w-]+)\/([\w-]+)(?:\?(.*))?$/))) diagramPage(m[1], m[2], m[3]);
+  else if ((m = h.match(/^present-([\w-]+)\/([\w-]+)(?:\?(.*))?$/))) present(m[1], m[2], m[3]);
   else if (h === "revisit") practiseRevisit();
   else if (h === "accessibility") accessibility();
   else if (h === "privacy") privacy();

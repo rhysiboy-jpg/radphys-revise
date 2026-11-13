@@ -1014,6 +1014,22 @@ details.try[open] summary::after { content: " −"; }
 .link-row button { min-height: 44px; padding: 8px 14px; font-size: 0.9rem; }
 .link-note { color: var(--muted); font-size: 0.9rem; }
 .link-note input { margin-top: 4px; }
+/* While a picture is being made the page is held still: no fades or motion caught half way. */
+.exporting *, .exporting *::before, .exporting *::after { transition: none !important; animation-play-state: paused !important; }
+/* Photons and the spin arrow are dashed so that they can flow; in a still picture a solid line reads better. */
+.exporting .photon, .exporting .spin { stroke-dasharray: none !important; }
+/* Presentation view: the diagram alone, as wide as the screen. */
+.presenting .side { display: none; }
+.presenting .shell { grid-template-columns: minmax(0, 1fr); }
+.presenting .sheet > * { max-width: none; }
+.presenting [data-role="present"] { display: none; }
+.present-bar { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; justify-content: space-between; }
+.present-bar h1 { font-size: 1.4rem; margin: 0; }
+/* With no menu there is room for the drawing and its controls side by side on a narrower screen, and no drawing is
+   taller than the screen, so nothing needs scrolling while presenting. */
+@media (min-width: 801px) { .presenting .grid { grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); } }
+.presenting .stage svg { max-height: calc(100vh - 170px); }
+.presenting .stage canvas { width: auto; max-width: 100%; max-height: calc(100vh - 170px); margin-inline: auto; }
 /* Exposure console: the dose creep log, and the fix-it task after a scenario. */
 .creep-wrap { overflow-x: auto; }
 /* Guess first on the dose ladder: the student's estimates beside the true doses. */

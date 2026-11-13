@@ -105,6 +105,18 @@ Two more settings in `js/config.js` rarely need changing:
 - `setSize`: how many questions are in a practice set (10).
 - `maxWrittenPerSet`: the most self-marked written questions in one set (2), so a set never fills up with long answers.
 
+## Using diagrams in lectures
+
+Under each diagram, beside "Copy link", are three more buttons.
+
+- **Download SVG** and **Download PNG** save the diagram as a picture, exactly as it looks at that moment with your chosen settings. The picture always has a light background, with the diagram's title above it, its summary sentence below, and a credit in APA 7 style (Morris, R. (2026). *Title* [Interactive diagram]. RadPhys Revise., plus the web address once the app is hosted). Insert it on a slide like any picture.
+  - **SVG** stays sharp at any size and can be recoloured or ungrouped in PowerPoint. It needs a recent version of PowerPoint.
+  - **PNG** works in every version and in any other program.
+  - Eight diagrams have no picture, because they are sorting and choosing activities with nothing drawn: the five sorting activities, justification, the dose choices and the dose ladder.
+- **Present** opens the diagram on a clean page of its own, with no menu or footer, in the light theme, keeping your settings. Use **Full screen** for projecting and **Exit** to come back.
+
+To show a working diagram inside a slide, PowerPoint needs an add-in, because it can't run the diagrams itself. Microsoft's **Web Viewer 2.0** (from the Office add-in store) shows a web page on a slide: press **Present**, copy the address from the browser, and paste it into the add-in. It needs the app to be hosted (an address starting https://) and internet in the room, and your computer must be allowed to install add-ins. Try it on a lecture PC before relying on it; the picture plus a link to the diagram is the fallback.
+
 ## Linking to a diagram set-up
 
 Under every diagram is a **Copy link to this set-up** button. It copies a web address that opens the diagram on a page of its own, with its sliders and options as they are now, for example the spectrum at 120 kVp with a molybdenum target. Paste it into a slide, Blackboard or an email, or use it to set a task ("Open this, then halve the mA").

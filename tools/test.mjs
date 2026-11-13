@@ -18,6 +18,7 @@ const store = await load("js/store.js");
 const { parseCSV } = await load("js/csv.js");
 const { parseLessons } = await load("js/lessons.js");
 const { changedFrom, encodeSetup, decodeSetup } = await load("js/setup.js");
+const { apaCredit, creditYear, wrap } = await load("js/export.js");
 
 let passed = 0;
 const failures = [];
@@ -185,6 +186,20 @@ test("results: each kind of answer gets the right colour class and label", () =>
   equal(strip(resultMark({ kind: "auto", score: 1, got: 5, of: 5 }, " right").label), "✓5 of 5 right", "all parts right:");
   equal(resultMark({ kind: "auto", score: 0.6, got: 3, of: 5 }), { cls: "self", label: "3 of 5" }, "partly right:");
   equal(resultMark({ kind: "auto", score: 0.2, got: 1, of: 5 }).cls, "bad", "mostly wrong:");
+});
+
+// ---------- Pictures for slides ----------
+test("picture credit: APA 7 order, with the year from the last update", () => {
+  const c = apaCredit({ author: "Morris, R.", year: creditYear("November 2026"), title: "The X-ray spectrum", site: "RadPhys Revise", url: "https://example.org/#diagram-production/spectrum" });
+  equal(c.before + c.title + c.after, "Morris, R. (2026). The X-ray spectrum [Interactive diagram]. RadPhys Revise.", "credit:");
+  equal(c.url, "https://example.org/#diagram-production/spectrum", "web address:");
+  equal(apaCredit({ author: "Morris, R.", year: 2026, title: "T", site: "S" }).url, "", "no address before the app is hosted:");
+  equal(creditYear("", new Date(2031, 0, 1)), 2031, "no update date set, so this year:");
+});
+test("picture text: long sentences wrap at whole words", () => {
+  equal(wrap("one two three four", 9), ["one two", "three", "four"], "wrapped:");
+  equal(wrap("", 10), [], "nothing to wrap:");
+  equal(wrap("unbreakablyLongWord next", 5), ["unbreakablyLongWord", "next"], "a long word keeps its own line:");
 });
 
 // ---------- Diagram set-ups in the web address ----------

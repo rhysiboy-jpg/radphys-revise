@@ -104,7 +104,7 @@ const MARKUP = `
       <g class="fx fx-3" aria-hidden="true"><text class="fxlabel el-t" x="250" y="216">electrons →</text></g>
       <g class="fx fx-4" aria-hidden="true">
         <circle cx="453" cy="232" r="30" fill="url(#g-heat)"/>
-        <text class="fxlabel heat-t" x="430" y="192" text-anchor="end">≈99% heat</text>
+        <text class="fxlabel heat-t" x="490" y="240">≈99% heat</text>
       </g>
       <g data-role="strays" class="fx fx-4" aria-hidden="true"></g>
       <g class="fx fx-5" aria-hidden="true"><polygon class="beam" points="453,236 387,436 519,436"/></g>
@@ -179,7 +179,7 @@ export function mount(root) {
   // Photons
   const cross = (g, x, y) => el("path", { class: "stop", d: `M${x - 6} ${y - 6} L${x + 6} ${y + 6} M${x + 6} ${y - 6} L${x - 6} ${y + 6}` }, g);
   const strays = $("strays");
-  [[392, 36], [250, 324], [330, 36]].forEach(([x, y]) => { el("path", { class: "photon weak", d: wavy(450, 228, x, y) }, strays); cross(strays, x, y); });
+  [[300, 36], [250, 324], [70, 96]].forEach(([x, y]) => { el("path", { class: "photon weak", d: wavy(450, 228, x, y) }, strays); cross(strays, x, y); });
   const useful = $("useful");
   [[421, 432], [455, 432], [489, 432]].forEach(([x, y]) => el("path", { class: "photon", d: wavy(453, 240, x, y) }, useful));
   el("path", { class: "photon weak", d: wavy(453, 240, 473, 334, 3, 9) }, useful); cross(useful, 473, 336);
