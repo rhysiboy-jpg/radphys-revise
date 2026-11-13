@@ -9,6 +9,7 @@ Each lesson starts with "# Title", then a few "name: value" lines, a blank line,
   sources   lecture slides, shown to you in review mode only
 Plain paragraphs are the explanation. "## Try this" and "## Key points" start those boxes; lines starting "- " are bullet points.
 Put a word or phrase in **double stars** to make it bold.
+Wording follows the lecture slides where it can (5-2, 8-1, 10-1); figures follow reference data.
 -->
 
 # The X-ray tube
@@ -19,22 +20,28 @@ diagram: tube
 status: draft
 sources: 5-2 s5–12, s20
 
-An X-ray tube turns electrical energy into X-rays. It needs three things: a supply of electrons, a high voltage to accelerate them, and a target to stop them. All of this happens inside a **vacuum**, so the electrons can cross the tube without hitting gas molecules.
+In the X-ray tube, electrons are accelerated from the negative **cathode** to the positive **anode**. On collision with the anode the electrons rapidly decelerate, and their kinetic energy is converted into X-rays and heat. This takes place inside a **vacuum**, so the electrons can cross the tube without colliding with gas molecules.
 
-The **cathode** is the negative side. It holds a coil of tungsten wire, the **filament**, which releases electrons when it is heated. Around it sits the **focusing cup**, held at the same negative potential. It repels the electrons and squeezes them into a narrow beam aimed at the focal spot.
+The **cathode** acts as the negative electrode. It has two parts:
 
-The **anode** is the positive side: a disc with a bevelled edge carrying a **tungsten** target track (often tungsten–rhenium). Tungsten is used because its high atomic number (Z = 74) makes X-ray production efficient, and its very high melting point (3,422 °C) survives the heat.
+- The **filament**: a helically wound tungsten wire, 0.2 to 0.3 mm in diameter. There are often two or three filaments, to produce different focal spot sizes.
+- The **focusing cup**: a second electrode, which forms the electrons into a narrow beam.
 
-About **99%** of the electrons' energy becomes heat, so the anode **rotates**, at about 3,000 rpm (or about 9,000 rpm in high-speed tubes). The electrons then strike a moving track rather than one spot, spreading the heat. The anode is turned by an **induction motor**: a copper **rotor** inside the vacuum, driven by **stator** coils outside the glass. It starts spinning when you press **prep**.
+The **anode** is supplied with a very high positive voltage (50 to 150 kV) during the exposure. It attracts the electrons from the cathode. It has to withstand high temperatures and be an efficient emitter of X-rays, so it is composed of a **tungsten and rhenium** skin on a molybdenum base.
 
-The **envelope** (glass, or metal and ceramic) holds the vacuum. Around it, the **housing** is lined with lead to absorb **leakage radiation**, and filled with **oil**, which insulates against the high voltage and carries heat away. The useful beam leaves through the **window**, then passes through **added filtration**.
+- **Tungsten** has a high atomic number (74), which is good for X-ray production, a high melting point (3,422 °C) and a high thermal conductivity.
+- **Rhenium** increases the thermal capacity and tensile strength, maintains a smoother surface, and increases resistance to damage from overheating and continuous electron bombardment.
+
+About **99%** of the kinetic energy is converted to heat, so in most tubes the anode **rotates**. The anode stem is attached to a copper **rotor**, located within the glass envelope. The **stator windings** surround the neck of the tube, outside the envelope but within the housing. When they are supplied with an alternating voltage they induce rotation of the rotor, and hence the anode, at 3,000 rpm or 9,000 rpm. The anode starts to rotate when you press **prep**.
+
+The **envelope** (glass, or metal and ceramic) holds the vacuum. The **tube housing** provides mechanical support and protection for the tube. It is filled with **oil**, which insulates and carries heat away, and it is **lead lined** to absorb stray radiation. The useful beam leaves through the **window**, then passes through **added filtration**.
 
 ## Predict
-The radiographer presses prep. What happens before any X-rays are made?
+The radiographer presses prep. What happens before any X-rays are produced?
 - The high voltage is applied across the tube
-- * The filament heats up and the anode starts to spin
+- * The filament heats up and the anode starts to rotate
 - The exposure timer starts
-> Prep heats the filament (thermionic emission) and spins the anode up to speed. Only when the exposure starts is the kVp applied.
+> Prep heats the filament (thermionic emission) and brings the anode up to speed. The kVp is applied only when the exposure starts.
 
 ## Try this
 - Tap each number on the diagram to read about that part.
@@ -42,10 +49,10 @@ The radiographer presses prep. What happens before any X-rays are made?
 - Notice which parts are inside the vacuum and which are outside it.
 
 ## Key points
-- The cathode (filament and focusing cup) supplies and aims the electrons; the anode's tungsten target stops them.
-- Tungsten: a high atomic number for efficient X-ray production, and a high melting point to survive the heat.
-- The rotating anode spreads the heat around a track. The rotor is inside the vacuum and the stator outside: an induction motor.
-- The vacuum envelope lets electrons cross freely; the oil insulates and cools; the lead-lined housing stops leakage radiation.
+- Electrons are accelerated from the negative cathode (filament and focusing cup) to the positive anode, where they rapidly decelerate.
+- Tungsten: a high atomic number for X-ray production, and a high melting point to withstand the heat.
+- The rotating anode spreads the heat. The rotor is inside the envelope and the stator windings outside it.
+- The envelope holds the vacuum; the oil insulates and cools; the lead-lined housing absorbs stray radiation.
 
 # Thermionic emission
 id: thermionic
@@ -55,23 +62,25 @@ diagram: tube
 status: draft
 sources: 5-2 s21–25
 
-Electrons in a metal are held in by its surface. Heat the metal enough and some electrons gain enough energy to escape. This is **thermionic emission**, and it is how the X-ray tube gets its electrons.
+Electrons are emitted from the heated filament by **thermionic emission**. Tungsten releases electrons at about 2,000 °C.
 
-The filament has its own low-voltage circuit. A **step-down transformer** supplies about **5 A at 12 V**, heating the tungsten filament to over 2,000 °C. This happens when you press **prep**.
+The **filament circuit** produces the heating current: approximately **5 A at 12 V**, stepped down from the supply voltage. To produce high tube currents the filament is heated to about 2,700 K, for a minimal time, to reduce evaporation of the tungsten. Before that it is preheated to about 1,500 K. The filament reaches its full temperature when you press **prep**.
 
-The released electrons gather in a cloud around the filament: the **space charge**. Nothing crosses the tube yet. Only when the **kVp** is applied are the electrons pulled across to the anode. That flow of electrons is the **tube current**, measured in milliamperes (**mA**).
+The electrons released repel each other, as they all have a negative charge, and form a cloud around the filament: the **space charge**. The negatively charged cloud repels further electrons being released.
 
-A hotter filament releases more electrons, so the **filament current controls the mA**. The kVp does something different: it sets how much **energy** each electron carries. Multiply the mA by the exposure time and you get the **mAs**, which sets how many electrons cross, and so the number of X-ray photons.
+When the **kVp** is applied, the electrons are accelerated by the potential difference between the cathode and the anode. This flow of electrons is the **tube current**, measured in milliamperes (**mA**). As the voltage is increased, more electrons flow to the anode. The **saturation voltage** is the voltage at which all the electrons are attracted to the anode. A further increase in voltage then has no effect on the current: the current is limited by the number of electrons available, and is said to be emission limited.
+
+So the **filament temperature controls the mA**: a hotter filament releases more electrons. The kVp determines the kinetic **energy** of each electron. The mA multiplied by the exposure time gives the **mAs**, which sets how many electrons cross the tube, and so the number of X-ray photons.
 
 ## Try this
-- Press **Next** once. Prep 1 shows the filament heating and the space charge forming around it.
+- Press **Next** once. Prep 1 shows the filament heating and the electron cloud forming around it.
 - Tap the filament (number 1) and read how its temperature sets the mA.
 
 ## Key points
-- Heating the tungsten filament releases electrons: thermionic emission.
-- The filament circuit (about 5 A at 12 V, from a step-down transformer) sets the filament temperature.
-- The electrons wait in a space charge until the kVp pulls them across the tube.
-- Filament temperature controls the mA (how many electrons); the kVp controls the energy of each one.
+- Electrons are emitted from the heated tungsten filament by thermionic emission.
+- The filament circuit (approximately 5 A at 12 V, stepped down from the supply) produces the heating current.
+- The electrons form a cloud, the space charge, until the kVp accelerates them to the anode.
+- Filament temperature controls the mA (the number of electrons); the kVp determines the energy of each one.
 
 # What happens in the anode
 id: anode
@@ -81,51 +90,55 @@ diagram: target
 status: draft
 sources: 8-1 s13–21
 
-Each electron arrives at the target with a kinetic energy, in keV, equal to the tube voltage in kV. An electron accelerated through 80 kV arrives with **80 keV**.
+X-rays are produced when high-speed electrons hit the anode. Each electron arrives with a kinetic energy, in keV, equal to the tube voltage in kV: an electron accelerated through 80 kV arrives with **80 keV**.
 
-In the target it meets tungsten atoms and loses its energy in many small interactions. The lecture sorts them into four kinds:
+We must consider the individual interactions that may happen to that electron in the tungsten target. There are four possibilities:
 
-- **1 Excitation (outer shell).** The electron lifts an outer-shell electron to a higher level; it drops back, and the energy ends as **heat**.
-- **2 Ionisation (outer shell).** The electron knocks an outer-shell electron out of the atom; the energy again ends as **heat**.
-- **3 Ionisation (inner shell).** The electron knocks out a K-shell electron, giving **characteristic radiation**.
-- **4 Braking.** The electron is slowed by the nucleus, giving **Bremsstrahlung**.
+- **1 Excitation (outer shell).** The incident electron imparts a small amount of its kinetic energy to an outer-shell electron, displacing it to a higher level. The electron then returns to its original level, and the energy is released as **heat**.
+- **2 Ionisation (outer shell).** A larger amount of kinetic energy is deposited in an outer-shell electron, and the electron is removed. A free electron takes its place, releasing its excess energy as **heat**.
+- **3 Ionisation (inner shell).** Energy is given to an inner-shell electron, which is ejected. It is replaced by an electron from an outer shell, with the release of energy as an X-ray photon: **characteristic radiation**.
+- **4 Electron braking.** The incident electron passes close to the nucleus of the tungsten atom, changes direction and slows down. The kinetic energy it loses is given off as an X-ray photon: **Bremsstrahlung radiation**.
 
-The outer-shell interactions happen far more often, and each involves only a few electronvolts. That is why about **99%** of the electrons' energy becomes **heat** and only about **1%** becomes X-rays, and why so much of anode design is about managing heat.
+Only the last two processes produce X-rays. The outer-shell interactions are far more likely, so X-rays and heat are both produced from the impact, and only about **1%** of the energy is released as X-ray radiation. About **99%** is converted to heat.
 
 ## Predict
-When the electron beam hits the target, where does most of its energy end up?
-- As X-rays
-- * As heat
-- As visible light
-> About 99% becomes heat. Interactions with outer-shell electrons only excite or ionise them; only Bremsstrahlung and inner-shell ionisation produce X-rays.
+When the electron beam hits the target, what is most of its energy converted to?
+- X-rays
+- * Heat
+- Visible light
+> About 99% is converted to heat. Outer-shell excitation and ionisation release their energy as heat; only inner-shell ionisation and electron braking produce X-rays.
 
 ## Try this
-- Fire an electron with **1** and with **2** selected. Neither makes an X-ray photon.
-- Now try **3** and **4**. These are the two that produce X-rays.
+- Fire an electron with **1** and with **2** selected. Neither produces an X-ray photon.
+- Now try **3** and **4**. These are the two processes that produce X-rays.
 
 ## Key points
-- Each electron arrives with an energy in keV equal to the kVp.
-- Outer-shell excitation and ionisation make heat; inner-shell ionisation and braking make X-rays.
-- About 99% of the energy becomes heat and about 1% becomes X-rays.
+- Each electron arrives with a kinetic energy in keV equal to the kVp.
+- Four possibilities: outer-shell excitation and outer-shell ionisation (heat), inner-shell ionisation (characteristic radiation) and electron braking (Bremsstrahlung).
+- Only about 1% of the energy is released as X-ray radiation; about 99% is converted to heat.
 
 # Bremsstrahlung and characteristic radiation
 id: x-rays
-summary: The two ways X-rays are made in the target, and why one gives a curve and the other sharp lines.
+summary: The two ways X-rays are produced in the target, and why one gives a continuous spectrum and the other lines.
 areas: Bremsstrahlung; Characteristic radiation
 diagram: target
 status: draft
 sources: 8-1 s18–33; 10-1 s3
 
-**Bremsstrahlung** (German for "braking radiation") happens when an electron passes close to a tungsten nucleus. The positive nucleus pulls on it, so it slows and changes direction, and the energy it loses leaves as an X-ray photon. A closer pass means a sharper turn and a higher-energy photon. Electrons pass at every distance, so photons of **every energy** are made, from almost nothing up to the maximum. That gives a **continuous spectrum**.
+**Bremsstrahlung**, or "braking" radiation, depends on the deflection caused by the attractive force of the nucleus. The incident electron passes close to the nucleus of the tungsten atom, changes direction and slows down. The kinetic energy it loses is given off as an X-ray photon.
 
-Rarely, an electron is stopped dead and all its energy becomes one photon. That is the **maximum photon energy**, and it equals the kVp: 80 kVp gives photons of up to 80 keV.
+The photon's energy depends on how close the electron passes to the nucleus. Small deflections are the most common, producing many low-energy photons. These have little penetrating power and are absorbed by the inherent and added filtration. Large deflections are less likely, and the loss of all the electron's energy is very rare, because the nucleus is so small within the atom. Drawing a graph of the photon energies gives a **continuous spectrum**.
 
-**Characteristic radiation** starts when an incoming electron knocks a **K-shell** electron out of a tungsten atom. That needs more than the K-shell binding energy, **69.5 keV**. An electron from a higher shell drops into the vacancy and gives out the difference as a photon:
+The **maximum photon energy** is set by the potential difference: 80 kVp gives photons of up to 80 keV.
+
+**Characteristic radiation** is emitted following the creation of a vacancy in an inner electron shell. The incident electron must have more than the K-shell binding energy, **69.5 keV** in tungsten, to eject a K-shell electron. The vacancy is filled by an electron from an outer shell, and the atom then contains excess energy: the difference in binding energy between the two shells. This is emitted as a photon:
 
 - From the L shell: 69.5 − 10.2 ≈ **59.3 keV** (Kα), the more likely.
 - From the M shell: about **67.2 keV** (Kβ).
 
-These energies depend only on tungsten, not on the kVp, so they appear as **sharp lines** on the spectrum. Below 69.5 kVp there are no K-lines at all. After the drop, the gap moves out to the L shell and is filled in turn, giving weak L-line photons (about 8 keV) that the tube's filtration absorbs. Occasionally (about 5% of the time in tungsten) the energy throws out an outer electron, an **Auger electron**, instead of a photon.
+These energies depend on the binding energies of tungsten's electrons, not on the kVp, so they appear as **lines** on the spectrum. Below 69.5 kVp there are no K-lines.
+
+The excess energy can be emitted in two ways: by emitting a photon, or by pushing out one of the most loosely bound electrons in the outermost shell. For heavy elements such as tungsten, photon emission is more common; for lighter elements, electron emission dominates. The electrons emitted are called **Auger electrons**.
 
 ## Try this
 - Choose **4 Braking** and fire at every distance. Each gives a different photon energy.
@@ -133,49 +146,53 @@ These energies depend only on tungsten, not on the kVp, so they appear as **shar
 - Choose **3 Inner ionisation** at 60 kVp, then at 80 kVp. Below 69.5 kVp there is no Kα photon.
 
 ## Key points
-- Bremsstrahlung: the electron is braked by the nucleus; any energy up to the kVp, so a continuous spectrum.
-- Characteristic: a K-shell vacancy filled from a higher shell; fixed energies (Kα 59.3 keV, Kβ 67.2 keV), so sharp lines.
-- K-lines need the electron to bring more than 69.5 keV: none below 69.5 kVp.
-- The maximum photon energy equals the kVp.
+- Bremsstrahlung: the electron is slowed by the nucleus. Small deflections are the most common, and the result is a continuous spectrum.
+- Characteristic radiation: a vacancy in an inner shell is filled from an outer shell. The energies are fixed (Kα 59.3 keV, Kβ 67.2 keV), so they appear as lines.
+- The K-lines need the electron to have more than 69.5 keV: there are none below 69.5 kVp.
+- The maximum photon energy is set by the kVp.
 
 # The X-ray spectrum
 id: spectrum
-summary: Reading the spectrum, and how mA, kVp, target and generator change it.
+summary: Reading the spectrum, and how target material, mA and kVp change it.
 areas: The X-ray spectrum
 diagram: spectrum
 status: draft
 sources: 10-1 s9–26
 
-The **X-ray spectrum** is a graph of the number of photons against photon energy. It combines the two kinds of X-ray: the smooth **Bremsstrahlung** curve and the sharp **K-lines** of tungsten. The curve ends at the **maximum photon energy**, equal to the kVp. At the low-energy end it falls away, because filtration has removed those photons.
+The **X-ray spectrum** is a graph of the number of photons against photon energy. It shows the continuous Bremsstrahlung spectrum and the characteristic lines of the target together. The spectrum ends at the **maximum photon energy**, set by the kVp.
 
-Two words describe a beam:
+Two terms describe a beam:
 
-- **Quantity** is the number of photons: the **area under the curve**.
-- **Quality** is the beam's penetrating power, described by its **mean** (or effective) photon energy.
+- **Quantity** is the number of photons: the **area under the graph**, including the characteristic lines.
+- **Quality** describes the **penetrating power** of the beam. A normal X-ray beam is heterogeneous (it contains photons of many energies), so its quality is commonly referred to by its **effective photon energy**: the energy of the homogeneous beam that it would be equivalent to.
 
-**mA and time** change the number of electrons, so the number of photons. Double the mA and the quantity doubles; the shape, the maximum and the mean energy stay the same.
+Four things affect the spectrum produced: the target material, the mA, the kVp and the filtration.
 
-**kVp** changes the energy of the electrons. Raising it moves the maximum photon energy up and shifts the curve to higher energies, so the **quality rises**. The quantity rises too, roughly with kVp², and the K-lines appear once the kVp passes 69.5.
+**Target material.** The target is generally tungsten (W, Z = 74); specialised mammography units use molybdenum (Mo, Z = 42). The amount of Bremsstrahlung is proportional to Z: the greater the atomic number, the greater the quantity produced. The characteristic lines depend on the binding energies of the target material's electrons, so each material has its own.
 
-The **target material** and the **generator** matter too. A lower atomic number target such as molybdenum makes fewer Bremsstrahlung photons and has its own K-lines, used in mammography. A generator with more ripple gives a lower average voltage, so fewer photons with a lower mean energy.
+**mA.** As the mA increases, the number of electrons emitted by the cathode increases in proportion, so the quantity of photons, characteristic and Bremsstrahlung, increases: 2 × mA = 2 × photons. The quality and the maximum and minimum energies are all unaltered.
+
+**kVp.** An increase in kVp increases the kinetic energy of the electrons at the target. The kVp determines the peak energy of the spectrum, and as it increases the number of higher-energy photons increases, so the **quality increases**. The quantity increases too, approximately with **kVp²**: a beam generated at 80 kVp compared with one at 60 kVp gives (80)² ÷ (60)² = 1.78, an increase in output of 78%.
+
+The **generator** also affects the spectrum. A supply with more ripple spends part of each cycle below the peak voltage, so it gives fewer photons, of lower mean energy.
 
 ## Predict
 Double the mA and keep the kVp the same. What happens to the spectrum?
 - It shifts to higher energies
-- * It gets twice as tall, with the same shape
+- * It becomes twice as tall, with the same shape
 - Its maximum energy doubles
-> The mA controls quantity (how many photons), not quality. The curve keeps its shape and its end point at the kVp; it just doubles in height.
+> The mA changes the quantity, not the quality: 2 × mA = 2 × photons. The maximum energy and the shape of the spectrum are unaltered.
 
 ## Try this
-- **Pin** the beam, then double the mA. Quantity doubles; quality is unchanged.
-- Raise the kVp from 60 to 80. Watch the maximum energy move and the K-lines appear above 69.5 kVp.
+- **Pin** the beam, then double the mA. The quantity doubles; the quality is unaltered.
+- Raise the kVp from 60 to 80. Watch the maximum energy increase and the K-lines appear above 69.5 kVp.
 - Choose the **Mammography** preset and compare its spectrum with general radiography.
 
 ## Key points
-- Quantity is the area under the curve; quality is the mean photon energy.
-- mA (and time) change quantity only.
-- kVp raises the maximum and mean energy, and the quantity (roughly with kVp²).
-- The K-lines' energies belong to the target material; they only appear above its K-edge.
+- Quantity is the area under the graph; quality is the penetrating power, referred to by the effective photon energy.
+- mA changes the quantity only: 2 × mA = 2 × photons.
+- kVp determines the peak energy; raising it increases the quality, and the quantity approximately with kVp².
+- The characteristic lines depend on the target material's binding energies.
 
 # Filtration
 id: filtration
@@ -185,17 +202,21 @@ diagram: spectrum
 status: draft
 sources: 10-1 s28–37
 
-Low-energy photons don't have the energy to pass through the patient. They are absorbed in the skin and superficial tissues, adding **dose** without ever reaching the image receptor. **Filtration** removes them before they reach the patient.
+**Filtration** is the reduction in the intensity of the beam as a result of passing through one or more materials before reaching the patient.
 
-Some filtration is built into the tube: the glass envelope, the oil and the window. This **inherent filtration** is about 1 mm aluminium equivalent, and it can't be removed. **Added filtration**, usually aluminium sheets at the tube port, brings the **total** to at least **2.5 mm aluminium equivalent** for general radiography.
+Lower-energy photons contribute to the patient's **dose**, not to the image: they are absorbed in the skin and superficial tissues and never reach the image receptor. Filtration absorbs these lower-energy photons.
 
-Filtration absorbs mostly low-energy photons, so the beam has fewer photons (**quantity falls**) but a higher mean energy (**quality rises**). This is **beam hardening**. The maximum photon energy doesn't change: that is still set by the kVp.
+**Inherent filtration** comes from the materials the beam passes through before leaving the tube: the tungsten target, the glass of the tube insert, the oil and the insert window. It is equivalent to approximately **1 mm of aluminium**, and it removes some of the low energies.
+
+**Additional filtration** is placed at the exit port, and is a legal requirement. The materials used include aluminium and copper. For general radiography the **total** filtration must be at least **2.5 mm aluminium equivalent**.
+
+On the spectrum, the area below the graph is decreased, so the **quantity is decreased**. The average energy is increased, so the **quality is increased**. This is **beam hardening**. The maximum photon energy is unaltered: it is still set by the kVp.
 
 ## Try this
-- **Pin** the beam at 2.5 mm, then change the filtration to 6 mm. Fewer photons, a higher mean energy.
-- Set the filtration to 0 mm and look at the low-energy end of the curve: these are the photons that would only add skin dose.
+- **Pin** the beam at 2.5 mm, then change the filtration to 6 mm. There are fewer photons, with a higher average energy.
+- Set the filtration to 0 mm and look at the low-energy end of the spectrum: these photons would contribute to dose, not to the image.
 
 ## Key points
-- Low-energy photons add patient dose but don't reach the image, so filtration removes them.
-- Inherent filtration is about 1 mm Al; the total must be at least 2.5 mm Al equivalent for general radiography.
-- Filtration lowers quantity and raises quality: beam hardening. The maximum energy is unchanged.
+- Lower-energy photons contribute to dose, not to the image, so filtration absorbs them.
+- Inherent filtration is approximately 1 mm Al; additional filtration is a legal requirement, and the total must be at least 2.5 mm Al equivalent for general radiography.
+- Filtration decreases the quantity and increases the quality: beam hardening. The maximum energy is unaltered.

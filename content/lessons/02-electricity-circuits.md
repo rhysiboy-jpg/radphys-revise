@@ -1,5 +1,6 @@
 <!--
 Lessons for topic 2, Electricity & X-ray Circuits. The README explains the format.
+Wording follows the lecture slides and notes where it can (5-1, 5-3, 10-1); figures follow reference data.
 -->
 
 # Charge, conductors and insulators
@@ -10,22 +11,28 @@ diagram: conductors
 status: draft
 sources: 5-1 s5–7
 
-Electric **charge** comes in two kinds: positive (protons) and negative (electrons). **Like charges repel** and **unlike charges attract**: two negative charges push each other apart, while a negative and a positive pull together. This is also why electrons are held in an atom by its positive nucleus.
+**Charge** describes the property of an object that allows it to take part in electrical forces. It is present in the form of protons and electrons, and there are two types: **positive** and **negative**. **Like charges repel** each other and **unlike charges attract**. Two negative charges try to move away from each other, while a positive and a negative charge attract.
 
-An object becomes charged by gaining or losing electrons, in three ways:
+Most materials are conductors or insulators.
 
-- **Friction**: rubbing transfers electrons from one surface to another (useful for insulators).
-- **Conduction**: charge flows across when a charged object touches another.
-- **Induction**: a charged object brought near an earthed conductor draws charge into or out of it.
+- In a **conductor**, the outermost electrons are loosely bound and free to travel through the material.
+- In an **insulator**, the electrons have a higher binding energy, so they are not as free to flow and carry charge through the material.
+- **Semiconductors** fit in between: impurities within the material can alter its conductive properties.
 
-In a **conductor**, such as a metal, the outermost electrons are loosely bound and free to move through the material, so charge can flow. In an **insulator** the electrons are held tightly (a higher binding energy), so charge can't flow freely. The oil and glass of an X-ray tube are insulators; the copper wiring is a conductor.
+There are three ways to give an object a net charge:
+
+- **Friction**: useful for charging insulators. Rubbing one material with another transfers electrons from one to the other, leaving one with a net negative charge and the other with a positive charge.
+- **Conduction**: if a charged object touches a conductor, some of the charge is transferred between them.
+- **Induction**: a charged object is brought close to a conductor that is connected to earth, and electrons flow onto it or away from it.
+
+In the X-ray tube and circuit, the copper wiring is a conductor, while the glass envelope and the oil are insulators.
 
 ## Predict
 With a voltage across a strip of glass, what will its electrons do?
 - Drift towards the positive end
 - * Stay with their atoms, so no current flows
 - Drift towards the negative end
-> Glass is an insulator: its electrons are held tightly, so they can't flow. In copper, the loosely bound outer electrons drift towards the positive end.
+> Glass is an insulator: its electrons have a higher binding energy and are not free to flow. In copper, the loosely bound outermost electrons drift towards the positive end.
 
 ## Try this
 - Make both charges negative, then make one positive: like charges repel, unlike charges attract.
@@ -33,9 +40,9 @@ With a voltage across a strip of glass, what will its electrons do?
 - Switch to **glass** or **oil**: the electrons stay with their atoms, so no current flows.
 
 ## Key points
-- Like charges repel; unlike charges attract.
-- Objects are charged by friction, conduction or induction.
-- Conductors have loosely bound outer electrons that are free to move; insulators hold theirs tightly.
+- Like charges repel each other; unlike charges attract.
+- Conductors: the outermost electrons are loosely bound and free to travel. Insulators: the electrons have a higher binding energy.
+- An object can be given a charge by friction, conduction or induction.
 
 # Potential difference, current and resistance
 id: circuits
@@ -45,31 +52,31 @@ diagram: ohms-law
 status: draft
 sources: 5-1 s8–11
 
-**Potential difference** is the difference in energy per unit of charge between two points in a circuit: the energy needed to move charge between them. It is measured in **volts**: 1 V is 1 joule per coulomb. The tube voltage (kVp) is a potential difference.
+**Potential difference** is the difference in the amount of energy that charge carriers have between two points in a circuit. It is measured in **volts** (V): if one joule of energy is required to move one coulomb of charge, the potential difference is 1 volt. The tube voltage (kVp) is a potential difference.
 
-**Current** is the rate of flow of charge, measured in **amperes**: 1 A is one coulomb passing a point each second. The tube current (mA) is the flow of electrons across the X-ray tube.
+**Current** is the flow of electric charge due to the potential difference within a circuit. It is the rate of charge flowing past a given point, measured in coulombs per second, named the **ampere** (A). The tube current (mA) is the flow of electrons across the X-ray tube.
 
-**Resistance** is the opposition to current, measured in **ohms**. It increases with the length of a wire and decreases with its thickness, so a long, thin wire has the highest resistance. Pushing current through a resistance turns energy into **heat**: a loss in most of the circuit, but exactly what heats the X-ray tube filament.
+**Ohm's law** states that the current through a conductor between two points is directly proportional to the voltage across the two points, at a constant temperature. Double the voltage and the current doubles.
 
-**Ohm's law**: for a conductor at constant temperature, the current is **directly proportional** to the potential difference. Double the voltage and the current doubles; the ratio between them is the resistance.
+This introduces **resistance**: the opposition to the flow of electric current, measured in **ohms**. It is analogous to mechanical friction within a circuit. Resistance depends on the material, and also on its size and shape: a wire's resistance is higher if it is long and thin, and lower if it is short and thick. Resistors oppose the flow, so more electrical energy is required to push the current through, and the excess energy dissipates as **heat**. Sometimes this is the desired outcome, as in a kettle, or in the filament of the X-ray tube.
 
 ## Predict
 Double the voltage across the same wire. What happens to the current?
 - It halves
 - It stays the same
 - * It doubles
-> Ohm's law: at a constant temperature, current is proportional to potential difference, so double the voltage gives double the current.
+> Ohm's law: at a constant temperature, the current is directly proportional to the voltage, so double the voltage gives double the current.
 
 ## Try this
 - Double the voltage: the current doubles, and the point moves along a straight line through the origin.
 - Make the wire **longer**, then **thicker**: watch the resistance rise, then fall.
-- Push a large current through a thin wire and see how much energy becomes heat.
+- Push a large current through a thin wire and see how much energy dissipates as heat.
 
 ## Key points
-- Potential difference: energy per unit charge, in volts (J/C).
-- Current: rate of flow of charge, in amperes (C/s).
-- Resistance: opposition to current, in ohms; higher for long, thin wires; it turns energy into heat.
-- Ohm's law: current is proportional to potential difference at constant temperature.
+- Potential difference: the difference in energy that charge carriers have between two points, in volts (J/C).
+- Current: the rate of charge flowing past a given point, in amperes (C/s).
+- Resistance: the opposition to the flow of current, in ohms. It is higher for long, thin wires, and the excess energy dissipates as heat.
+- Ohm's law: current is directly proportional to voltage, at a constant temperature.
 
 # Alternating current and transformers
 id: transformers
@@ -79,96 +86,111 @@ diagram: transformer
 status: draft
 sources: 5-3 s3, s7–9, s19
 
-**Direct current** (DC) flows in one direction only. **Alternating current** (AC) reverses direction many times a second: 50 times a second in UK mains. Mains AC is at about 230 V, but the X-ray tube needs tens of thousands of volts, and the filament needs only about 12 V. **Transformers** make both.
+A **circuit** is a path through which electrical current flows. A closed circuit, or loop, makes current flow possible. The current can be **direct current** (DC), which flows in one direction only, or **alternating current** (AC), which reverses direction: 50 times a second in the UK mains.
 
-A transformer has two **windings** on an **iron core**. AC in the **primary** winding makes a **changing magnetic field** in the core, which **induces** an alternating voltage in the **secondary** winding: electromagnetic induction. Only a changing field induces a voltage, so a transformer **needs AC**: DC makes a steady field that induces nothing.
+There are specific voltage and current requirements to produce X-rays. The mains supply is about 230 V, but the X-ray tube needs tens of thousands of volts, and the filament needs only about 12 V. **Transformers** provide both.
 
-The **turns ratio** sets the change. More turns on the secondary than the primary **steps the voltage up**; fewer **steps it down**. A transformer can't create energy, so when the voltage goes up the current comes down, keeping the power about the same (transformers are over 95% efficient).
+Transformers use **electromagnetic induction** to vary the voltage. They consist of an **iron core**, a **primary winding** and a **secondary winding**. An alternating current flowing through the primary winding produces a changing magnetic field, which carries through the core and induces an alternating voltage in the secondary winding. Transformers only operate with AC: an alternating supply is needed to induce a current in the secondary winding.
 
-In the X-ray circuit, a **step-up transformer** raises the voltage to kilovolts for the tube, and a **step-down transformer** gives the filament its low voltage and high current (about 12 V and 5 A). An **autotransformer** selects the voltage fed to the step-up transformer, which is how the kVp is chosen.
+- A **step-up transformer** has more turns on the secondary than on the primary. The voltage is increased, but the current must decrease to keep the power constant.
+- A **step-down transformer** has fewer turns on the secondary. It decreases the voltage, with a corresponding increase in current.
+
+Transformer efficiency is typically above 95%. The current flowing through the windings produces heat, so X-ray transformers are placed inside a metal box filled with **oil**, which gives electrical and thermal insulation and cools the transformer.
+
+In the X-ray circuit, a step-up transformer converts the voltage to kilovoltage for the tube, and a step-down transformer gives the filament a lower voltage but a higher current (about 12 V and 5 A). An **autotransformer** selects the voltage supplied to the step-up transformer, which is how the kVp is chosen.
 
 ## Predict
 A step-up transformer raises 230 V to tens of kilovolts. What happens to the current on the high-voltage side?
 - It rises by the same factor
 - * It falls by the same factor
 - It doesn't change
-> Voltage and current change in opposite directions: in an ideal transformer, voltage × current is the same on both sides.
+> The voltage is increased, so the current must decrease to keep the power constant.
 
 ## Try this
-- Choose **High voltage** and see how many turns lift 230 V to the tube voltage, and what happens to the current.
+- Choose **High voltage** and see how many turns raise 230 V to the tube voltage, and what happens to the current.
 - Choose **Filament** and compare: a step-down transformer gives a low voltage and a high current.
-- Move the primary voltage: with the turns fixed, the output follows the input, just as the autotransformer sets the kVp.
+- Move the primary voltage: with the turns fixed, the output follows the input, as when the autotransformer sets the kVp.
 
 ## Key points
-- AC reverses direction (50 times a second in the UK); DC flows one way.
-- A transformer works by electromagnetic induction, so it needs AC.
-- More secondary turns steps the voltage up and the current down; fewer steps it down.
-- Step-up for the tube's kilovolts; step-down for the filament; the autotransformer selects the kVp.
+- AC reverses direction (50 times a second in the UK); DC flows in one direction.
+- Transformers use electromagnetic induction to vary the voltage, so they only operate with AC.
+- Step-up: the voltage is increased and the current decreases. Step-down: the voltage decreases and the current increases.
+- Step-up for the tube's kilovoltage; step-down for the filament; the autotransformer selects the kVp.
 
 # Rectification
 id: rectification
-summary: Turning AC into the one-way supply the tube needs, and why smoother is better.
+summary: Turning AC into the one-way supply the tube needs, and why a steadier supply is better.
 areas: Rectification
 diagram: rectification
 status: draft
 sources: 5-3 s10–14; 10-1 s39–43
 
-The step-up transformer gives a very high **alternating** voltage, but the tube needs current to flow **one way**: electrons must always travel from the negative **cathode** to the positive **anode**. Turning AC into DC is **rectification**, done by **rectifiers** (diodes), which let current through in one direction only.
+The X-ray tube requires **direct current**: a negative charge at one end (the cathode) and a positive charge at the other (the anode). Once the voltage has been transformed, the supply is high-voltage AC. **Rectification** is used to convert high-voltage AC to high-voltage DC. It is achieved with **diodes**: solid-state devices through which current can pass in one direction only.
 
-- **Half-wave** rectification simply suppresses the reverse half of each cycle, leaving gaps.
-- **Full-wave** rectification turns the reverse half into forward current too: twice as many pulses, but the voltage still drops to zero between them.
-- **Three-phase** supplies overlap three waveforms, so after rectification the voltage barely dips between pulses.
+Different forms of rectification are possible, with different outcomes for the resulting current:
+
+- **Half-wave** rectification suppresses the negative portion of the AC sine wave. The positive portion is used to produce a pulsating DC.
+- **Full-wave** rectification converts the negative portion of the sine wave to a positive current, giving a more uniform pulsating DC.
+- A **three-phase** supply has three waves of AC, each offset in time from the others. After rectification the drop between the peaks is much smaller, giving a much more uniform DC supply. Hospitals use three-phase supplies.
 - **High-frequency** generators give an almost constant voltage.
 
-The dip between peaks is called **ripple**. While the voltage is well below the peak, the tube makes fewer, lower-energy photons. Less ripple means a more consistent beam with a **higher mean energy** and **more output** for each mAs, which is why hospital generators are three-phase or high-frequency.
+The drop between the peaks is called **ripple**. A supply with peaks and troughs is not optimal for X-ray production: while the voltage is well below the peak, the tube produces fewer photons, of lower energy. Less ripple gives a more consistent beam, with a **higher mean energy** and **more output** for the same mAs.
 
 ## Predict
-With half-wave rectification, what happens to the half of each AC cycle that runs the wrong way?
-- It's reversed and used
-- * It's blocked, so no X-rays are made then
-- It's stored for the next half-cycle
-> A half-wave rectifier blocks the reverse half, so the tube makes X-rays only half the time. Full-wave rectification flips it instead, so both halves are used.
+With half-wave rectification, what happens to the negative portion of each AC cycle?
+- It is converted and used
+- * It is suppressed, so no X-rays are produced then
+- It is stored for the next half-cycle
+> Half-wave rectification suppresses the negative portion, so the tube produces X-rays only half the time. Full-wave rectification converts it to a positive current, so both portions are used.
 
 ## Try this
-- Start at AC, then choose half-wave: the reversed half disappears.
+- Start at AC, then choose half-wave: the negative portion disappears.
 - Go to full-wave, then three-phase, and compare the ripple each time.
 
 ## Key points
-- Rectification converts AC to DC, so the cathode stays negative and the anode positive.
-- Half-wave suppresses the reverse half; full-wave converts it, doubling the pulses.
-- Three-phase and high-frequency supplies have little ripple: a steadier kVp, a higher mean energy and more output.
+- Rectification converts high-voltage AC to high-voltage DC, so the cathode stays negative and the anode positive.
+- Half-wave suppresses the negative portion of the sine wave; full-wave converts it to a positive current.
+- Three-phase and high-frequency supplies have little ripple: a more uniform supply, a higher mean energy and more output.
 
 # The X-ray circuit
 id: x-ray-circuit
-summary: The primary, secondary and filament circuits, and what sits in each.
+summary: The primary, secondary and filament circuits, and what is in each.
 areas: The X-ray circuit
 diagram: xray-circuit
 status: draft
 sources: 5-3 s16–19
 
-An X-ray generator has three linked circuits.
+X-rays should be controlled in intensity and energy. The X-ray circuit does this, and can be split into three distinct parts.
 
-The **primary circuit** runs at low voltage and holds everything the radiographer controls: the **main switch**, the **exposure switch**, the **timer**, the **autotransformer** and the **kVp and mA selectors**.
+The **primary circuit** is sometimes known as the low-voltage circuit. It contains:
 
-The **secondary circuit** is the high-voltage side. The **step-up transformer** raises the voltage to the kilovolts the tube needs, and the **rectifiers** turn it into a one-way supply, so the cathode is always negative and the anode always positive.
+- the **main switch**, which supplies the power for the X-ray tube;
+- the **exposure switch**, which permits current to flow through the circuit;
+- the **timer**, used to end the exposure at an accurately measured pre-set time;
+- the **kVp and mA selectors**, which allow selection of the energy and intensity of the X-rays produced. The kVp is selected at the **autotransformer**.
 
-The **filament circuit** has a **step-down transformer**, giving a low voltage and a high current to heat the filament for **thermionic emission**. Its setting controls the filament temperature, and so the **mA**.
+The **secondary circuit** is the high-voltage circuit. It contains:
 
-Putting it together: the **kVp** is selected in the primary circuit and produced in the secondary circuit, while the **mA** is set through the filament circuit.
+- the **high-voltage transformer**, a step-up transformer that converts the voltage to kilovoltage;
+- the **rectifiers**, solid-state devices that allow current to flow in only one direction. They convert high-voltage AC to the high-voltage DC necessary for the tube.
+
+The **filament circuit** supplies power to the X-ray tube filament, so that enough electrons are released by **thermionic emission**. It includes a **step-down transformer**, which provides the high current the filament needs. Its setting controls the filament temperature, and so the **mA**.
+
+In summary: the **kVp** is selected in the primary circuit and produced in the secondary circuit, while the **mA** is set through the filament circuit.
 
 ## Predict
 Where in the X-ray circuit is the mA set?
 - At the step-up transformer
 - * In the filament circuit
 - At the rectifiers
-> The mA selector sets the filament current, so the filament's temperature and how many electrons it releases. The kVp is selected at the autotransformer.
+> The mA selector sets the filament current, so the filament's temperature and the number of electrons released by thermionic emission. The kVp is selected at the autotransformer.
 
 ## Try this
-- Choose **Select the kVp**: it is chosen in the primary circuit and produced in the secondary.
+- Choose **Select the kVp**: it is selected in the primary circuit and produced in the secondary.
 - Choose **Select the mA**: it is set through the filament circuit.
 - Tap each part to read what it does and which circuit it belongs to.
 
 ## Key points
-- Primary (low voltage): main switch, exposure switch, timer, autotransformer, kVp and mA selectors.
-- Secondary (high voltage): step-up transformer and rectifiers.
-- Filament: step-down transformer, low voltage and high current; it sets the mA.
+- Primary (low-voltage) circuit: main switch, exposure switch, timer, autotransformer, kVp and mA selectors.
+- Secondary (high-voltage) circuit: step-up transformer and rectifiers.
+- Filament circuit: step-down transformer, low voltage and high current; it sets the mA.
