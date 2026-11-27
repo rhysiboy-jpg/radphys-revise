@@ -579,6 +579,9 @@ async function present(topicId, diagramId, query) {
   const t = topicById(topicId), d = t?.diagrams.find(x => x.id === diagramId && shown(x));
   if (!d) return t ? explore(t.id) : home();
   document.body.classList.add("presenting");
+  // Shown inside another page (the PowerPoint add-in's frame): the slide has its own title, so the bar goes, and only Reset
+  // stays under the diagram.
+  document.body.classList.toggle("embedded", window.self !== window.top);
   document.documentElement.dataset.theme = "light";   // a light background projects best; route() puts the usual theme back
   show(`
     <div class="present-bar">

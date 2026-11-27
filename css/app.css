@@ -1030,6 +1030,18 @@ details.try[open] summary::after { content: " −"; }
 @media (min-width: 801px) { .presenting .grid { grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); } }
 .presenting .stage svg { max-height: calc(100vh - 170px); }
 .presenting .stage canvas { width: auto; max-width: 100%; max-height: calc(100vh - 170px); margin-inline: auto; }
+/* Inside a PowerPoint slide (the add-in's frame): no title bar or extra buttons, little padding, the drawing and its
+   controls side by side in a frame as small as a slide, and the controls scroll on their own if they need to. */
+.embedded .present-bar, .embedded .update-bar, .embedded .skip { display: none; }
+.embedded .link-row > :not([data-role="reset-diagram"]) { display: none; }
+.embedded .sheet { margin: 0; padding: 8px; gap: 8px; border: 0; border-radius: 0; min-height: 100vh; }
+.embedded .module { padding: 0; border: 0; }
+@media (min-width: 520px) {
+  .embedded .grid { grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: 12px; }
+  .embedded .grid > .panel { max-height: calc(100vh - 16px); overflow-y: auto; }
+}
+.embedded .stage svg { max-height: calc(100vh - 60px); }
+.embedded .stage canvas { max-height: calc(100vh - 60px); }
 /* Exposure console: the dose creep log, and the fix-it task after a scenario. */
 .creep-wrap { overflow-x: auto; }
 /* Guess first on the dose ladder: the student's estimates beside the true doses. */

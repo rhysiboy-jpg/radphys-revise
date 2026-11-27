@@ -1,0 +1,28 @@
+/* The PowerPoint add-in page: a picker while editing, then the live diagram filling the slide's frame.
+   Colours come from the app's light theme tokens in css/app.css. */
+html, body.addin { height: 100%; margin: 0; }
+body.addin { display: flex; flex-direction: column; background: var(--surface); color: var(--ink); font-family: var(--font-body); }
+
+.addin-bar { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 4px 8px;
+  border-bottom: 1px solid var(--line); font-size: 0.85rem; }
+.addin-bar[hidden] { display: none; }
+.addin-name { color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.addin-bar button { min-height: 32px; padding: 4px 12px; font-size: 0.85rem; }
+
+.addin-pick { overflow-y: auto; padding: 16px; display: grid; gap: 14px; align-content: start; }
+.addin-pick[hidden] { display: none; }
+.addin-pick h1 { font-size: 1.25rem; margin: 0; }
+.addin-pick > p { margin: 0; color: var(--muted); }
+.addin-link { display: grid; gap: 6px; }
+.addin-link-row { display: flex; gap: 8px; }
+.addin-link-row input { flex: 1; min-width: 0; padding: 8px 10px; }
+.addin-error { margin: 0; color: var(--bad); font-size: 0.9rem; }
+.addin-error:empty { display: none; }
+.addin-topic { display: grid; gap: 6px; }
+.addin-topic h2 { font-size: 0.95rem; margin: 6px 0 0; color: var(--muted); }
+.addin-topic ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(220px, 100%), 1fr)); gap: 6px; }
+.addin-topic button { width: 100%; text-align: left; display: grid; gap: 2px; padding: 8px 12px; min-height: 44px; }
+.addin-topic button small { color: var(--muted); font-weight: 400; }
+
+.addin-frame { flex: 1; width: 100%; border: 0; display: block; background: var(--surface); }
+.addin-frame[hidden] { display: none; }

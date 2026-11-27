@@ -172,9 +172,21 @@ const walk = dir => fs.readdirSync(path.join(ROOT, dir), { withFileTypes: true }
 for (const f of [...walk("js"), ...walk("css"), ...walk("icons"), ...walk("fonts"), "content/topics.json", "content/calculations.js", "index.html", "manifest.webmanifest"])
   if (!core.has(f) && /\.(js|css|svg|png|json|html|webmanifest|woff2)$/.test(f)) problem("sw.js", `${f} isn't in the CORE list, so it won't work offline`);
 // Fonts and scripts come from the app itself: nothing a page loads may come from another site (privacy, and offline use).
-for (const f of ["index.html", ...walk("css")]) {
-  const ext = read(f).match(/(?:href|src)=["']https?:\/\/[^"']+|url\(["']?https?:\/\/[^)"']+/g);
-  if (ext) problem(f, `loads from another site: ${ext.join(", ")}`);
+// The one exception: the PowerPoint add-in page must load Microsoft's Office script from Microsoft, and nothing else.
+const OFFICE_JS = "https://appsforoffice.microsoft.com/lib/1/hosted/office.js";
+for (const f of ["index.html", "addin/index.html", ...walk("css"), ...walk("addin").filter(x => x.endsWith(".css"))]) {
+  const ext = (read(f).match(/(?:href|src)=["']https?:\/\/[^"']+|url\(["']?https?:\/\/[^)"']+/g) || [])
+    .filter(m => !(f === "addin/index.html" && m.endsWith(OFFICE_JS)));
+  if (ext.length) problem(f, `loads from another site: ${ext.join(", ")}`);
+}
+// The add-in's manifest must point at the live add-in page and the icons, all of which must exist.
+if (exists("addin/manifest.xml")) {
+  const manifest = read("addin/manifest.xml"), site = "https://rhysiboy-jpg.github.io/radphys-revise/";
+  for (const [, url] of manifest.matchAll(/DefaultValue="(https:[^"]+)"/g)) {
+    if (!url.startsWith(site)) continue;
+    const local = url.slice(site.length).split("#")[0];
+    if (local && !exists(local)) problem("addin/manifest.xml", `points at ${local}, which doesn't exist`);
+  }
 }
 for (const f of core) if (f !== "./" && !exists(f)) problem("sw.js", `CORE lists ${f}, which doesn't exist (the offline copy would fail to install)`);
 

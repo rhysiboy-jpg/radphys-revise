@@ -117,6 +117,18 @@ Under each diagram, beside "Copy link", are three more buttons.
 
 To show a working diagram inside a slide, PowerPoint needs an add-in, because it can't run the diagrams itself. Microsoft's **Web Viewer 2.0** (from the Office add-in store) shows a web page on a slide: press **Present**, copy the address from the browser, and paste it into the add-in. It needs the app to be hosted (an address starting https://) and internet in the room, and your computer must be allowed to install add-ins. Try it on a lecture PC before relying on it; the picture plus a link to the diagram is the fallback.
 
+## Live diagrams inside PowerPoint (the add-in)
+
+RadPhys Revise has its own free PowerPoint add-in, which puts a working diagram on a slide. While editing you choose the diagram; in the slide show you can move its sliders and press its buttons, without leaving PowerPoint. It needs internet in the room.
+
+**Installing it** (once per person). Download `addin/manifest.xml` from the repository (or from https://rhysiboy-jpg.github.io/radphys-revise/addin/manifest.xml, saved as a file). Then:
+- **PowerPoint for Microsoft 365 (Windows or Mac), or PowerPoint on the web:** Home > Add-ins (or Insert > Add-ins) > **More Add-ins** > **My Add-ins** > **Upload My Add-in**, and choose the file.
+- If that option is missing or blocked, your organisation controls add-ins: ask IT to deploy the add-in centrally from the same file (Microsoft 365 admin centre > Integrated apps). It then appears for every lecturer, with nothing to install.
+
+**Using it.** On a slide, Insert > Add-ins > **RadPhys Revise diagrams**. Pick a diagram from the list, or paste a link from **Copy link** or **Present** under a diagram to keep its settings. Resize the frame like any other object. **Change diagram** (shown while editing, hidden in the slide show) picks another. The choice is saved in the presentation, so it reopens on any computer that has the add-in.
+
+The add-in shows the live site, so changes to the app reach every slide without reinstalling. Diagrams awaiting sign-off appear only while review mode is on.
+
 ## Linking to a diagram set-up
 
 Under every diagram is a **Copy link to this set-up** button. It copies a web address that opens the diagram on a page of its own, with its sliders and options as they are now, for example the spectrum at 120 kVp with a molybdenum target. Paste it into a slide, Blackboard or an email, or use it to set a task ("Open this, then halve the mA").

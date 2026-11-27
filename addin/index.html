@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en-GB" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RadPhys Revise diagram</title>
+<!-- PowerPoint add-ins must load Microsoft's own Office script from Microsoft's site: the one outside script in this app, and
+     only on this page, which only PowerPoint opens. Without it (offline, or opened in a browser) the page still works, but
+     can't save the chosen diagram in the slide. -->
+<script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
+<link rel="stylesheet" href="../css/fonts.css">
+<link rel="stylesheet" href="../css/app.css">
+<link rel="stylesheet" href="addin.css">
+</head>
+<body class="addin">
+  <header class="addin-bar" data-role="bar" hidden>
+    <span class="addin-name" data-role="name"></span>
+    <button type="button" data-role="change">Change diagram</button>
+  </header>
+  <main class="addin-pick" data-role="pick" hidden>
+    <h1>Choose a diagram for this slide</h1>
+    <p>It stays live on the slide: in the slide show you can move its sliders and press its buttons.</p>
+    <form class="addin-link" data-role="link-form">
+      <label for="addin-link">Or paste a link from <b>Copy link</b> or <b>Present</b>, to keep its settings</label>
+      <div class="addin-link-row">
+        <input type="text" id="addin-link" placeholder="https://rhysiboy-jpg.github.io/radphys-revise/#diagram-…" autocomplete="off">
+        <button type="submit">Use this link</button>
+      </div>
+      <p class="addin-error" data-role="link-error" aria-live="polite"></p>
+    </form>
+    <div data-role="list"><p class="muted">Loading the diagrams…</p></div>
+  </main>
+  <iframe class="addin-frame" data-role="frame" title="RadPhys Revise diagram" hidden></iframe>
+  <script type="module" src="addin.js"></script>
+</body>
+</html>

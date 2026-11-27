@@ -19,6 +19,7 @@ const { parseCSV } = await load("js/csv.js");
 const { parseLessons } = await load("js/lessons.js");
 const { changedFrom, encodeSetup, decodeSetup } = await load("js/setup.js");
 const { apaCredit, creditYear, wrap } = await load("js/export.js");
+const { parseLink, presentPath } = await load("addin/addin.js");
 
 let passed = 0;
 const failures = [];
@@ -200,6 +201,16 @@ test("picture text: long sentences wrap at whole words", () => {
   equal(wrap("one two three four", 9), ["one two", "three", "four"], "wrapped:");
   equal(wrap("", 10), [], "nothing to wrap:");
   equal(wrap("unbreakablyLongWord next", 5), ["unbreakablyLongWord", "next"], "a long word keeps its own line:");
+});
+
+// ---------- The PowerPoint add-in ----------
+test("add-in: a pasted link gives the diagram and its settings", () => {
+  equal(parseLink("https://rhysiboy-jpg.github.io/radphys-revise/#diagram-production/spectrum?target=Mo&spec-kv=120"),
+    { topic: "production", id: "spectrum", query: "target=Mo&spec-kv=120" }, "a Copy link link:");
+  equal(parseLink("  https://x.org/app/#present-exposure/console  "), { topic: "exposure", id: "console", query: "" }, "a Present link:");
+  equal(parseLink("https://example.org/nothing"), null, "not a diagram link:");
+  equal(parseLink("#learn-atomic/units"), null, "a lesson, not a diagram:");
+  equal(presentPath({ topic: "production", id: "spectrum", query: "spec-kv=120" }), "../#present-production/spectrum?spec-kv=120", "the page it opens:");
 });
 
 // ---------- Diagram set-ups in the web address ----------

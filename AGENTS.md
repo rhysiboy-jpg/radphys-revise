@@ -40,6 +40,7 @@ RadPhys Revise is a revision app for first-year diagnostic radiography physics (
 | `js/diagrams/` | One module per interactive, each exporting `mount(root)`. It may return a cleanup function. `util.js` has shared helpers (including `tapToSet`, which lets a tap on a graph set its slider), and `sortkit.js` is the shared sorting activity. |
 | `js/setup.js` | Shared by every diagram: settings in the web address (the "Copy link" button) and the single screen-reader line when a slider stops. The app adds a Reset button beside "Copy link", which rebuilds the diagram from scratch. |
 | `js/export.js` | A diagram as a picture for slides ("Download SVG" and "Download PNG"): light background, title, summary and an APA 7 credit. Everything is written onto the elements as plain attributes, because PowerPoint's SVG reader ignores style sheets. |
+| `addin/` | The PowerPoint add-in: `manifest.xml` (what lecturers give PowerPoint), and the page it shows in a slide (`index.html`, `addin.js`, `addin.css`), which frames the app's `#present-` view. This page is the one place allowed to load a script from another site: Microsoft's Office script, which add-ins require. Keep the manifest's `Id` the same for ever. |
 | `js/content.js`, `js/lessons.js`, `js/csv.js` | Loading and parsing content. |
 | `js/store.js` | Student progress in localStorage. |
 | `css/app.css` | All styles. Diagram colours use the `--dg-*`, `--photon` and `--electron` tokens. Never hard-code colours, and check dark mode. |
