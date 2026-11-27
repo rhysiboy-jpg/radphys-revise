@@ -145,9 +145,11 @@ Also read the three pages linked at the foot of every page. Each is a draft, and
 
 ## Publishing
 
-The app is a plain static website with no build step. It's published to GitHub Pages: upload the whole folder (except `prototypes/` and `review/`) to a GitHub repository, then turn on Pages. Claude will walk you through this before the pilot.
+The app is a plain static website with no build step, published by GitHub Pages at **https://rhysiboy-jpg.github.io/radphys-revise/**. Pages publishes the `content/phase-1` branch (set under the repository's **Settings > Pages**), so every push updates the live site within a minute or two. Anyone who already has the app open sees "A new version is ready" once `VERSION` in `sw.js` has changed.
 
-Before publishing, check the content. In PowerShell, from the project folder, run:
+The repository is public, so everything in it can be seen, including `review/` and `prototypes/`. While `reviewMode` is `true`, the live site shows drafts too: right for testing, but set it to `false` before giving the link to students.
+
+Before pushing, check the content. In PowerShell, from the project folder, run:
 
 ```
 node tools/validate.mjs

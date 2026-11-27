@@ -14,7 +14,7 @@ RadPhys Revise is a revision app for first-year diagnostic radiography physics (
 ## Standing rules
 
 - **Commit or push only when Rhys asks.** He usually asks for one commit per finished piece of work. Work on the current branch (`content/phase-1`) unless told otherwise.
-- **Keep the GitHub repository private** until Rhys gives the go-ahead (an IP check is pending).
+- **The repository is public** (Rhys's decision, 27 November 2026), and GitHub Pages publishes the `content/phase-1` branch to https://rhysiboy-jpg.github.io/radphys-revise/. Every push goes live within a minute or two, so run both checks before pushing, and never commit anything that shouldn't be public.
 - **The app is an independent effort**, not a university service. Bangor University appears only in the "not an official Bangor University resource" statements (footer and About page). Don't add university branding, names or a data controller unless Rhys asks.
 - **No real patient images** anywhere. Simulated images use the cartoon limb in `js/diagrams/limb.js`.
 - **Never commit the lecture slides** or other source material Rhys shares from his own files.
